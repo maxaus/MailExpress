@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+<h:head>
+    <meta http-equiv="Content-Language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Mail</title>
+
+    <script type="text/javascript" src="http://methvin.com/jquery/jquery.js"></script>
+    <script type="text/javascript" src="http://methvin.com/splitter/splitter.js"></script>
+
+    <!--<h:outputScript library="js" name="jquery.min.js"/>-->
+    <!--<h:outputScript library="js" name="splitter.js"/>-->
+    <h:outputStylesheet library="css" name="main.css"/>
+
+
+    <script type="text/javascript">
+        $().ready(function() {
+            $("#mainSplitter").splitter({
+                type: "v",
+                outline: true,
+                minLeft: 100, sizeLeft: 150, maxLeft: 350,
+                anchorToWindow: true,
+                fillHeight: true,
+                accessKey: "L"
+            });
+
+            $("#secondarySplitter").splitter({
+                splitHorizontal: true,
+                outline: true,
+                sizeBottom: 300, minTop: 50,
+                accessKey: "J"
+            });
+        });
+    </script>
+</h:head>
+<h:body>
+
+<div id="header" class="holder">
+   status bar
+</div>
+<div id="toolbar" class="holder">
+   toolbar
+</div>
+
+<div id="mainSplitter" class="holder">
+
+    <div class="mainLeft splitterPane">
+        <ui:insert name="menu" >
+            <ui:include src="menu.xhtml" />
+        </ui:insert>
+    </div>
+
+    <div id="secondarySplitter">
+        <div class="secondaryTop splitterPane">
+            <ui:insert name="list" >
+                <ui:include src="list.xhtml" />
+            </ui:insert>
+
+        </div>
+
+        <div class="secondaryBottom splitterPane">
+            <ui:insert name="view" >
+                <ui:include src="view.xhtml" />
+            </ui:insert>
+        </div>
+    </div>
+
+</div>
+
+</h:body>
+</html>
