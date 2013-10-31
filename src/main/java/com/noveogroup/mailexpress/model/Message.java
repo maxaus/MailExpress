@@ -1,6 +1,7 @@
 package com.noveogroup.mailexpress.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,19 @@ public class Message extends AbstractEntity {
     @Lob
     @Column(name = "body")
     private String body;
+
+    @Column(name = "read")
+    private boolean read;
+    
+    @Column(name = "date")
+    private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private Contact sender;
+
+    @OneToMany
+    private List<Contact> receivers;
 
     @ManyToOne
     @JoinColumn(name = "folder_id", nullable = false)
@@ -40,6 +54,38 @@ public class Message extends AbstractEntity {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Contact getSender() {
+        return sender;
+    }
+
+    public void setSender(Contact sender) {
+        this.sender = sender;
+    }
+
+    public List<Contact> getReceivers() {
+        return receivers;
+    }
+
+    public void setReceivers(List<Contact> receivers) {
+        this.receivers = receivers;
     }
 
     public Folder getFolder() {

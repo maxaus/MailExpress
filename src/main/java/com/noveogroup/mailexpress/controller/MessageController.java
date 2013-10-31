@@ -1,5 +1,6 @@
 package com.noveogroup.mailexpress.controller;
 
+import com.noveogroup.mailexpress.dto.MessageItem;
 import com.noveogroup.mailexpress.model.Message;
 import com.noveogroup.mailexpress.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +26,8 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    public List<Message> getMessages() {
-        return messageService.findAll();
+    public List<MessageItem> getMessages() {
+//        return messageService.findAll();
+        return new ArrayList<MessageItem>();
     }
 }

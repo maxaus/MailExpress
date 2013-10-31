@@ -3,9 +3,10 @@ package com.noveogroup.mailexpress.controller;
 import com.noveogroup.mailexpress.dto.FolderNode;
 import com.noveogroup.mailexpress.model.Folder;
 import com.noveogroup.mailexpress.service.FolderService;
+import org.richfaces.component.UITree;
+import org.richfaces.event.TreeSelectionChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -24,9 +25,10 @@ public class FolderController implements Serializable {
 
     private static final long serialVersionUID = 8105007650641624790L;
 
-
     @Autowired
     private FolderService folderService;
+
+    private TreeNode currentSelection = null;
 
     private List<TreeNode> rootNodes = new ArrayList<TreeNode>();
 
@@ -50,4 +52,25 @@ public class FolderController implements Serializable {
             }
         }
     }
+
+    public void selectionChanged(TreeSelectionChangeEvent selectionChangeEvent) {
+        // considering only single selection
+        List<Object> selection = new ArrayList<>(selectionChangeEvent.getNewSelection());
+        Object currentSelectionKey = selection.get(0);
+        UITree tree = (UITree) selectionChangeEvent.getSource();
+
+        Object storedKey = tree.getRowKey();
+        tree.setRowKey(currentSelectionKey);
+        currentSelection = (TreeNode) tree.getRowData();
+        tree.setRowKey(storedKey);
+    }
+
+    public TreeNode getCurrentSelection() {
+        return currentSelection;
+    }
+
+    public void setCurrentSelection(TreeNode currentSelection) {
+        this.currentSelection = currentSelection;
+    }
+
 }

@@ -7,70 +7,117 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
         >
 <h:head>
-    <meta http-equiv="Content-Language" content="en" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="en"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Mail</title>
 
-    <script type="text/javascript" src="http://methvin.com/jquery/jquery.js"></script>
-    <script type="text/javascript" src="http://methvin.com/splitter/splitter.js"></script>
-
-    <!--<h:outputScript library="js" name="jquery.min.js"/>-->
-    <!--<h:outputScript library="js" name="splitter.js"/>-->
+    <h:outputStylesheet library="css" name="layout-default.css"/>
     <h:outputStylesheet library="css" name="main.css"/>
 
+    <h:outputScript name="jquery.js"/>
+    <h:outputScript library="js" name="jquery.ui.js"/>
+    <h:outputScript library="js" name="jquery.layout.js"/>
 
-    <script type="text/javascript">
-        $().ready(function() {
-            $("#mainSplitter").splitter({
-                type: "v",
-                outline: true,
-                minLeft: 100, sizeLeft: 150, maxLeft: 350,
-                anchorToWindow: true,
-                fillHeight: true,
-                accessKey: "L"
-            });
+    <h:outputScript>
 
-            $("#secondarySplitter").splitter({
-                splitHorizontal: true,
-                outline: true,
-                sizeBottom: 300, minTop: 50,
-                accessKey: "J"
-            });
+        function resizeInnerLayout () {
+        if (emailListingLayout &amp;&amp; $("#emailListing").is(":visible"))
+        emailListingLayout.resizeAll();
+
+        };
+
+        var
+        outerLayout = null
+        , outerLayoutOptions = {
+        center__paneSelector: ".outer-center"
+        , north__paneSelector: ".outer-north"
+        , spacing_open: 8 // ALL panes
+        , spacing_closed: 10 // ALL panes
+        , north__closable: false
+        , north__resizable: false
+        , north__spacing_open: 0
+        , center__onresize: resizeInnerLayout
+        }
+
+        , emailListingLayout = null
+        , emailListingLayoutOptions = {
+        spacing_open: 8 // ALL panes
+        , spacing_closed: 10 // ALL panes
+        , west__size: 180
+        , west__minSize: 180
+        , west__maxSize: 500
+        , east__size: 200
+        , east__minSize: 150
+        , east__maxSize: 300
+        , north__closable: false
+        , north__resizable: false
+        , north__spacing_open: 0
+        , west__togglerLength_open: 0
+        , east__togglerLength_open: 0
+        , east__togglerLength_closed: 0
+        , east__initClosed: true
+        , center__onresize: "emailListingInnerLayout.resizeAll"
+        }
+
+        , emailListingInnerLayout = null
+        , emailListingInnerLayoutOptions = {
+        center__paneSelector: ".inner-center"
+        , south__paneSelector: ".inner-south"
+        , spacing_open: 8 // ALL panes
+        , spacing_closed: 10
+        , south__size: "50%"
+        , south__minSize: 80
+        , south__maxSize: "80%"
+        }
+
+        ;
+
+        $(document).ready(function() {
+
+        outerLayout = $('body').layout( outerLayoutOptions );
+
+        // ALWAYS start with the email listing, so load that now
+        emailListingLayout = $('#emailListing').layout( emailListingLayoutOptions );
+        emailListingInnerLayout = $('#emailListing .ui-layout-center').layout( emailListingInnerLayoutOptions );
+
         });
-    </script>
+    </h:outputScript>
 </h:head>
 <h:body>
 
-<div id="header" class="holder">
-   status bar
-</div>
-<div id="toolbar" class="holder">
-   toolbar
+<div class="outer-north container">
+    <h:outputText value="#{folderController.currentSelection} - " rendered="#{folderController.currentSelection != null}" id="app-title"/>  Mail Express
 </div>
 
-<div id="mainSplitter" class="holder">
+<div class="outer-center container">
 
-    <div class="mainLeft splitterPane">
-        <ui:insert name="menu" >
-            <ui:include src="menu.xhtml" />
-        </ui:insert>
-    </div>
+    <div id="emailListing" class="inner-layout-container">
 
-    <div id="secondarySplitter">
-        <div class="secondaryTop splitterPane">
-            <ui:insert name="list" >
-                <ui:include src="list.xhtml" />
-            </ui:insert>
-
-        </div>
-
-        <div class="secondaryBottom splitterPane">
-            <ui:insert name="view" >
-                <ui:include src="view.xhtml" />
+        <div class="ui-layout-north container">
+            <ui:insert name="toolbar">
+                <ui:include src="toolbar.xhtml"/>
             </ui:insert>
         </div>
-    </div>
 
+        <div class="ui-layout-west container border">
+            <ui:insert name="menu">
+                <ui:include src="menu.xhtml"/>
+            </ui:insert>
+        </div>
+
+        <div class="ui-layout-center container">
+            <div class="inner-center container">
+                <ui:insert name="list">
+                     <ui:include src="list.xhtml"/>
+                </ui:insert>
+            </div>
+            <div class="inner-south container">
+                <ui:insert name="view">
+                    <ui:include src="view.xhtml"/>
+                </ui:insert>
+            </div>
+        </div>
+    </div>
 </div>
 
 </h:body>

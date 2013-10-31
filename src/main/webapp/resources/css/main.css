@@ -15,76 +15,23 @@ body {
     right: 0;
 }
 
-.holder {
-    width: auto;
-
-    padding: 2px;
-    margin: 2px;
-    border:  1px dotted #cecece;
-
-    overflow: auto;
-    background-color: #ffffff;
+.container {
+    border-width: 0;
+    overflow: hidden;
+    padding: 0;
+    display: none; /* hide panes until layout initializes */
 }
 
-.mainLeft {
-    margin: 10px;
-    border: 3px solid #ffffff;
-    padding: 5px;
+.block {
+    border: 1px dashed #BBB;
+    padding: 5px 10px;
+    font-weight: bold;
 }
 
-.mainTop {
-    margin: 10px;
-    border: 3px solid #ffffff;
-    padding: 5px;
+.border {
+    border-width: 1px;
 }
 
-#secondarySplitter {
-    padding: 1px;
-    margin: 2px;
-}
-
-.secondaryTop {
-    padding: 5px;
-}
-
-.secondaryBottom {
-    padding: 5px;
-}
-
-.secondaryLeft {
-    margin: 15px;
-    padding: 5px;
-}
-
-.secondaryRight {
-    margin: 7px;
-    padding: 5px;
-}
-
-.splitterPane {
-    background: #ffffff;
-    overflow: auto;
-}
-.hsplitbar {
-    height: 5px;
-    background-color: #cecece;
-    background-image: url(../img/hgrabber.gif);
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.hsplitbar.active, .hsplitbar:hover {
-    background-color: #656565;
-    height: 5px;
-}
-
-.vsplitbar {
-    width: 5px;
-    background-color: #cecece;
-    background-image: url(../img/vgrabber.gif);
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.vsplitbar.active, .vsplitbar:hover {
-    background-color: #656565;
-    width: 5px;
+.inner-layout-container {
+    height: 100%;
 }
