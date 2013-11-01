@@ -2,7 +2,6 @@ package com.noveogroup.mailexpress.ui;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponentBase;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -13,18 +12,34 @@ import java.io.IOException;
 @FacesComponent("com.noveogroup.mailexpress.ui")
 public class UIAttachment extends UIComponentBase {
 
+    public static final String COMPONENT_TYPE = "com.noveogroup.mailexpress.ui";
+
+    String value = null;
+
+    public String getValue() {
+        return value;
+    }
+
     @Override
     public String getFamily() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return COMPONENT_TYPE;
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", this);
+        writer.startElement("marquee", this);
+        writer.write(getValue());
+        writer.endElement("marquee");
     }
 
-    public void encodeEnd(FacesContext context) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.endElement("div");
+
+    @Override
+    public void encodeEnd(FacesContext arg0) throws IOException {
+        super.encodeEnd(arg0);
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
