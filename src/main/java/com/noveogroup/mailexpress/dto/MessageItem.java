@@ -16,7 +16,7 @@ public class MessageItem implements Serializable {
 
     private String sender;
 
-    private Date date;
+    private String date;
 
     public Long getId() {
         return id;
@@ -42,11 +42,11 @@ public class MessageItem implements Serializable {
         this.sender = sender;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

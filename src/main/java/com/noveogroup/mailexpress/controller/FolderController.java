@@ -55,7 +55,7 @@ public class FolderController implements Serializable {
 
     public void selectionChanged(TreeSelectionChangeEvent selectionChangeEvent) {
         // considering only single selection
-        List<Object> selection = new ArrayList<>(selectionChangeEvent.getNewSelection());
+        List<Object> selection = new ArrayList<Object>(selectionChangeEvent.getNewSelection());
         Object currentSelectionKey = selection.get(0);
         UITree tree = (UITree) selectionChangeEvent.getSource();
 
