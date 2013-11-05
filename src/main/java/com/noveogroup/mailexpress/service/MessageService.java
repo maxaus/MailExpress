@@ -10,4 +10,10 @@ import java.util.List;
 public interface MessageService {
 
     List<Message> findAll();
+
+    Long getCount();
+
+    Message getMessageById(Long id);
+
+    List<Message> find(String sortColumn, String direction, int pageNumber, int pageSize);
 }

@@ -15,7 +15,88 @@
         <mysql.version>5.1.25</mysql.version>
         <springframework.version>3.2.3.RELEASE</springframework.version>
         <hibernate.version>4.2.2.Final</hibernate.version>
+        <maven.checkstyle.plugin.version>2.5</maven.checkstyle.plugin.version>
+        <maven.findbugs.plugin.version>2.3.1</maven.findbugs.plugin.version>
+        <maven.pmd.plugin.version>2.5</maven.pmd.plugin.version>
+        <checkstyle.file>D:\Projects\MailExpress\checkstyle.xml</checkstyle.file>
+        <findbugs.exclude.file>D:\Projects\MailExpress\findbugs-exclude.xml</findbugs.exclude.file>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>checkstyle</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>${maven.checkstyle.plugin.version}</version>
+                        <configuration>
+                            <consoleOutput>true</consoleOutput>
+                            <configLocation>${checkstyle.file}</configLocation>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>findbugs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <version>${maven.findbugs.plugin.version}</version>
+                        <configuration>
+                            <failOnError>true</failOnError>
+                            <excludeFilterFile>${findbugs.exclude.file}</excludeFilterFile>
+                            <findbugsXmlOutput>true</findbugsXmlOutput>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>pmd</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <version>${maven.pmd.plugin.version}</version>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                            <printFailingErrors>true</printFailingErrors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
 

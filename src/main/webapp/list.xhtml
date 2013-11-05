@@ -12,27 +12,42 @@
                 xmlns:rich="http://richfaces.org/rich" xmlns:attachment="http://noveogroup.com/">
     <h:form id="list">
         <h:panelGrid>
-            <rich:dataScroller for="msg_list" maxPages="5" boundaryControls="auto" fastControls="auto" style="text-align: center" />
-            <rich:dataTable value="#{messageController.messages}" var="message" id="msg_list" rows="10">
+            <rich:dataScroller for="msg_list" maxPages="5" page="#{messageListController.pageNum}"/>
+            <rich:dataTable value="#{messagePaginatingDataModel}" var="message" id="msg_list" rows="#{messageListController.pageSize}">
+                <rich:column width="20">
+                    <f:facet name="header">
+                        <h:outputText value=""/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox id="select"/>
+                </rich:column>
                 <rich:column id="attach">
                     <f:facet name="header">
                         <h:graphicImage library="img" name="attachment_small.png"/>
                     </f:facet>
                     <h:graphicImage library="img" name="attachment_small.png"/>
                 </rich:column>
-                <rich:column sortBy="#{message.subject}" id="subject" sortOrder="#{messageListController.subjectOrder}">
+                <rich:column id="subject" sortBy="#{message.subject}" sortOrder="#{messageListController.subjectOrder}">
                     <f:facet name="header">
-                        <a4j:commandLink value="#{msg['subject']}" render="msg_list" action="#{messageListController.sortBySubject}" />
+                        <h:panelGrid columns="2">
+                            <a4j:commandLink execute="@this" value="#{msg['subject']}" render="msg_list"
+                                             action="#{messageListController.sort}">
+                                <f:param name="sortProperty" value="subject"/>
+                            </a4j:commandLink>
+                            <h:graphicImage value="resources/img/down.png"
+                                            rendered="#{messageListController.sortsOrders['subject']=='descending'}"/>
+                            <h:graphicImage value="resources/img/up.png"
+                                            rendered="#{messageListController.sortsOrders['subject']=='ascending'}"/>
+                        </h:panelGrid>
                     </f:facet>
                     <h:outputText value="#{message.subject}"/>
                 </rich:column>
-                <rich:column sortBy="#{message.sender}" id="sender" sortOrder="#{messageListController.senderOrder}">
+                <rich:column id="sender" sortBy="#{message.sender}" sortOrder="#{messageListController.senderOrder}">
                     <f:facet name="header">
                         <a4j:commandLink value="#{msg['sender']}" render="msg_list" action="#{messageListController.sortBySender}" />
                     </f:facet>
                     <h:outputText value="#{message.sender}"/>
                 </rich:column>
-                <rich:column sortBy="#{message.date}" id="send_date" sortOrder="#{messageListController.dateOrder}">
+                <rich:column id="send_date" sortBy="#{message.date}" sortOrder="#{messageListController.dateOrder}">
                     <f:facet name="header">
                         <a4j:commandLink value="#{msg['send_date']}" render="msg_list" action="#{messageListController.sortByDate}" />
                     </f:facet>
@@ -42,6 +57,7 @@
             <rich:dataScroller for="msg_list" maxPages="5" boundaryControls="auto" fastControls="auto"/>
         </h:panelGrid>
     </h:form>
+    <attachment:attachment><f:verbatim>dff</f:verbatim></attachment:attachment>
 </ui:composition>
 </body>
 </html>

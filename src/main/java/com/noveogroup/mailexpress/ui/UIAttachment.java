@@ -28,9 +28,9 @@ public class UIAttachment extends UIComponentBase {
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("marquee", this);
+        writer.startElement("attachment", this);
         writer.write(getValue());
-        writer.endElement("marquee");
+        writer.endElement("attachment");
     }
 
 
