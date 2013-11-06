@@ -12,27 +12,53 @@
                 xmlns:rich="http://richfaces.org/rich">
     <rich:tabPanel switchType="client">
         <rich:tab header="Send / Receive">
-            <rich:toolbar height="35" itemSeparator="grid">
-                <rich:toolbarGroup>
-                    <h:graphicImage library="img" name="mail.png" title="#{msg['new_message']}"/>
-                    <h:graphicImage library="img" name="reply.png" title="#{msg['reply']}"/>
-                    <h:graphicImage library="img" name="reply_to_all.png" title="#{msg['reply_to_all']}"/>
-                    <h:graphicImage library="img" name="send.png" title="#{msg['send']}"/>
-                    <h:graphicImage library="img" name="delete.png" title="#{msg['delete']}"/>
+            <rich:toolbar>
+                <rich:toolbarGroup itemSeparator="line">
+                    <h:commandButton image="resources/img/mail.png" title="#{msg['new_message']}">
+                        <rich:componentControl target="popup" operation="show"/>
+                    </h:commandButton>
+                    <h:commandButton image="resources/img/reply.png" title="#{msg['reply']}">
+                    </h:commandButton>
+                    <h:commandButton image="resources/img/reply_to_all.png" title="#{msg['reply_to_all']}">
+                    </h:commandButton>
+                    <h:commandButton image="resources/img/send.png" title="#{msg['send']}">
+                    </h:commandButton>
+                    <h:commandButton image="resources/img/delete.png" title="#{msg['delete']}">
+                    </h:commandButton>
                 </rich:toolbarGroup>
             </rich:toolbar>
         </rich:tab>
         <rich:tab header="Folder">
-            <rich:toolbar height="35" itemSeparator="grid">
-                <rich:toolbarGroup>
-                    <h:graphicImage library="img" name="new_folder.png" title="#{msg['new_folder']}"/>
-                    <h:graphicImage library="img" name="rename.png" title="#{msg['rename']}"/>
-                    <h:graphicImage library="img" name="delete.png" title="#{msg['delete']}"/>
+            <rich:toolbar>
+                <rich:toolbarGroup itemSeparator="line">
+                    <h:commandButton image="resources/img/new_folder.png" title="#{msg['new_folder']}">
+                    </h:commandButton>
+                    <h:commandButton image="resources/img/rename.png" title="#{msg['rename']}">
+                    </h:commandButton>
+                    <h:commandButton image="resources/img/delete.png" title="#{msg['delete']}">
+                    </h:commandButton>
                 </rich:toolbarGroup>
             </rich:toolbar>
         </rich:tab>
     </rich:tabPanel>
 
+    <rich:popupPanel id="popup" modal="false" autosized="true" resizeable="false">
+        <f:facet name="header">
+            <h:outputText value="Simple popup panel"/>
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <p>Any content might be inside this panel.</p>
+
+        <p>
+            The popup panel is open and closed from the javascript function of component client side object. The following code
+
+        </p>
+    </rich:popupPanel>
 
 </ui:composition>
 </body>

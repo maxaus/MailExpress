@@ -32,10 +32,18 @@ body {
     border-width: 1px;
 }
 
+.rf-tb {
+    height: 35px;
+}
+
+.rf-tb-itm input {
+    vertical-align: middle;
+}
+
 .inner-layout-container {
     height: 100%;
 }
 
 table {
-    width: 100%;
+    width: 80%;
 }

@@ -14,6 +14,12 @@
         <h:panelGrid>
             <rich:dataScroller for="msg_list" maxPages="5" boundaryControls="auto" fastControls="auto" style="text-align: center" />
             <rich:dataTable value="#{messageController.messages}" var="message" id="msg_list" rows="10">
+                <rich:column id="attach">
+                    <f:facet name="header">
+                        <h:graphicImage library="img" name="attachment_small.png"/>
+                    </f:facet>
+                    <h:graphicImage library="img" name="attachment_small.png"/>
+                </rich:column>
                 <rich:column sortBy="#{message.subject}" id="subject" sortOrder="#{messageListController.subjectOrder}">
                     <f:facet name="header">
                         <a4j:commandLink value="#{msg['subject']}" render="msg_list" action="#{messageListController.sortBySubject}" />
@@ -36,7 +42,6 @@
             <rich:dataScroller for="msg_list" maxPages="5" boundaryControls="auto" fastControls="auto"/>
         </h:panelGrid>
     </h:form>
-    <attachment:attachment><f:verbatim>dff</f:verbatim></attachment:attachment>
 </ui:composition>
 </body>
 </html>
