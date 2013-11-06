@@ -42,14 +42,19 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Message> find(String sortColumn, String direction, int pageNumber, int pageSize) {
+    public List<Message> find(Long folderId, String sortColumn, String direction, int pageNumber, int pageSize) {
         Pageable pageRequest;
         if (sortColumn != null) {
              pageRequest = new PageRequest(pageNumber, pageSize,Sort.Direction.fromString(direction), sortColumn);
         } else {
             pageRequest = new PageRequest(pageNumber, pageSize);
         }
-        Page page = messageDao.findAll(pageRequest);
+        Page page;
+        if (folderId != null) {
+            page = messageDao.findByFolderId(folderId, pageRequest);
+        } else {
+            page = messageDao.findAll(pageRequest);
+        }
         return page.getContent();
     }
 }

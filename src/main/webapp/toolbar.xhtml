@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-        >
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:a4j="http://richfaces.org/a4j"
@@ -14,16 +10,16 @@
         <rich:tab header="Send / Receive">
             <rich:toolbar>
                 <rich:toolbarGroup itemSeparator="line">
-                    <h:commandButton image="resources/img/mail.png" title="#{msg['new_message']}">
+                    <h:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}">
                         <rich:componentControl target="popup" operation="show"/>
                     </h:commandButton>
-                    <h:commandButton image="resources/img/reply.png" title="#{msg['reply']}">
+                    <h:commandButton image="#{resource['img:reply.png']}" title="#{msg['reply']}">
                     </h:commandButton>
-                    <h:commandButton image="resources/img/reply_to_all.png" title="#{msg['reply_to_all']}">
+                    <h:commandButton image="#{resource['img:reply_to_all.png']}" title="#{msg['reply_to_all']}">
                     </h:commandButton>
-                    <h:commandButton image="resources/img/send.png" title="#{msg['send']}">
+                    <h:commandButton image="#{resource['img:send.png']}" title="#{msg['send']}">
                     </h:commandButton>
-                    <h:commandButton image="resources/img/delete.png" title="#{msg['delete']}">
+                    <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}">
                     </h:commandButton>
                 </rich:toolbarGroup>
             </rich:toolbar>
@@ -31,11 +27,11 @@
         <rich:tab header="Folder">
             <rich:toolbar>
                 <rich:toolbarGroup itemSeparator="line">
-                    <h:commandButton image="resources/img/new_folder.png" title="#{msg['new_folder']}">
+                    <h:commandButton image="#{resource['img:new_folder.png']}" title="#{msg['new_folder']}">
                     </h:commandButton>
-                    <h:commandButton image="resources/img/rename.png" title="#{msg['rename']}">
+                    <h:commandButton image="#{resource['img:rename.png']}" title="#{msg['rename']}">
                     </h:commandButton>
-                    <h:commandButton image="resources/img/delete.png" title="#{msg['delete']}">
+                    <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}">
                     </h:commandButton>
                 </rich:toolbarGroup>
             </rich:toolbar>
@@ -61,5 +57,4 @@
     </rich:popupPanel>
 
 </ui:composition>
-</body>
 </html>

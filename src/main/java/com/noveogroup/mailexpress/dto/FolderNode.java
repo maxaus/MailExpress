@@ -14,12 +14,14 @@ import java.util.List;
 public class FolderNode extends NamedNode implements TreeNode {
 
     private static final long serialVersionUID = -3644535276155461599L;
+    private Long id;
     private String iconPath;
     private List<FolderNode> subFolders = new ArrayList<FolderNode>();
 
     public FolderNode(Folder folder) {
         this.setType("folder");
         if (folder != null) {
+            this.id = folder.getId();
             this.name = folder.getName();
             this.iconPath = folder.getIconPath();
             if (!folder.getSubFolders().isEmpty()) {
@@ -29,6 +31,14 @@ public class FolderNode extends NamedNode implements TreeNode {
                 }
             }
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getIconPath() {

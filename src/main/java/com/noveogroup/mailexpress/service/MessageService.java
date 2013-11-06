@@ -15,5 +15,5 @@ public interface MessageService {
 
     Message getMessageById(Long id);
 
-    List<Message> find(String sortColumn, String direction, int pageNumber, int pageSize);
+    List<Message> find(Long folderId, String sortColumn, String direction, int pageNumber, int pageSize);
 }

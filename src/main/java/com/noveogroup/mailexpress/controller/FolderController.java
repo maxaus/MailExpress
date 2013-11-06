@@ -28,9 +28,9 @@ public class FolderController implements Serializable {
     @Autowired
     private FolderService folderService;
 
-    private TreeNode currentSelection = null;
+    private FolderNode currentSelection = null;
 
-    private List<TreeNode> rootNodes = new ArrayList<TreeNode>();
+    private List<TreeNode> rootNodes = new ArrayList<>();
 
     public List<TreeNode> getRootNodes() {
         if (rootNodes.isEmpty()) {
@@ -53,23 +53,22 @@ public class FolderController implements Serializable {
         }
     }
 
-    public void selectionChanged(TreeSelectionChangeEvent selectionChangeEvent) {
-        // considering only single selection
-        List<Object> selection = new ArrayList<Object>(selectionChangeEvent.getNewSelection());
+    public void selectionListener(TreeSelectionChangeEvent selectionChangeEvent) {
+        List<Object> selection = new ArrayList<>(selectionChangeEvent.getNewSelection());
         Object currentSelectionKey = selection.get(0);
         UITree tree = (UITree) selectionChangeEvent.getSource();
 
         Object storedKey = tree.getRowKey();
         tree.setRowKey(currentSelectionKey);
-        currentSelection = (TreeNode) tree.getRowData();
+        currentSelection = (FolderNode) tree.getRowData();
         tree.setRowKey(storedKey);
     }
 
-    public TreeNode getCurrentSelection() {
+    public FolderNode getCurrentSelection() {
         return currentSelection;
     }
 
-    public void setCurrentSelection(TreeNode currentSelection) {
+    public void setCurrentSelection(FolderNode currentSelection) {
         this.currentSelection = currentSelection;
     }
 

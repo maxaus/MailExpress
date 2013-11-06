@@ -1,16 +1,15 @@
-package com.noveogroup.mailexpress.dto;
+package com.noveogroup.mailexpress.dto.table;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
+import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.model.Arrangeable;
 
 public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> implements Arrangeable {
@@ -23,7 +22,7 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
 
     protected String sortField = null;
 
-    protected HashMap<String,Object> filterMap = new HashMap<>();
+    protected HashMap<String, Object> filterMap = new HashMap<>();
 
     protected boolean detached = false;
 
@@ -33,8 +32,11 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
 
     protected Map<U, T> wrappedData = new HashMap<>();
 
+    protected List<T> selectedItems = new ArrayList<>();
+
+    protected Collection<U> selectedIndexes;
+
     /**
-     *
      * @see org.ajax4jsf.model.ExtendedDataModel#getRowKey()
      */
     @Override
@@ -42,8 +44,20 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
         return currentPk;
     }
 
+    public void selectionListener(AjaxBehaviorEvent event) {
+        UIExtendedDataTable dataTable = (UIExtendedDataTable) event.getComponent();
+        Object originalKey = dataTable.getRowKey();
+        selectedItems.clear();
+        for (Object selectionKey : selectedIndexes) {
+            dataTable.setRowKey(selectionKey);
+            if (dataTable.isRowAvailable()) {
+                selectedItems.add((T) dataTable.getRowData());
+            }
+        }
+        dataTable.setRowKey(originalKey);
+    }
+
     /**
-     *
      * @see org.ajax4jsf.model.ExtendedDataModel#setRowKey(java.lang.Object)
      */
 
@@ -54,7 +68,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#setRowIndex(int)
      */
     @Override
@@ -63,7 +76,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#setWrappedData(java.lang.Object)
      */
     @Override
@@ -72,7 +84,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#getRowIndex()
      */
     @Override
@@ -81,7 +92,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#getWrappedData()
      */
     @Override
@@ -90,7 +100,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see org.ajax4jsf.model.ExtendedDataModel#walk(javax.faces.context.FacesContext, org.ajax4jsf.model.DataVisitor,
      *      org.ajax4jsf.model.Range, java.lang.Object)
      */
@@ -114,32 +123,15 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#isRowAvailable()
      */
 
     @Override
     public boolean isRowAvailable() {
-        if (currentPk == null) {
-            return false;
-        }
-        if (wrappedKeys.contains(currentPk)) {
-            return true;
-        }
-        if (wrappedData.entrySet().contains(currentPk)) {
-            return true;
-        }
-        try {
-            if (getObjectById(currentPk) != null) {
-                return true;
-            }
-        } catch (final Exception e) {
-        }
-        return false;
+        return currentPk != null && (wrappedKeys.contains(currentPk) || wrappedData.entrySet().contains(currentPk) || getObjectById(currentPk) != null);
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#getRowData()
      */
     @Override
@@ -156,7 +148,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     }
 
     /**
-     *
      * @see javax.faces.model.DataModel#getRowCount()
      */
     @Override
@@ -167,39 +158,53 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
         return rowCount;
     }
 
+    public Collection<U> getSelectedIndexes() {
+        return selectedIndexes;
+    }
+
+    public void setSelectedIndexes(Collection<U> selectedIndexes) {
+        this.selectedIndexes = selectedIndexes;
+    }
+
+    public T getSelectedItem() {
+        if (selectedItems == null || selectedItems.isEmpty()) {
+            return null;
+        }
+        return selectedItems.get(0);
+    }
+
+    public List<T> getSelectedItems() {
+        return selectedItems;
+    }
+
+    public void setSelectedItems(List<T> selectedItems) {
+        this.selectedItems = selectedItems;
+    }
+
     /**
      * @param object
-     *
      * @return U
      */
     public abstract U getId(T object);
 
     /**
-     *
      * @param firstRow
-     *
      * @param numberOfRows
-     *
      * @param sortField
-     *
      * @param descending
-     *
      * @return List<T>
      */
-    public abstract List<T> findObjects(int firstRow, int numberOfRows, String sortField, HashMap<String,Object> filterMap, boolean descending);
+    public abstract List<T> findObjects(int firstRow, int numberOfRows, String sortField, HashMap<String, Object> filterMap, boolean descending);
 
     /**
-     *
      * @param id
-     *
      * @return T
      */
     public abstract T getObjectById(U id);
 
     /**
-     *
      * @return Long
      */
-    public abstract Long getNumRecords(HashMap<String,Object> filterMap);
+    public abstract Long getNumRecords(HashMap<String, Object> filterMap);
 
 }

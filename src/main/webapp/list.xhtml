@@ -1,63 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-        >
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:a4j="http://richfaces.org/a4j"
-                xmlns:rich="http://richfaces.org/rich" xmlns:attachment="http://noveogroup.com/">
+                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+                xmlns:attachment="http://noveogroup.com/">
     <h:form id="list">
-        <h:panelGrid>
-            <rich:dataScroller for="msg_list" maxPages="5" page="#{messageListController.pageNum}"/>
-            <rich:dataTable value="#{messagePaginatingDataModel}" var="message" id="msg_list" rows="#{messageListController.pageSize}">
-                <rich:column width="20">
+        <h:panelGrid styleClass="center">
+            <rich:extendedDataTable id="msg_list" value="#{messageListData}" var="message"
+                                    selection="#{messageListData.selectedIndexes}" selectionMode="multiple"
+                                    rows="#{messageListData.pageSize}" sortMode="single" filterVar="">
+                <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
+                          render="msg_view"/>
+                <rich:column id="subject" sortBy="#{message.subject}"
+                             sortOrder="#{messageListData.sortsOrders['subject']}" width="40%" styleClass="w1">
                     <f:facet name="header">
-                        <h:outputText value=""/>
-                    </f:facet>
-                    <h:selectBooleanCheckbox id="select"/>
-                </rich:column>
-                <rich:column id="attach">
-                    <f:facet name="header">
-                        <h:graphicImage library="img" name="attachment_small.png"/>
-                    </f:facet>
-                    <h:graphicImage library="img" name="attachment_small.png"/>
-                </rich:column>
-                <rich:column id="subject" sortBy="#{message.subject}" sortOrder="#{messageListController.subjectOrder}">
-                    <f:facet name="header">
-                        <h:panelGrid columns="2">
-                            <a4j:commandLink execute="@this" value="#{msg['subject']}" render="msg_list"
-                                             action="#{messageListController.sort}">
-                                <f:param name="sortProperty" value="subject"/>
-                            </a4j:commandLink>
-                            <h:graphicImage value="resources/img/down.png"
-                                            rendered="#{messageListController.sortsOrders['subject']=='descending'}"/>
-                            <h:graphicImage value="resources/img/up.png"
-                                            rendered="#{messageListController.sortsOrders['subject']=='ascending'}"/>
-                        </h:panelGrid>
+                        <h:outputText value="#{msg['subject']}"/>
                     </f:facet>
                     <h:outputText value="#{message.subject}"/>
                 </rich:column>
-                <rich:column id="sender" sortBy="#{message.sender}" sortOrder="#{messageListController.senderOrder}">
+                <rich:column id="sender" sortBy="#{message.sender}"
+                             sortOrder="#{messageListData.sortsOrders['sender']}">
                     <f:facet name="header">
-                        <a4j:commandLink value="#{msg['sender']}" render="msg_list" action="#{messageListController.sortBySender}" />
+                        <h:outputText value="#{msg['sender']}"/>
                     </f:facet>
                     <h:outputText value="#{message.sender}"/>
                 </rich:column>
-                <rich:column id="send_date" sortBy="#{message.date}" sortOrder="#{messageListController.dateOrder}">
+                <rich:column id="send_date" sortBy="#{message.date}" sortOrder="#{messageListData.sortsOrders['date']}">
                     <f:facet name="header">
-                        <a4j:commandLink value="#{msg['send_date']}" render="msg_list" action="#{messageListController.sortByDate}" />
+                        <h:outputText value="#{msg['send_date']}"/>
                     </f:facet>
                     <h:outputText value="#{message.date}"/>
                 </rich:column>
-            </rich:dataTable>
-            <rich:dataScroller for="msg_list" maxPages="5" boundaryControls="auto" fastControls="auto"/>
+            </rich:extendedDataTable>
+            <rich:dataScroller for="msg_list" maxPages="5" page="#{messageListData.pageNum}"/>
         </h:panelGrid>
     </h:form>
-    <attachment:attachment><f:verbatim>dff</f:verbatim></attachment:attachment>
 </ui:composition>
-</body>
 </html>

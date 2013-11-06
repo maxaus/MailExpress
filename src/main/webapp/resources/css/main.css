@@ -32,6 +32,10 @@ body {
     border-width: 1px;
 }
 
+.center {
+    text-align: center;
+}
+
 .rf-tb {
     height: 35px;
 }
@@ -40,10 +44,33 @@ body {
     vertical-align: middle;
 }
 
+div *.rf-tab-cnt {
+    padding: 0;
+}
+
 .inner-layout-container {
     height: 100%;
 }
 
+.w1 {
+    width: 40%;
+}
+
+.w2 {
+    width: 30%;
+}
+
+.rich-table-subheadercell
+{
+    white-space: normal !important;
+}
+
+
+.rich-table-sortable-header
+{
+    white-space: normal !important;
+}
+
 table {
-    width: 80%;
+    width: 100%;
 }

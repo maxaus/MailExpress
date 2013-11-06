@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-        >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j">
 <h:head>
     <meta http-equiv="Content-Language" content="en"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -84,41 +81,42 @@
     </h:outputScript>
 </h:head>
 <h:body>
+    <div class="outer-north container">
+        <a4j:outputPanel id="app-title">
+            <h:outputText value="#{folderController.currentSelection} - "
+                          rendered="#{folderController.currentSelection != null}"/> Mail Express
+        </a4j:outputPanel>
+    </div>
 
-<div class="outer-north container">
-    <h:outputText value="#{folderController.currentSelection} - " rendered="#{folderController.currentSelection != null}" id="app-title"/>  Mail Express
-</div>
+    <div class="outer-center container">
 
-<div class="outer-center container">
+        <div id="emailListing" class="inner-layout-container">
 
-    <div id="emailListing" class="inner-layout-container">
-
-        <div class="ui-layout-north container">
-            <ui:insert name="toolbar">
-                <ui:include src="toolbar.xhtml"/>
-            </ui:insert>
-        </div>
-
-        <div class="ui-layout-west container border">
-            <ui:insert name="menu">
-                <ui:include src="menu.xhtml"/>
-            </ui:insert>
-        </div>
-
-        <div class="ui-layout-center container border">
-            <div class="inner-center container">
-                <ui:insert name="list">
-                     <ui:include src="list.xhtml"/>
+            <div class="ui-layout-north container">
+                <ui:insert name="toolbar">
+                    <ui:include src="toolbar.xhtml"/>
                 </ui:insert>
             </div>
-            <div class="inner-south container">
-                <ui:insert name="view">
-                    <ui:include src="view.xhtml"/>
+
+            <div class="ui-layout-west container border">
+                <ui:insert name="menu">
+                    <ui:include src="menu.xhtml"/>
                 </ui:insert>
+            </div>
+
+            <div class="ui-layout-center container border">
+                <div class="inner-center container">
+                    <ui:insert name="list">
+                        <ui:include src="list.xhtml"/>
+                    </ui:insert>
+                </div>
+                <div class="inner-south container">
+                    <ui:insert name="view">
+                        <ui:include src="view.xhtml"/>
+                    </ui:insert>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 </h:body>
 </html>
