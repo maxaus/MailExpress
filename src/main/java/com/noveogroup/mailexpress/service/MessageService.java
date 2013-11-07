@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface MessageService {
 
-    List<Message> findAll();
-
-    Long getCount();
+    Message saveMessage(Message message);
 
     Message getMessageById(Long id);
 
-    List<Message> find(Long folderId, String sortColumn, String direction, int pageNumber, int pageSize);
+    Long countByFolder(Long folderId);
+
+    List<Message> findByFolder(Long folderId, String sortColumn, String direction, int pageNumber, int pageSize);
 }

@@ -4,11 +4,12 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:msgdata="http://java.sun.com/jsf/composite/msgdata">
 <ui:composition>
-    <a4j:outputPanel id="msg_view">
-        <rich:panel header="Selected Rows:" rendered="#{not empty messageListData.selectedItem}">
-            <h:outputText value="#{messageListData.selectedItem.subject} - #{messageListData.selectedItem.body}"/>
+    <a4j:outputPanel id="msg_view" rendered="#{not empty messageViewController.message}">
+        <msgdata:msgSummary message="#{messageViewController.message}"/>
+        <rich:panel header="Selected Rows:">
+            <h:outputText value="#{messageViewController.message.body}"/>
         </rich:panel>
     </a4j:outputPanel>
 </ui:composition>

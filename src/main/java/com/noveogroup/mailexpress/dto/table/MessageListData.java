@@ -1,7 +1,7 @@
 package com.noveogroup.mailexpress.dto.table;
 
 import com.noveogroup.mailexpress.controller.FolderController;
-import com.noveogroup.mailexpress.dto.FolderNode;
+import com.noveogroup.mailexpress.dto.MessageItem;
 import com.noveogroup.mailexpress.model.Message;
 import com.noveogroup.mailexpress.service.MessageService;
 import org.richfaces.component.SortOrder;
@@ -14,6 +14,9 @@ import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,9 @@ import java.util.Map;
 @Component
 @ManagedBean
 @RequestScoped
-public class MessageListData extends PaginatingDataModel<Message, Long> {
+public class MessageListData extends PaginatingDataModel<MessageItem, Long> {
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
     @Autowired
     private MessageService messageService;
@@ -64,28 +69,33 @@ public class MessageListData extends PaginatingDataModel<Message, Long> {
     }
 
     @Override
-    public Long getId(Message message) {
+    public Long getId(MessageItem message) {
         return message.getId();
     }
 
     @Override
-    public List<Message> findObjects(int firstRow, int numberOfRows, String sortField, HashMap<String, Object> filterMap, boolean descending) {
-        FolderNode folderNode = folderController.getCurrentSelection();
-        Long folderId = null;
-        if (folderNode != null) {
-            folderId = folderNode.getId();
+    public List<MessageItem> findObjects(int firstRow, int numberOfRows, String sortField, HashMap<String, Object> filterMap, boolean descending) {
+        Long folderId = folderController.getSelectedFolderId();
+        if (folderId != null) {
+            return createDtoList(messageService.findByFolder(folderId, sortField, descending ? "desc" : "asc", firstRow / numberOfRows, numberOfRows));
+        } else {
+            return new ArrayList<>();
         }
-        return messageService.find(folderId, sortField, descending ? "desc" : "asc", firstRow / numberOfRows, numberOfRows);
     }
 
     @Override
-    public Message getObjectById(Long id) {
-        return messageService.getMessageById(id);
+    public MessageItem getObjectById(Long id) {
+        return createDto(messageService.getMessageById(id));
     }
 
     @Override
     public Long getNumRecords(HashMap<String, Object> filterMap) {
-        return messageService.getCount();
+        Long folderId = folderController.getSelectedFolderId();
+        if (folderId != null) {
+            return messageService.countByFolder(folderId);
+        } else {
+            return 0L;
+        }
     }
 
     @Override
@@ -96,10 +106,37 @@ public class MessageListData extends PaginatingDataModel<Message, Long> {
 
                 SortField field = sortFields.get(0);
                 ValueExpression sortBy = field.getSortBy();
-                 String exp = sortBy.getExpressionString();
-                this.sortField = exp.substring(exp.lastIndexOf('.')+1, exp.lastIndexOf('}'));
+                String exp = sortBy.getExpressionString();
+                this.sortField = exp.substring(exp.lastIndexOf('.') + 1, exp.lastIndexOf('}'));
                 this.descending = SortOrder.descending == field.getSortOrder();
             }
         }
+    }
+
+    private List<MessageItem> createDtoList(List<Message> messages) {
+        List<MessageItem> dtoList = new ArrayList<>();
+        for (Message message : messages) {
+            dtoList.add(createDto(message));
+        }
+        return dtoList;
+    }
+
+    private MessageItem createDto(Message message) {
+        MessageItem dto = new MessageItem();
+        dto.setId(message.getId());
+        dto.setSender(message.getSender().getEmail());
+        dto.setSubject(message.getSubject());
+        dto.setUnread(message.isUnread());
+        dto.setBody(message.getBody());
+//        dto.setWithAttachment(CollectionUtils.isNotEmpty(message.getAttachments()));
+        dto.setDate(DATE_FORMAT.format(message.getDate()));
+        return dto;
+    }
+
+    public void changeReadStatus() {
+        String msgId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("msgId");
+        Message message = messageService.getMessageById(Long.valueOf(msgId));
+        message.setUnread(!message.isUnread());
+        messageService.saveMessage(message);
     }
 }

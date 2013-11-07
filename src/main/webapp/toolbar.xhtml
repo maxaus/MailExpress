@@ -8,33 +8,32 @@
                 xmlns:rich="http://richfaces.org/rich">
     <rich:tabPanel switchType="client">
         <rich:tab header="Send / Receive">
-            <rich:toolbar>
-                <rich:toolbarGroup itemSeparator="line">
-                    <h:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}">
-                        <rich:componentControl target="popup" operation="show"/>
-                    </h:commandButton>
-                    <h:commandButton image="#{resource['img:reply.png']}" title="#{msg['reply']}">
-                    </h:commandButton>
-                    <h:commandButton image="#{resource['img:reply_to_all.png']}" title="#{msg['reply_to_all']}">
-                    </h:commandButton>
-                    <h:commandButton image="#{resource['img:send.png']}" title="#{msg['send']}">
-                    </h:commandButton>
-                    <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}">
-                    </h:commandButton>
-                </rich:toolbarGroup>
-            </rich:toolbar>
+            <a4j:outputPanel id="msgTools">
+                <rich:toolbar>
+                    <rich:toolbarGroup itemSeparator="line">
+                        <h:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}">
+                            <rich:componentControl target="popup" operation="show"/>
+                        </h:commandButton>
+                        <h:commandButton image="#{resource['img:reply.png']}" title="#{msg['reply']}"/>
+                        <h:commandButton image="#{resource['img:reply_to_all.png']}" title="#{msg['reply_to_all']}"/>
+                        <h:commandButton image="#{resource['img:send.png']}" title="#{msg['send']}"/>
+                        <h:commandButton
+                                image="#{messageListData.selectedItem == null ? resource['img:delete-disabled.png'] : resource['img:delete.png']}"
+                                title="#{msg['delete']}" disabled="#{messageListData.selectedItem == null}"/>
+                    </rich:toolbarGroup>
+                </rich:toolbar>
+            </a4j:outputPanel>
         </rich:tab>
         <rich:tab header="Folder">
-            <rich:toolbar>
-                <rich:toolbarGroup itemSeparator="line">
-                    <h:commandButton image="#{resource['img:new_folder.png']}" title="#{msg['new_folder']}">
-                    </h:commandButton>
-                    <h:commandButton image="#{resource['img:rename.png']}" title="#{msg['rename']}">
-                    </h:commandButton>
-                    <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}">
-                    </h:commandButton>
-                </rich:toolbarGroup>
-            </rich:toolbar>
+            <a4j:outputPanel id="folderTools">
+                <rich:toolbar>
+                    <rich:toolbarGroup itemSeparator="line">
+                        <h:commandButton image="#{resource['img:new_folder.png']}" title="#{msg['new_folder']}"/>
+                        <h:commandButton image="#{resource['img:rename.png']}" title="#{msg['rename']}"/>
+                        <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}"/>
+                    </rich:toolbarGroup>
+                </rich:toolbar>
+            </a4j:outputPanel>
         </rich:tab>
     </rich:tabPanel>
 
@@ -44,16 +43,11 @@
         </f:facet>
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
-                X
+                x
             </h:outputLink>
         </f:facet>
 
-        <p>Any content might be inside this panel.</p>
-
-        <p>
-            The popup panel is open and closed from the javascript function of component client side object. The following code
-
-        </p>
+        <p>New message.</p>
     </rich:popupPanel>
 
 </ui:composition>

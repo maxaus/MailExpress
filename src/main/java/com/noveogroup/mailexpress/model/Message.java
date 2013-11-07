@@ -20,8 +20,8 @@ public class Message extends AbstractEntity {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "read")
-    private boolean read;
+    @Column(name = "unread")
+    private boolean unread;
     
     @Column(name = "date")
     private Date date;
@@ -56,12 +56,12 @@ public class Message extends AbstractEntity {
         this.body = body;
     }
 
-    public boolean isRead() {
-        return read;
+    public boolean isUnread() {
+        return unread;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setUnread(boolean unread) {
+        this.unread = unread;
     }
 
     public Date getDate() {

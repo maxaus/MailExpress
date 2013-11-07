@@ -28,7 +28,8 @@ public class FolderController implements Serializable {
     @Autowired
     private FolderService folderService;
 
-    private FolderNode currentSelection = null;
+    private String selectedFolderName = null;
+    private Long selectedFolderId = null;
 
     private List<TreeNode> rootNodes = new ArrayList<>();
 
@@ -60,16 +61,17 @@ public class FolderController implements Serializable {
 
         Object storedKey = tree.getRowKey();
         tree.setRowKey(currentSelectionKey);
-        currentSelection = (FolderNode) tree.getRowData();
+        FolderNode folderNode = (FolderNode) tree.getRowData();
+        this.selectedFolderName = folderNode.getName();
+        this.selectedFolderId = folderNode.getId();
         tree.setRowKey(storedKey);
     }
 
-    public FolderNode getCurrentSelection() {
-        return currentSelection;
+    public String getSelectedFolderName() {
+        return selectedFolderName;
     }
 
-    public void setCurrentSelection(FolderNode currentSelection) {
-        this.currentSelection = currentSelection;
+    public Long getSelectedFolderId() {
+        return selectedFolderId;
     }
-
 }

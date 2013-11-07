@@ -28,8 +28,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
 
     protected List<U> wrappedKeys = new ArrayList<>();
 
-    protected Integer rowCount;
-
     protected Map<U, T> wrappedData = new HashMap<>();
 
     protected List<T> selectedItems = new ArrayList<>();
@@ -60,7 +58,6 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
     /**
      * @see org.ajax4jsf.model.ExtendedDataModel#setRowKey(java.lang.Object)
      */
-
     @SuppressWarnings("unchecked")
     @Override
     public void setRowKey(final Object key) {
@@ -152,10 +149,7 @@ public abstract class PaginatingDataModel<T, U> extends ExtendedDataModel<T> imp
      */
     @Override
     public int getRowCount() {
-        if (rowCount == null) {
-            rowCount = getNumRecords(filterMap).intValue();
-        }
-        return rowCount;
+        return getNumRecords(filterMap).intValue();
     }
 
     public Collection<U> getSelectedIndexes() {

@@ -4,37 +4,56 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
-                xmlns:attachment="http://noveogroup.com/">
+                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
     <h:form id="list">
         <h:panelGrid styleClass="center">
-            <rich:extendedDataTable id="msg_list" value="#{messageListData}" var="message"
-                                    selection="#{messageListData.selectedIndexes}" selectionMode="multiple"
-                                    rows="#{messageListData.pageSize}" sortMode="single" filterVar="">
-                <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
-                          render="msg_view"/>
-                <rich:column id="subject" sortBy="#{message.subject}"
-                             sortOrder="#{messageListData.sortsOrders['subject']}" width="40%" styleClass="w1">
-                    <f:facet name="header">
-                        <h:outputText value="#{msg['subject']}"/>
-                    </f:facet>
-                    <h:outputText value="#{message.subject}"/>
-                </rich:column>
-                <rich:column id="sender" sortBy="#{message.sender}"
-                             sortOrder="#{messageListData.sortsOrders['sender']}">
-                    <f:facet name="header">
-                        <h:outputText value="#{msg['sender']}"/>
-                    </f:facet>
-                    <h:outputText value="#{message.sender}"/>
-                </rich:column>
-                <rich:column id="send_date" sortBy="#{message.date}" sortOrder="#{messageListData.sortsOrders['date']}">
-                    <f:facet name="header">
-                        <h:outputText value="#{msg['send_date']}"/>
-                    </f:facet>
-                    <h:outputText value="#{message.date}"/>
-                </rich:column>
-            </rich:extendedDataTable>
-            <rich:dataScroller for="msg_list" maxPages="5" page="#{messageListData.pageNum}"/>
+            <a4j:outputPanel id="msg_list">
+                <rich:extendedDataTable id="msgTable" value="#{messageListData}" var="message"
+                                        selection="#{messageListData.selectedIndexes}" selectionMode="multiple"
+                                        rows="#{messageListData.pageSize}" sortMode="single"
+                                        noDataLabel="#{msg['no_messages']}">
+                    <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
+                              render="msg_view msgTools"/>
+                    <rich:column id="unread">
+                        <f:facet name="header">
+                            <h:graphicImage library="img" name="eye.png"/>
+                        </f:facet>
+                        <a4j:commandButton
+                                image="#{message.unread ? resource['img:green_dot.png'] : resource['img:gray_dot.png']}"
+                                execute="@this" render="msg_list" action="#{messageListData.changeReadStatus}"
+                                title="#{message.unread ? msg['mark_read'] : msg['mark_unread']}">
+                            <f:param name="msgId" value="#{message.id}"/>
+                        </a4j:commandButton>
+                        <a4j:status>
+                            <f:facet name="start">
+                                <h:graphicImage value="#{resource['img:busy.gif']}"/>
+                            </f:facet>
+                        </a4j:status>
+                    </rich:column>
+                    <rich:column id="subject" sortBy="#{message.subject}"
+                                 sortOrder="#{messageListData.sortsOrders['subject']}" width="40%" styleClass="w1">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['subject']}"/>
+                        </f:facet>
+                        <h:outputText value="#{message.subject}"/>
+                    </rich:column>
+                    <rich:column id="sender" sortBy="#{message.sender}"
+                                 sortOrder="#{messageListData.sortsOrders['sender']}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['sender']}"/>
+                        </f:facet>
+                        <h:outputText value="#{message.sender}"/>
+                    </rich:column>
+                    <rich:column id="send_date" sortBy="#{message.date}"
+                                 sortOrder="#{messageListData.sortsOrders['date']}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['send_date']}"/>
+                        </f:facet>
+                        <h:outputText value="#{message.date}"/>
+                    </rich:column>
+                </rich:extendedDataTable>
+                <rich:dataScroller for="msgTable" maxPages="5" page="#{messageListData.pageNum}"/>
+            </a4j:outputPanel>
         </h:panelGrid>
     </h:form>
 </ui:composition>

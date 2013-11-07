@@ -14,7 +14,7 @@ public class UIAttachment extends UIComponentBase {
 
     public static final String COMPONENT_TYPE = "com.noveogroup.mailexpress.ui";
 
-    String value = null;
+    String value = "";
 
     public String getValue() {
         return value;

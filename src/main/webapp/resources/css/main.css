@@ -60,6 +60,14 @@ div *.rf-tab-cnt {
     width: 30%;
 }
 
+.b {
+    font-weight: bold;
+}
+
+.msg-summary {
+    background-color: #cecece;
+}
+
 .rich-table-subheadercell
 {
     white-space: normal !important;

@@ -23,15 +23,8 @@ public class MessageServiceImpl implements MessageService{
     private MessageDao messageDao;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Message> findAll() {
-        return messageDao.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Long getCount() {
-        return messageDao.count();
+    public Message saveMessage(Message message) {
+        return messageDao.save(message);
     }
 
     @Override
@@ -42,19 +35,20 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Message> find(Long folderId, String sortColumn, String direction, int pageNumber, int pageSize) {
+    public Long countByFolder(Long folderId) {
+        return messageDao.countByFolderId(folderId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Message> findByFolder(Long folderId, String sortColumn, String direction, int pageNumber, int pageSize) {
         Pageable pageRequest;
         if (sortColumn != null) {
              pageRequest = new PageRequest(pageNumber, pageSize,Sort.Direction.fromString(direction), sortColumn);
         } else {
             pageRequest = new PageRequest(pageNumber, pageSize);
         }
-        Page page;
-        if (folderId != null) {
-            page = messageDao.findByFolderId(folderId, pageRequest);
-        } else {
-            page = messageDao.findAll(pageRequest);
-        }
+        Page page = messageDao.findByFolderId(folderId, pageRequest);
         return page.getContent();
     }
 }

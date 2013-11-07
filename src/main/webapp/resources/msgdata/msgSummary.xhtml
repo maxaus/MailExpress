@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:composite="http://java.sun.com/jsf/composite" xmlns:attachment="http://noveogroup.com/"
+        >
+
+<composite:interface>
+    <composite:attribute name="message"/>
+</composite:interface>
+
+<composite:implementation>
+    <h:panelGrid styleClass="msg-summary" columns="2">
+        <rich:panel>
+            <h:outputText value="#{cc.attrs.message.subject}" styleClass="b"/>
+            <h:outputText value="#{cc.attrs.message.date}"/>
+            <h:outputText value="#{cc.attrs.message.sender}"/>
+
+        </rich:panel>
+        <attachment:attachment></attachment:attachment>
+
+    </h:panelGrid>
+</composite:implementation>
+
+</html>
