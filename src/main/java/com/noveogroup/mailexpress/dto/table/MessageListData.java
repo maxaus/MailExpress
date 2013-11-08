@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Component
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class MessageListData extends PaginatingDataModel<MessageItem, Long> {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");

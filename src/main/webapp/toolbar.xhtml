@@ -37,9 +37,9 @@
         </rich:tab>
     </rich:tabPanel>
 
-    <rich:popupPanel id="popup" modal="false" autosized="true" resizeable="false">
+    <rich:popupPanel id="popup" modal="true" autosized="true" resizeable="false">
         <f:facet name="header">
-            <h:outputText value="Simple popup panel"/>
+            <h:outputText value="#{msg['new_message']}"/>
         </f:facet>
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
@@ -47,7 +47,9 @@
             </h:outputLink>
         </f:facet>
 
-        <p>New message.</p>
+        <ui:insert name="msgForm">
+            <ui:include src="form/newMessage.xhtml"/>
+        </ui:insert>
     </rich:popupPanel>
 
 </ui:composition>
