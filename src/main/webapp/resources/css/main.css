@@ -48,6 +48,11 @@ div *.rf-tab-cnt {
     padding: 0;
 }
 
+.folder-icon{
+    width: 24px;
+    height: 24px;
+}
+
 .inner-layout-container {
     height: 100%;
 }

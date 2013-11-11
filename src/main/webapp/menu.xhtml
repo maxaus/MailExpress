@@ -12,11 +12,11 @@
                 <h:outputText value="#{msg['folders_header']}"/>
             </f:facet>
             <rich:tree id="tree" nodeType="#{node.type}" var="node" value="#{folderController.rootNodes}"
-                       toggleType="client" selectionChangeListener="#{folderController.selectionListener}">
+                       toggleType="client" selectionChangeListener="#{folderController.selectionListener}" iconClass="folder-icon">
                 <rich:treeNode type="folder" iconLeaf="#{resource['img:folder_leaf.png']}"
                                iconCollapsed="#{resource['img:folder.png']}"
                                iconExpanded="#{resource['img:folder.png']}"
-                               expanded="true">
+                               expanded="true" iconClass="folder-icon">
                     <h:outputText value="#{node}"/>
                     <a4j:ajax execute="@form" event="click" listener="#{messageListData.selectionListener}" render="app-title msg_list msg_view"/>
                 </rich:treeNode>
