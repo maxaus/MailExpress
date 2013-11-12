@@ -7,8 +7,12 @@
     <groupId>mail-express</groupId>
     <artifactId>mail-express</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>mail-express-core</module>
+        <module>mail-express-ui</module>
+    </modules>
 
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <org.richfaces.bom.version>4.3.2.Final</org.richfaces.bom.version>
