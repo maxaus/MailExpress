@@ -9,9 +9,13 @@ import java.util.List;
  */
 public interface MessageService {
 
-    Message saveMessage(Message message);
+    Message save(Message message);
 
-    Message getMessageById(Long id);
+    Message update(Message message);
+
+    void delete(Message message);
+
+    Message getById(Long id);
 
     Long countByFolder(Long folderId);
 

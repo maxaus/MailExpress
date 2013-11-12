@@ -86,7 +86,7 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
 
     @Override
     public MessageItem getObjectById(final Long id) {
-        return createDto(messageService.getMessageById(id));
+        return createDto(messageService.getById(id));
     }
 
     @Override
@@ -136,8 +136,8 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
     public void changeReadStatus() {
         final String msgId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(
             "msgId");
-        final Message message = messageService.getMessageById(Long.valueOf(msgId));
+        final Message message = messageService.getById(Long.valueOf(msgId));
         message.setUnread(!message.isUnread());
-        messageService.saveMessage(message);
+        messageService.save(message);
     }
 }

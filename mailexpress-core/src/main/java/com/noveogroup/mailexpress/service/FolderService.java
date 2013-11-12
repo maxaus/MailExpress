@@ -10,4 +10,10 @@ import java.util.List;
 public interface FolderService {
 
     List<Folder> findAll();
+
+    Folder save(Folder folder);
+
+    Folder update(Folder folder);
+
+    void delete(Folder folder);
 }
