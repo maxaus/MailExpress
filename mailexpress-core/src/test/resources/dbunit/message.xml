@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <message id="1" subject="Msg subject" body="This is message body" sent_date="2013-11-11 20:10:00" folder_id="4" sender_id="1" unread="0"/>
+</dataset>

@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS `mail_test`;
+CREATE DATABASE `mail_test` DEFAULT CHARACTER SET 'utf8' DEFAULT COLLATE 'utf8_general_ci';

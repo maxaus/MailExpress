@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <folder id="1" folder_name="Inbox" icon_path="inbox.png" system_folder="true"/>
+    <folder id="2" folder_name="Private" icon_path="" parent_folder_id="1" system_folder="false"/>
+    <folder id="3" folder_name="Work" icon_path="" parent_folder_id="1" system_folder="false"/>
+    <folder id="4" folder_name="Sent" icon_path="sent.png" system_folder="true"/>
+    <folder id="5" folder_name="Trash" icon_path="trash.png" system_folder="true"/>
+</dataset>
