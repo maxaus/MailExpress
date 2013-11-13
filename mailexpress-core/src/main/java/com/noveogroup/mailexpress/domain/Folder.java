@@ -24,7 +24,7 @@ public class Folder extends AbstractEntity {
     @Column(name = "system_folder", nullable = false)
     private boolean systemFolder;
 
-    @OneToMany(mappedBy = "parentFolderId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parentFolderId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Folder> subFolders;
 
     public String getName() {

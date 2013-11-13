@@ -39,7 +39,7 @@ public class Message extends AbstractEntity {
     private Contact sender;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Contact> receivers;
+    private List<Contact> receivers = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "folder_id", nullable = false)
@@ -117,5 +117,9 @@ public class Message extends AbstractEntity {
     public void addAttachment(final Attachment attachment) {
         attachment.setMessage(this);
         this.attachments.add(attachment);
+    }
+
+    public void addReceiver(final Contact receiver) {
+        this.receivers.add(receiver);
     }
 }

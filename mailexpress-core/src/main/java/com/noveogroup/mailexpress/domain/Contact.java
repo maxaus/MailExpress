@@ -15,6 +15,12 @@ public class Contact extends AbstractEntity {
     @Column(name = "email", length = 120, nullable = false)
     private String email;
 
+    public Contact() {}
+
+    public Contact(final String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }

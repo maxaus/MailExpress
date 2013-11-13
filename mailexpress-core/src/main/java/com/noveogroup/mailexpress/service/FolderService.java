@@ -11,6 +11,8 @@ public interface FolderService {
 
     List<Folder> findAll();
 
+    Folder findByName(String name);
+
     Folder save(Folder folder);
 
     Folder update(Folder folder);

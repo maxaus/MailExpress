@@ -6,7 +6,7 @@
 <h:head>
     <meta http-equiv="Content-Language" content="en"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Mail</title>
+    <title>#{msg['application_title']}</title>
 
     <h:outputStylesheet library="css" name="layout-default.css"/>
     <h:outputStylesheet library="css" name="main.css"/>
@@ -82,7 +82,7 @@
 </h:head>
 <h:body>
     <div class="outer-north container">
-        <a4j:outputPanel id="app-title">
+        <a4j:outputPanel id="app-title" styleClass="b center">
             <h:outputText value="#{folderController.selectedFolderName} - "
                           rendered="#{folderController.selectedFolderName != null}"/> Mail Express
         </a4j:outputPanel>

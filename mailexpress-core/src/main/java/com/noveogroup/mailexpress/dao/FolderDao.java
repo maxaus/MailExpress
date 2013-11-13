@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("folderDao")
 public interface FolderDao extends JpaRepository<Folder, Long> {
+
+    Folder findByName(final String name);
 }

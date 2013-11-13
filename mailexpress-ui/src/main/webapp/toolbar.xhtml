@@ -12,14 +12,12 @@
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
                         <h:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}">
-                            <rich:componentControl target="popup" operation="show"/>
+                            <rich:componentControl target="messagePopup" operation="show"/>
                         </h:commandButton>
                         <h:commandButton image="#{resource['img:reply.png']}" title="#{msg['reply']}"/>
                         <h:commandButton image="#{resource['img:reply_to_all.png']}" title="#{msg['reply_to_all']}"/>
                         <h:commandButton image="#{resource['img:send.png']}" title="#{msg['send']}"/>
-                        <h:commandButton
-                                image="#{messageListData.selectedItem == null ? resource['img:delete-disabled.png'] : resource['img:delete.png']}"
-                                title="#{msg['delete']}" disabled="#{messageListData.selectedItem == null}"/>
+                        <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}"/>
                     </rich:toolbarGroup>
                 </rich:toolbar>
             </a4j:outputPanel>
@@ -28,7 +26,9 @@
             <a4j:outputPanel id="folderTools">
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
-                        <h:commandButton image="#{resource['img:new_folder.png']}" title="#{msg['new_folder']}"/>
+                        <h:commandButton image="#{resource['img:new_folder.png']}" title="#{msg['new_folder']}">
+                            <rich:componentControl target="folderPopup" operation="show"/>
+                        </h:commandButton>
                         <h:commandButton image="#{resource['img:rename.png']}" title="#{msg['rename']}"/>
                         <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}"/>
                     </rich:toolbarGroup>
@@ -37,18 +37,18 @@
         </rich:tab>
     </rich:tabPanel>
 
-    <rich:popupPanel id="popup" modal="true" autosized="true" resizeable="false">
+    <rich:popupPanel id="messagePopup" modal="true" autosized="true" resizeable="false">
         <f:facet name="header">
             <h:outputText value="#{msg['new_message']}"/>
         </f:facet>
         <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+            <h:outputLink value="#" onclick="#{rich:component('messagePopup')}.hide(); return false;">
                 x
             </h:outputLink>
         </f:facet>
 
-        <ui:insert name="msgForm">
-            <ui:include src="form/newMessage.xhtml"/>
+        <ui:insert name="form">
+            <ui:include src="form/message.xhtml"/>
         </ui:insert>
     </rich:popupPanel>
 

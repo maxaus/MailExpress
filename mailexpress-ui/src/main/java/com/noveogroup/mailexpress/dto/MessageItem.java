@@ -1,5 +1,7 @@
 package com.noveogroup.mailexpress.dto;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -12,8 +14,6 @@ public class MessageItem implements Serializable {
     private Long id;
 
     private boolean unread;
-
-    private boolean withAttachment;
 
     private String subject;
 
@@ -37,14 +37,6 @@ public class MessageItem implements Serializable {
 
     public void setUnread(final boolean unread) {
         this.unread = unread;
-    }
-
-    public boolean isWithAttachment() {
-        return withAttachment;
-    }
-
-    public void setWithAttachment(final boolean withAttachment) {
-        this.withAttachment = withAttachment;
     }
 
     public String getSubject() {
@@ -77,5 +69,10 @@ public class MessageItem implements Serializable {
 
     public void setBody(final String body) {
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

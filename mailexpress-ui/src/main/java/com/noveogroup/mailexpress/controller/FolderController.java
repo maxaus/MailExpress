@@ -2,6 +2,7 @@ package com.noveogroup.mailexpress.controller;
 
 import com.noveogroup.mailexpress.dto.FolderNode;
 import com.noveogroup.mailexpress.domain.Folder;
+import com.noveogroup.mailexpress.dto.form.FolderFormData;
 import com.noveogroup.mailexpress.service.FolderService;
 import org.richfaces.component.UITree;
 import org.richfaces.event.TreeSelectionChangeEvent;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.swing.tree.TreeNode;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,13 +21,16 @@ import java.util.List;
  */
 @Component
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class FolderController implements Serializable {
 
     private static final long serialVersionUID = 8105007650641624790L;
 
     @Autowired
     private FolderService folderService;
+
+    @Autowired
+    private FolderFormData folderFormData;
 
     private String selectedFolderName;
 
@@ -74,5 +78,13 @@ public class FolderController implements Serializable {
 
     public Long getSelectedFolderId() {
         return selectedFolderId;
+    }
+
+    public String saveFolder() {
+        Folder folder = new Folder();
+        folder.setName(folderFormData.getName());
+        folder.setParentFolderId(selectedFolderId);
+        folderService.save(folder);
+        return null;
     }
 }

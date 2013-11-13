@@ -128,16 +128,7 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
         dto.setSubject(message.getSubject());
         dto.setUnread(message.isUnread());
         dto.setBody(message.getBody());
-//        dto.setWithAttachment(CollectionUtils.isNotEmpty(message.getAttachments()));
         dto.setDate(DATE_FORMAT.format(message.getDate()));
         return dto;
-    }
-
-    public void changeReadStatus() {
-        final String msgId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(
-            "msgId");
-        final Message message = messageService.getById(Long.valueOf(msgId));
-        message.setUnread(!message.isUnread());
-        messageService.save(message);
     }
 }

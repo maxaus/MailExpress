@@ -6,8 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:composite="http://java.sun.com/jsf/composite" xmlns:attachment="http://noveogroup.com/"
-        >
+      xmlns:composite="http://java.sun.com/jsf/composite">
 
 <composite:interface>
     <composite:attribute name="message"/>
@@ -19,10 +18,7 @@
             <h:outputText value="#{cc.attrs.message.subject}" styleClass="b"/>
             <h:outputText value="#{cc.attrs.message.date}"/>
             <h:outputText value="#{cc.attrs.message.sender}"/>
-
         </rich:panel>
-        <attachment:attachment></attachment:attachment>
-
     </h:panelGrid>
 </composite:implementation>
 

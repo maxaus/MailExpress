@@ -1,10 +1,10 @@
 package com.noveogroup.mailexpress.dto.form;
 
-import org.richfaces.model.UploadedFile;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +13,11 @@ import java.util.List;
 @Component
 @ManagedBean
 @RequestScoped
-public class MessageFormData {
+public class MessageFormData implements Serializable {
+
+    private static final long serialVersionUID = -2081260075515423870L;
+
+    private Long id;
 
     private String subject;
 
@@ -21,7 +25,13 @@ public class MessageFormData {
 
     private List<String> receivers;
 
-    private List<UploadedFile> attachments;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
     public String getSubject() {
         return subject;
@@ -45,13 +55,5 @@ public class MessageFormData {
 
     public void setReceivers(final List<String> receivers) {
         this.receivers = receivers;
-    }
-
-    public List<UploadedFile> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(final List<UploadedFile> attachments) {
-        this.attachments = attachments;
     }
 }

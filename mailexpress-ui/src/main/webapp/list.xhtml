@@ -5,30 +5,28 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+    <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()"/>
+
     <h:form id="list">
         <h:panelGrid styleClass="center">
-            <a4j:outputPanel id="msg_list">
+            <a4j:outputPanel id="msgList">
                 <rich:extendedDataTable id="msgTable" value="#{messageListData}" var="message"
                                         selection="#{messageListData.selectedIndexes}" selectionMode="multiple"
                                         rows="#{messageListData.pageSize}" sortMode="single"
-                                        noDataLabel="#{msg['no_messages']}">
+                                        noDataLabel="#{msg['no_messages']}" styleClass="message-list">
                     <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
-                              render="msg_view msgTools"/>
+                              render="msgView msgTools"/>
                     <rich:column id="unread">
                         <f:facet name="header">
                             <h:graphicImage library="img" name="eye.png"/>
                         </f:facet>
                         <a4j:commandButton
                                 image="#{message.unread ? resource['img:green_dot.png'] : resource['img:gray_dot.png']}"
-                                execute="@this" render="msg_list" action="#{messageListData.changeReadStatus}"
+                                execute="@this" render="msgList" action="#{messageController.changeReadStatus}"
                                 title="#{message.unread ? msg['mark_read'] : msg['mark_unread']}">
-                            <f:param name="msgId" value="#{message.id}"/>
+                            <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                                       assignTo="#{messageController.currentMessageItemId}"/>
                         </a4j:commandButton>
-                        <a4j:status>
-                            <f:facet name="start">
-                                <h:graphicImage value="#{resource['img:busy.gif']}"/>
-                            </f:facet>
-                        </a4j:status>
                     </rich:column>
                     <rich:column id="subject" sortBy="#{message.subject}"
                                  sortOrder="#{messageListData.sortsOrders['subject']}" width="40%" styleClass="w1">
@@ -53,8 +51,38 @@
                     </rich:column>
                 </rich:extendedDataTable>
                 <rich:dataScroller for="msgTable" maxPages="5" page="#{messageListData.pageNum}"/>
+                <rich:contextMenu target="msgTable" mode="ajax" styleClass="center">
+                    <rich:menuItem label="#{msg['reply']}" mode="ajax" icon="#{resource['img:reply.png']}">
+                        <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                                   assignTo="#{messageController.currentMessageItemId}"/>
+                    </rich:menuItem>
+                    <rich:menuItem label="#{msg['reply_to_all']}" mode="ajax"
+                                   icon="#{resource['img:reply_to_all.png']}"/>
+                    <rich:menuItem label="#{msg['forward']}" mode="ajax" icon="#{resource['img:send.png']}"/>
+                    <rich:menuItem label="#{msg['delete']}" mode="ajax" icon="#{resource['img:delete.png']}"
+                                   execute="@this" render="@none"
+                                   oncomplete="#{rich:component('confirmMessagePane')}.show()">
+                        <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                                   assignTo="#{messageController.currentMessageItemId}"/>
+                    </rich:menuItem>
+                </rich:contextMenu>
             </a4j:outputPanel>
         </h:panelGrid>
+
+        <a4j:jsFunction name="remove" action="#{messageController.remove}" render="msgTable" execute="@this"
+                        oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
+
+        <rich:popupPanel id="statPane" autosized="true">
+            <h:graphicImage value="#{resource['img:busy.gif']}"/>
+            #{msg['please_wait']}
+        </rich:popupPanel>
+
+        <rich:popupPanel id="confirmMessagePane" autosized="true">
+            #{msg['delete_message_confirm_question']}
+            <a4j:commandButton value="#{msg['yes']}" onclick="remove(); return false;"/>
+            <a4j:commandButton value="#{msg['no']}"
+                               onclick="#{rich:component('confirmMessagePane')}.hide(); return false;"/>
+        </rich:popupPanel>
     </h:form>
 </ui:composition>
 </html>

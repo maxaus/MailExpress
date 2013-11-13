@@ -14,8 +14,10 @@ import java.util.List;
 public class FolderNode extends NamedNode implements TreeNode {
 
     private static final long serialVersionUID = -3644535276155461599L;
+    private static final String IMG_LIBRARY = "img";
     private Long id;
     private String iconPath;
+    private boolean system;
     private List<FolderNode> subFolders = new ArrayList<FolderNode>();
 
     public FolderNode(final Folder folder) {
@@ -23,7 +25,8 @@ public class FolderNode extends NamedNode implements TreeNode {
         if (folder != null) {
             this.id = folder.getId();
             this.name = folder.getName();
-            this.iconPath = folder.getIconPath();
+            this.iconPath = IMG_LIBRARY + ":" + folder.getIconPath();
+            this.system = folder.isSystemFolder();
             if (!folder.getSubFolders().isEmpty()) {
                 for (final Folder subFolder : folder.getSubFolders()) {
                     final FolderNode subFolderNode = new FolderNode(subFolder);
@@ -43,6 +46,10 @@ public class FolderNode extends NamedNode implements TreeNode {
 
     public String getIconPath() {
         return iconPath;
+    }
+
+    public boolean isSystem() {
+        return system;
     }
 
     public List<FolderNode> getSubFolders() {

@@ -32,6 +32,12 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public Folder findByName(final String name) {
+        LOGGER.info("Retrieving folder by name : {}", name);
+        return folderDao.findByName(name);
+    }
+
+    @Override
     @Transactional
     public Folder save(final Folder folder) {
         LOGGER.info("Saving new folder");
