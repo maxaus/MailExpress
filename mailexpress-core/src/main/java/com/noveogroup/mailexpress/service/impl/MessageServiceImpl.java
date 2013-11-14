@@ -28,6 +28,9 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageDao messageDao;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public Message save(final Message message) {
@@ -35,6 +38,9 @@ public class MessageServiceImpl implements MessageService {
         return messageDao.save(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public Message update(final Message message) {
@@ -42,6 +48,9 @@ public class MessageServiceImpl implements MessageService {
         return messageDao.save(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void delete(final Message message) {
@@ -49,6 +58,9 @@ public class MessageServiceImpl implements MessageService {
         messageDao.delete(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public Message getById(final Long id) {
@@ -56,6 +68,9 @@ public class MessageServiceImpl implements MessageService {
         return messageDao.findOne(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public Long countByFolder(final Long folderId) {
@@ -63,6 +78,9 @@ public class MessageServiceImpl implements MessageService {
         return messageDao.countByFolderId(folderId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Message> findByFolder(final Long folderId, final String sortColumn, final String direction,

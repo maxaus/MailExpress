@@ -6,10 +6,11 @@
       xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://java.sun.com/jsf/html" xmlns:msgdata="http://java.sun.com/jsf/composite/msgdata">
 <ui:composition>
-    <a4j:outputPanel id="msgView" rendered="#{not empty messageListData.selectedItem}">
-        <msgdata:msgSummary message="#{messageListData.selectedItem}"/>
-        <rich:panel>
-            <h:outputText value="#{messageListData.selectedItem.body}"/>
+    <a4j:outputPanel id="msgView">
+        <msgdata:msgSummary message="#{messageListData.selectedItem}"
+                            rendered="#{not empty messageListData.selectedItem}"/>
+        <rich:panel rendered="#{not empty messageListData.selectedItem}" bodyClass="msg-view">
+            <h:outputText value="#{messageListData.selectedItem.body}" escape="false"/>
         </rich:panel>
     </a4j:outputPanel>
 </ui:composition>

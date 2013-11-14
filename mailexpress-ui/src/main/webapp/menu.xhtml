@@ -21,18 +21,21 @@
                                expanded="true" iconClass="folder-icon">
                     <h:outputText value="#{node}"/>
                     <a4j:ajax execute="@form" event="click" listener="#{messageListData.selectionListener}"
-                              render="app-title msgList msgView"/>
+                              render="appTitle msgList msgView"/>
                 </rich:treeNode>
             </rich:tree>
 
             <rich:contextMenu target="tree" mode="ajax">
-                <rich:menuItem label="#{msg['new_folder']}" render="popupContent" oncomplete="#{rich:component('folderPopup')}.show()"
+                <rich:menuItem label="#{msg['new_folder']}" render="popupContent"
+                               oncomplete="#{rich:component('folderPopup')}.show()"
                                mode="ajax" icon="#{resource['img:new_folder.png']}"/>
 
-                <rich:menuItem label="#{msg['rename']}" render="popupContent" oncomplete="#{rich:component('folderPopup')}.show()"
+                <rich:menuItem label="#{msg['rename']}" render="popupContent"
+                               oncomplete="#{rich:component('folderPopup')}.show()"
                                mode="ajax" icon="#{resource['img:rename.png']}"/>
 
-                <rich:menuItem label="#{msg['delete']}" render="popupContent" oncomplete="#{rich:component('folderPopup')}.show()"
+                <rich:menuItem label="#{msg['delete']}" render="popupContent"
+                               oncomplete="#{rich:component('folderPopup')}.show()"
                                mode="ajax" icon="#{resource['img:delete.png']}"/>
             </rich:contextMenu>
         </rich:panel>
@@ -56,8 +59,13 @@
 
     <rich:popupPanel id="confirmFolderPane" autosized="true">
         #{msg['delete_folder_confirm_question']}
-        <a4j:commandButton value="#{msg['yes']}" onclick="remove(); return false;" />
-        <a4j:commandButton value="#{msg['no']}" onclick="#{rich:component('confirmFolderPane')}.hide(); return false;" />
+        <a4j:commandButton value="#{msg['yes']}" onclick="remove(); return false;"/>
+        <a4j:commandButton value="#{msg['no']}" onclick="#{rich:component('confirmFolderPane')}.hide(); return false;"/>
     </rich:popupPanel>
+
+    <rich:popupPanel id="renameFolderPane" autosized="true">
+
+    </rich:popupPanel>
+
 </ui:composition>
 </html>

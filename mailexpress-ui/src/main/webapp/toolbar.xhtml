@@ -11,9 +11,8 @@
             <a4j:outputPanel id="msgTools">
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
-                        <h:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}">
-                            <rich:componentControl target="messagePopup" operation="show"/>
-                        </h:commandButton>
+                        <a4j:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}"
+                                           onclick="#{rich:component('messagePopup')}.show();" render="messageBody"/>
                         <h:commandButton image="#{resource['img:reply.png']}" title="#{msg['reply']}"/>
                         <h:commandButton image="#{resource['img:reply_to_all.png']}" title="#{msg['reply_to_all']}"/>
                         <h:commandButton image="#{resource['img:send.png']}" title="#{msg['send']}"/>
@@ -37,10 +36,8 @@
         </rich:tab>
     </rich:tabPanel>
 
-    <rich:popupPanel id="messagePopup" modal="true" autosized="true" resizeable="false">
-        <f:facet name="header">
-            <h:outputText value="#{msg['new_message']}"/>
-        </f:facet>
+    <rich:popupPanel id="messagePopup" modal="true" autosized="false" resizeable="true" minHeight="450" minWidth="580"
+                     header="#{msg['new_message']}">
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('messagePopup')}.hide(); return false;">
                 x

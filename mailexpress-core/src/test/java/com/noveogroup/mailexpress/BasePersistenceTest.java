@@ -15,24 +15,31 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
+ * Base class for database integration tests.
+ *
  * @author Maxim Baev
  */
-@ContextConfiguration(locations = {
-        "classpath*:META-INF/spring/test-appContext.xml"
-})
 @TransactionConfiguration(defaultRollback = false)
+@ContextConfiguration(locations = {"classpath*:META-INF/spring/test-appContext.xml"})
 public abstract class BasePersistenceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
+    /**
+     * Flag indicates is test data already inserted.
+     */
     private static boolean dataInserted;
 
+    /**
+     * Data source.
+     */
     @Qualifier("dataSource")
     @Autowired
     private DataSource dataSource;
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
+    /**
+     * Initialize, insert test data.
+     *
+     * @throws Exception exception occurred
+     */
     @Before
     public void insertData() throws Exception {
         if (!dataInserted) {
@@ -41,7 +48,7 @@ public abstract class BasePersistenceTest extends AbstractTransactionalJUnit4Spr
         }
     }
 
-    protected IDatabaseConnection getDatabaseConnection() throws SQLException {
+    private IDatabaseConnection getDatabaseConnection() throws SQLException {
         final IDatabaseConnection databaseConnection = new DatabaseDataSourceConnection(dataSource);
         final DatabaseConfig databaseConfig = databaseConnection.getConfig();
         databaseConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());

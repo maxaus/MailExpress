@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:msgdata="http://java.sun.com/jsf/composite/msgdata">
     <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()"/>
 
     <h:form id="list">
@@ -29,21 +29,18 @@
                         </a4j:commandButton>
                     </rich:column>
                     <rich:column id="subject" sortBy="#{message.subject}"
-                                 sortOrder="#{messageListData.sortsOrders['subject']}" width="40%" styleClass="w1">
+                                 sortOrder="#{messageListData.sortsOrders['subject']}" width="100px">
                         <f:facet name="header">
                             <h:outputText value="#{msg['subject']}"/>
                         </f:facet>
                         <h:outputText value="#{message.subject}"/>
                     </rich:column>
-                    <rich:column id="sender" sortBy="#{message.sender}"
-                                 sortOrder="#{messageListData.sortsOrders['sender']}">
-                        <f:facet name="header">
-                            <h:outputText value="#{msg['sender']}"/>
-                        </f:facet>
-                        <h:outputText value="#{message.sender}"/>
-                    </rich:column>
+
+                    <msgdata:sortColumn columnId="sender" beanProperty="#{message.sender}"
+                                        sortOrder="#{messageListData.sortsOrders['sender']}"
+                                        header="#{msg['sender']}" width="200px"/>
                     <rich:column id="send_date" sortBy="#{message.date}"
-                                 sortOrder="#{messageListData.sortsOrders['date']}">
+                                 sortOrder="#{messageListData.sortsOrders['date']}" width="100px">
                         <f:facet name="header">
                             <h:outputText value="#{msg['send_date']}"/>
                         </f:facet>
@@ -68,21 +65,22 @@
                 </rich:contextMenu>
             </a4j:outputPanel>
         </h:panelGrid>
-
-        <a4j:jsFunction name="remove" action="#{messageController.remove}" render="msgTable" execute="@this"
-                        oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
-
-        <rich:popupPanel id="statPane" autosized="true">
-            <h:graphicImage value="#{resource['img:busy.gif']}"/>
-            #{msg['please_wait']}
-        </rich:popupPanel>
-
-        <rich:popupPanel id="confirmMessagePane" autosized="true">
-            #{msg['delete_message_confirm_question']}
-            <a4j:commandButton value="#{msg['yes']}" onclick="remove(); return false;"/>
-            <a4j:commandButton value="#{msg['no']}"
-                               onclick="#{rich:component('confirmMessagePane')}.hide(); return false;"/>
-        </rich:popupPanel>
     </h:form>
+
+    <a4j:jsFunction name="remove" action="#{messageController.remove}" render="msgTable" execute="@this"
+                    oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
+
+    <rich:popupPanel id="statPane" autosized="true">
+        <h:graphicImage value="#{resource['img:busy.gif']}"/>
+        #{msg['please_wait']}
+    </rich:popupPanel>
+
+    <rich:popupPanel id="confirmMessagePane" autosized="true">
+        #{msg['delete_message_confirm_question']}
+        <a4j:commandButton value="#{msg['yes']}" onclick="remove(); return false;"/>
+        <a4j:commandButton value="#{msg['no']}"
+                           onclick="#{rich:component('confirmMessagePane')}.hide(); return false;"/>
+    </rich:popupPanel>
+
 </ui:composition>
 </html>

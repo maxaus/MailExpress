@@ -15,22 +15,35 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * Custom application exception handler.
+ *
  * @author Maxim Baev
  */
-public class MailExpressExceptionHandler  extends ExceptionHandlerWrapper {
+public class MailExpressExceptionHandler extends ExceptionHandlerWrapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailExpressExceptionHandler.class);
     private ExceptionHandler wrapped;
 
+    /**
+     * Constructor.
+     *
+     * @param wrapped exception handler
+     */
     public MailExpressExceptionHandler(final ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExceptionHandler getWrapped() {
         return wrapped;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle() throws FacesException {
         final Iterator iterator = getUnhandledExceptionQueuedEvents().iterator();

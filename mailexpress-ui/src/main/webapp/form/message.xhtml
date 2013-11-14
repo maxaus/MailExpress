@@ -7,16 +7,33 @@
       xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
 <ui:composition>
     <h:form id="messageForm">
-        <h:outputLabel value="#{msg['subject']}" for="messageSubject"/>
-        <h:inputText id="messageSubject" value="#{messageFormData.subject}"/>
-        <h:outputLabel value="#{msg['to']}" for="messageReceivers"/>
-        <h:inputText id="messageReceivers" value="#{messageFormData.receivers}">
-            <f:converter converterId="stringListConverter"/>
-        </h:inputText>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{msg['subject']}" for="messageSubject"/>
+            <h:inputText id="messageSubject" label="#{msg['subject']}" value="#{messageFormData.subject}"/>
+
+            <h:outputLabel value="#{msg['to']}" for="messageReceivers"/>
+            <h:inputText id="messageReceivers" label="#{msg['to']}" value="#{messageFormData.receivers}" required="true">
+                <f:converter converterId="stringListConverter"/>
+                <f:validator validatorId="emailListValidator"/>
+            </h:inputText>
+            <h:outputText value="&lt;!-- --&gt;" escape="false"/>
+            <h:outputText value="#{msg['email_tip']}" styleClass="tip-text"/>
+
+            <h:outputLabel value="#{msg['copy']}" for="messageReceiverCopies"/>
+            <h:inputText id="messageReceiverCopies" label="#{msg['copy']}" value="#{messageFormData.copies}">
+                <f:converter converterId="stringListConverter"/>
+                <f:validator validatorId="emailListValidator"/>
+            </h:inputText>
+            <h:outputText value="&lt;!-- --&gt;" escape="false"/>
+            <h:outputText value="#{msg['email_tip']}" styleClass="tip-text"/>
+        </h:panelGrid>
+        <rich:messages ajaxRendered="true"/>
 
         <rich:editor id="messageBody" value="#{messageFormData.body}"/>
 
-        <h:commandButton action="#{messageController.saveMessage}" value="#{msg['send']}"/>
+        <a4j:commandButton action="#{messageController.saveMessage}" value="#{msg['send']}" oncomplete=""/>
+        <a4j:commandButton value="#{msg['cancel']}"
+                           onclick="#{rich:component('messagePopup')}.hide(); return false;"/>
     </h:form>
 </ui:composition>
 </html>

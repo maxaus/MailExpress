@@ -1,6 +1,10 @@
 package com.noveogroup.mailexpress.dto.table;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -13,40 +17,68 @@ import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.model.Arrangeable;
 
 /**
- * @param <T>
- * @param <U>
+ * Base class for data to be represented in UI data table.
+ *
+ * @param <T> entity class
+ * @param <U> entity index class
  * @author Maxim Baev
  */
 public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> implements Arrangeable {
 
+    /**
+     * Current row primary key.
+     */
     protected U currentPk;
 
+    /**
+     * Row index.
+     */
     protected int rowIndex;
 
+    /**
+     * Is descending order.
+     */
     protected boolean descending = true;
 
+    /**
+     * Sort field.
+     */
     protected String sortField;
 
+    /**
+     * Filter map.
+     */
     protected Map<String, Object> filterMap = new HashMap<>();
 
+    /**
+     * Is in detached state.
+     */
     protected boolean detached;
 
+    /**
+     * Wrapped keys.
+     */
     protected List<U> wrappedKeys = new ArrayList<>();
 
+    /**
+     * Wrapped data.
+     */
     protected Map<U, T> wrappedData = new HashMap<>();
 
+    /**
+     * Selected data items.
+     */
     protected List<T> selectedItems = new ArrayList<>();
 
+    /**
+     * Selected data indexes.
+     */
     protected Collection<U> selectedIndexes;
 
     /**
-     * @see org.ajax4jsf.model.ExtendedDataModel#getRowKey()
+     * Listens to data table row selection event.
+     * @param event event
      */
-    @Override
-    public Object getRowKey() {
-        return currentPk;
-    }
-
     public void selectionListener(final AjaxBehaviorEvent event) {
         final UIExtendedDataTable dataTable = (UIExtendedDataTable) event.getComponent();
         final Object originalKey = dataTable.getRowKey();
@@ -61,16 +93,71 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see org.ajax4jsf.model.ExtendedDataModel#setRowKey(java.lang.Object)
+     * Gets selected indexes.
+     *
+     * @return the selected indexes
      */
-    @SuppressWarnings("unchecked")
+    public Collection<U> getSelectedIndexes() {
+        return selectedIndexes;
+    }
+
+    /**
+     * Sets selected indexes.
+     *
+     * @param selectedIndexes the selected indexes
+     */
+    public void setSelectedIndexes(final Collection<U> selectedIndexes) {
+        this.selectedIndexes = selectedIndexes;
+    }
+
+    /**
+     * Gets selected item.
+     *
+     * @return the selected item
+     */
+    public T getSelectedItem() {
+        if (selectedItems == null || selectedItems.isEmpty()) {
+            return null;
+        }
+        return selectedItems.get(0);
+    }
+
+    /**
+     * Gets selected items.
+     *
+     * @return the selected items
+     */
+    public List<T> getSelectedItems() {
+        return selectedItems;
+    }
+
+    /**
+     * Sets selected items.
+     *
+     * @param selectedItems the selected items
+     */
+    public void setSelectedItems(final List<T> selectedItems) {
+        this.selectedItems = selectedItems;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object getRowKey() {
+        return currentPk;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setRowKey(final Object key) {
         this.currentPk = (U) key;
     }
 
     /**
-     * @see javax.faces.model.DataModel#setRowIndex(int)
+     * {@inheritDoc}
      */
     @Override
     public void setRowIndex(final int arg0) {
@@ -78,7 +165,7 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see javax.faces.model.DataModel#setWrappedData(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void setWrappedData(final Object data) {
@@ -86,7 +173,7 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see javax.faces.model.DataModel#getRowIndex()
+     * {@inheritDoc}
      */
     @Override
     public int getRowIndex() {
@@ -94,7 +181,7 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see javax.faces.model.DataModel#getWrappedData()
+     * {@inheritDoc}
      */
     @Override
     public Object getWrappedData() {
@@ -102,8 +189,7 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see org.ajax4jsf.model.ExtendedDataModel#walk(javax.faces.context.FacesContext, org.ajax4jsf.model.DataVisitor,
-     *      org.ajax4jsf.model.Range, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void walk(final FacesContext context, final DataVisitor visitor, final Range range, final Object argument) {
@@ -125,9 +211,8 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see javax.faces.model.DataModel#isRowAvailable()
+     * {@inheritDoc}
      */
-
     @Override
     public boolean isRowAvailable() {
         return currentPk != null && (wrappedKeys.contains(currentPk) || wrappedData.entrySet().contains(currentPk)
@@ -135,7 +220,7 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see javax.faces.model.DataModel#getRowData()
+     * {@inheritDoc}
      */
     @Override
     public T getRowData() {
@@ -151,60 +236,45 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * @see javax.faces.model.DataModel#getRowCount()
+     * {@inheritDoc}
      */
     @Override
     public int getRowCount() {
         return getNumRecords(filterMap).intValue();
     }
 
-    public Collection<U> getSelectedIndexes() {
-        return selectedIndexes;
-    }
-
-    public void setSelectedIndexes(final Collection<U> selectedIndexes) {
-        this.selectedIndexes = selectedIndexes;
-    }
-
-    public T getSelectedItem() {
-        if (selectedItems == null || selectedItems.isEmpty()) {
-            return null;
-        }
-        return selectedItems.get(0);
-    }
-
-    public List<T> getSelectedItems() {
-        return selectedItems;
-    }
-
-    public void setSelectedItems(final List<T> selectedItems) {
-        this.selectedItems = selectedItems;
-    }
-
     /**
-     * @param object
-     * @return U
+     * Returns entity ID.
+     *
+     * @param object entity
+     * @return U entity index
      */
     public abstract U getId(T object);
 
     /**
-     * @param firstRow
-     * @param numberOfRows
-     * @param sortField
-     * @param descending
-     * @return List<T>
+     * Returns object for data table page.
+     *
+     * @param firstRow     first row
+     * @param numberOfRows number of rows
+     * @param sortField    sorting field name
+     * @param descending   is sort direction is descending
+     * @return List<T> List of data items
      */
     public abstract List<T> findObjects(int firstRow, int numberOfRows, String sortField, Map<String,
             Object> filterMap, boolean descending);
 
     /**
-     * @param id
-     * @return T
+     * Returns entity by ID.
+     *
+     * @param id ID
+     * @return T entity
      */
     public abstract T getObjectById(U id);
 
     /**
-     * @return Long
+     * Returns number of records.
+     *
+     * @return Long Number of records
      */
     public abstract Long getNumRecords(Map<String, Object> filterMap);
 

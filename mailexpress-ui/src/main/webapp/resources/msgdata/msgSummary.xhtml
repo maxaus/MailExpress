@@ -6,19 +6,25 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:composite="http://java.sun.com/jsf/composite">
+      xmlns:composite="http://java.sun.com/jsf/composite" xmlns:attachment="http://noveogroup.com/">
 
 <composite:interface>
     <composite:attribute name="message"/>
 </composite:interface>
 
 <composite:implementation>
-    <h:panelGrid styleClass="msg-summary" columns="2">
-        <rich:panel>
-            <h:outputText value="#{cc.attrs.message.subject}" styleClass="b"/>
-            <h:outputText value="#{cc.attrs.message.date}"/>
-            <h:outputText value="#{cc.attrs.message.sender}"/>
+    <h:panelGrid columns="2">
+        <rich:panel bodyClass="msg-summary">
+            <h:panelGrid columns="2" styleClass="w3">
+                <h:outputLabel for="subject" value="#{msg['subject']}: "/>
+                <h:outputText id="subject" value="#{cc.attrs.message.subject}"/>
+                <h:outputLabel for="sentDate" value="#{msg['send_date']}: "/>
+                <h:outputText id="sentDate" value="#{cc.attrs.message.date}"/>
+                <h:outputLabel for="sender" value="#{msg['sender']}: "/>
+                <h:outputText id="sender" value="#{cc.attrs.message.sender}"/>
+            </h:panelGrid>
         </rich:panel>
+        <attachment:attachment/>
     </h:panelGrid>
 </composite:implementation>
 

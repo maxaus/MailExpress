@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link AbstractDataListModel} implementation for the message list.
+ *
  * @author Maxim Baev
  */
 @Component
@@ -32,46 +34,79 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
     private static final int DEFAULT_PAGE_SIZE = 10;
 
+    private int pageNum = 1;
+    private int pageSize = DEFAULT_PAGE_SIZE;
+    private Map<String, SortOrder> sortsOrders;
+
     @Autowired
     private MessageService messageService;
 
     @Autowired
     private FolderController folderController;
 
-    private int pageNum = 1;
-    private int pageSize = DEFAULT_PAGE_SIZE;
-
-    private Map<String, SortOrder> sortsOrders;
-
+    /**
+     * Instantiates a new Message list data.
+     */
     public MessageListData() {
         sortsOrders = new HashMap<>();
     }
 
+    /**
+     * Gets sorts orders.
+     *
+     * @return the sorts orders
+     */
     public Map<String, SortOrder> getSortsOrders() {
         return sortsOrders;
     }
 
+    /**
+     * Gets page num.
+     *
+     * @return the page num
+     */
     public int getPageNum() {
         return pageNum;
     }
 
+    /**
+     * Sets page num.
+     *
+     * @param pageNum the page num
+     */
     public void setPageNum(final int pageNum) {
         this.pageNum = pageNum;
     }
 
+    /**
+     * Gets page size.
+     *
+     * @return the page size
+     */
     public int getPageSize() {
         return pageSize;
     }
 
+    /**
+     * Sets page size.
+     *
+     * @param pageSize the page size
+     */
     public void setPageSize(final int pageSize) {
         this.pageSize = pageSize;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId(final MessageItem message) {
         return message.getId();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MessageItem> findObjects(final int firstRow, final int numberOfRows, final String sortField,
                                          final Map<String, Object> filterMap, final boolean descending) {
@@ -84,11 +119,17 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MessageItem getObjectById(final Long id) {
         return createDto(messageService.getById(id));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getNumRecords(final Map<String, Object> filterMap) {
         final Long folderId = folderController.getSelectedFolderId();
@@ -99,6 +140,9 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void arrange(final FacesContext context, final ArrangeableState state) {
         if (state != null) {

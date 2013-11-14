@@ -9,7 +9,8 @@
     <h:form id="folderForm">
         <h:outputLabel value="#{msg['folder_name']}" for="folderName"/>
         <h:inputText id="folderName" value="#{folderFormData.name}"/>
-        <h:commandButton action="#{folderController.saveFolder}" value="#{msg['save']}"/>
+        <a4j:commandButton action="#{folderController.saveFolder}" value="#{msg['save']}"/>
+        <a4j:commandButton onclick="#{rich:component('folderPopup')}.hide()" value="#{msg['cancel']}"/>
     </h:form>
 </ui:composition>
 </html>

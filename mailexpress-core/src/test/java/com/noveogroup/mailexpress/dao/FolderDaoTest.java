@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Tests {@link FolderDao} instance.
+ * Tests {@link FolderDao}.
  *
  * @author Maxim Baev
  */

@@ -36,6 +36,10 @@ body {
     text-align: center;
 }
 
+.left {
+    text-align: center;
+}
+
 .errorMessage {
     color: #FF0011;
 }
@@ -62,11 +66,15 @@ div *.rf-tab-cnt {
 }
 
 .w1 {
-    width: 40%;
+    width: 150px;
 }
 
 .w2 {
-    width: 30%;
+    width: 200px;
+}
+
+.w3 {
+    width: inherit;
 }
 
 .b {
@@ -75,6 +83,10 @@ div *.rf-tab-cnt {
 
 .msg-summary {
     background-color: #cecece;
+}
+
+.msg-view {
+    overflow: auto;
 }
 
 .rich-table-subheadercell
@@ -86,6 +98,17 @@ div *.rf-tab-cnt {
 .rich-table-sortable-header
 {
     white-space: normal !important;
+}
+
+.tip-text  {
+    color: #a6a6a6;
+    font-size: smaller;
+    font-style: italic;
+}
+
+.msg-form{
+    width: 300px;
+    height: 300px;
 }
 
 table {

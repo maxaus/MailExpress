@@ -10,19 +10,20 @@
         >
 
 <composite:interface>
+    <composite:attribute name="columnId"/>
     <composite:attribute name="beanProperty"/>
-    <composite:attribute name="sortingProperty"/>
-    <composite:attribute name="tableData"/>
-    <composite:attribute name="tableId"/>
+    <composite:attribute name="sortOrder"/>
     <composite:attribute name="header"/>
+    <composite:attribute name="width"/>
 </composite:interface>
 
 <composite:implementation>
-    <rich:column>
+    <rich:column id="#{cc.attrs.columnId}" sortBy="#{cc.attrs.beanProperty}"
+                 sortOrder="#{cc.attrs.sortOrder}" width="#{cc.attrs.width}">
         <f:facet name="header">
             <h:outputText value="#{cc.attrs.header}"/>
         </f:facet>
-        <h:outputText value=""/>
+        <h:outputText value="#{cc.attrs.beanProperty}"/>
     </rich:column>
 </composite:implementation>
 

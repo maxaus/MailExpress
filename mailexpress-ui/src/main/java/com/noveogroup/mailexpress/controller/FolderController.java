@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * UI controller for folder manage actions.
+ *
  * @author Maxim Baev
  */
 @Component
@@ -26,18 +28,21 @@ public class FolderController implements Serializable {
 
     private static final long serialVersionUID = 8105007650641624790L;
 
+    private String selectedFolderName;
+    private Long selectedFolderId;
+    private List<TreeNode> rootNodes = new ArrayList<>();
+
     @Autowired
     private FolderService folderService;
 
     @Autowired
     private FolderFormData folderFormData;
 
-    private String selectedFolderName;
-
-    private Long selectedFolderId;
-
-    private List<TreeNode> rootNodes = new ArrayList<>();
-
+    /**
+     * Return list of tree nodes to build folder tree.
+     *
+     * @return List of tree nodes
+     */
     public List<TreeNode> getRootNodes() {
         if (rootNodes.isEmpty()) {
             initTree();
@@ -45,20 +50,11 @@ public class FolderController implements Serializable {
         return rootNodes;
     }
 
-    private void initTree() {
-        final List<Folder> folders = folderService.findAll();
-        addData(folders);
-    }
-
-    private void addData(final List<Folder> folders) {
-        for (final Folder folder : folders) {
-            if (folder.getParentFolderId() == null) {
-                final FolderNode folderNode = new FolderNode(folder);
-                rootNodes.add(folderNode);
-            }
-        }
-    }
-
+    /**
+     * Listens to folder tree node selection event.
+     *
+     * @param selectionChangeEvent event
+     */
     public void selectionListener(final TreeSelectionChangeEvent selectionChangeEvent) {
         final List<Object> selection = new ArrayList<>(selectionChangeEvent.getNewSelection());
         final Object currentSelectionKey = selection.get(0);
@@ -72,19 +68,57 @@ public class FolderController implements Serializable {
         tree.setRowKey(storedKey);
     }
 
+    /**
+     * Returns currently selected folder name.
+     *
+     * @return Folder name
+     */
     public String getSelectedFolderName() {
         return selectedFolderName;
     }
 
+    /**
+     * Returns currently selected folder ID.
+     *
+     * @return Folder ID
+     */
     public Long getSelectedFolderId() {
         return selectedFolderId;
     }
 
-    public String saveFolder() {
-        Folder folder = new Folder();
+    /**
+     * Saves new folder.
+     */
+    public void saveFolder() {
+        final Folder folder = new Folder();
         folder.setName(folderFormData.getName());
         folder.setParentFolderId(selectedFolderId);
         folderService.save(folder);
-        return null;
+    }
+
+    public void remove() {
+
+    }
+
+    /**
+     * Initializes folder tree.
+     */
+    private void initTree() {
+        final List<Folder> folders = folderService.findAll();
+        addData(folders);
+    }
+
+    /**
+     * Adds folders to the tree.
+     *
+     * @param folders all folders
+     */
+    private void addData(final List<Folder> folders) {
+        for (final Folder folder : folders) {
+            if (folder.getParentFolderId() == null) {
+                final FolderNode folderNode = new FolderNode(folder);
+                rootNodes.add(folderNode);
+            }
+        }
     }
 }

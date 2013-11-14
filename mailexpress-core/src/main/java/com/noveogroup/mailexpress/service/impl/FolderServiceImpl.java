@@ -24,6 +24,9 @@ public class FolderServiceImpl implements FolderService {
     @Autowired
     private FolderDao folderDao;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Folder> findAll() {
@@ -31,12 +34,18 @@ public class FolderServiceImpl implements FolderService {
         return folderDao.findAll();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Folder findByName(final String name) {
         LOGGER.info("Retrieving folder by name : {}", name);
         return folderDao.findByName(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public Folder save(final Folder folder) {
@@ -44,6 +53,9 @@ public class FolderServiceImpl implements FolderService {
         return folderDao.save(folder);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public Folder update(final Folder folder) {
@@ -51,6 +63,9 @@ public class FolderServiceImpl implements FolderService {
         return folderDao.save(folder);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void delete(final Folder folder) {
