@@ -1,9 +1,9 @@
 package com.noveogroup.mailexpress.controller;
 
 import com.noveogroup.mailexpress.domain.Contact;
+import com.noveogroup.mailexpress.domain.ContactType;
 import com.noveogroup.mailexpress.domain.Folder;
 import com.noveogroup.mailexpress.domain.Message;
-import com.noveogroup.mailexpress.dto.MessageItem;
 import com.noveogroup.mailexpress.dto.form.MessageFormData;
 import com.noveogroup.mailexpress.service.FolderService;
 import com.noveogroup.mailexpress.service.MessageService;
@@ -54,10 +54,10 @@ public class MessageController implements Serializable {
         message.setDate(new Date());
         Folder sentFolder = folderService.findByName(SENT_FOLDER_NAME);
         message.setFolder(sentFolder);
-        message.setSender(new Contact(DEFAULT_SENDER_EMAIL));
+        message.setSender(new Contact(DEFAULT_SENDER_EMAIL, ContactType.SENDER));
 
         for (String receiverEmail : messageFormData.getReceivers()) {
-            message.addReceiver(new Contact(receiverEmail));
+            message.addReceiver(new Contact(receiverEmail, ContactType.RECEIVER));
         }
         messageService.save(message);
 

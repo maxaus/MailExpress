@@ -42,6 +42,7 @@ SET character_set_client = utf8;
 CREATE TABLE `contact` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `email` varchar(120) NOT NULL,
+  `contact_type` int(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 SET character_set_client = @saved_cs_client;
