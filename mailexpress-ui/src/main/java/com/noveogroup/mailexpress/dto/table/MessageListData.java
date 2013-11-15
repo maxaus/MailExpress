@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

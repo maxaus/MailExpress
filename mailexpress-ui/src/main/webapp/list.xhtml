@@ -16,7 +16,7 @@
                                         noDataLabel="#{msg['no_messages']}" styleClass="message-list">
                     <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
                               render="msgView msgTools"/>
-                    <rich:column id="unread">
+                    <rich:column id="unread" width="40px">
                         <f:facet name="header">
                             <h:graphicImage library="img" name="eye.png"/>
                         </f:facet>
@@ -35,10 +35,13 @@
                         </f:facet>
                         <h:outputText value="#{message.subject}"/>
                     </rich:column>
-
-                    <msgdata:sortColumn columnId="sender" beanProperty="#{message.sender}"
-                                        sortOrder="#{messageListData.sortsOrders['sender']}"
-                                        header="#{msg['sender']}" width="200px"/>
+                    <rich:column id="sender" sortBy="#{message.sender}"
+                                 sortOrder="#{messageListData.sortsOrders['sender']}" width="200px">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['sender']}"/>
+                        </f:facet>
+                        <h:outputText value="#{message.sender}"/>
+                    </rich:column>
                     <rich:column id="send_date" sortBy="#{message.date}"
                                  sortOrder="#{messageListData.sortsOrders['date']}" width="100px">
                         <f:facet name="header">

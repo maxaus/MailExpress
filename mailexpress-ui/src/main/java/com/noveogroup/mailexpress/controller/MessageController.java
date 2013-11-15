@@ -8,12 +8,15 @@ import com.noveogroup.mailexpress.dto.form.MessageFormData;
 import com.noveogroup.mailexpress.service.FolderService;
 import com.noveogroup.mailexpress.service.MessageService;
 import org.apache.commons.collections.CollectionUtils;
+import org.richfaces.event.FileUploadEvent;
+import org.richfaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.Date;
@@ -86,6 +89,12 @@ public class MessageController implements Serializable {
         messageService.save(message);
     }
 
+    public void uploadListener(FileUploadEvent event) throws Exception {
+        UploadedFile item = event.getUploadedFile();
+
+
+    }
+
     public Long getCurrentMessageItemId() {
         return currentMessageItemId;
     }
@@ -93,4 +102,6 @@ public class MessageController implements Serializable {
     public void setCurrentMessageItemId(final Long currentMessageItemId) {
         this.currentMessageItemId = currentMessageItemId;
     }
+
+
 }

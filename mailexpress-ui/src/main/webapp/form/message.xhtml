@@ -30,8 +30,13 @@
         <rich:messages ajaxRendered="true"/>
 
         <rich:editor id="messageBody" value="#{messageFormData.body}"/>
+        <rich:fileUpload fileUploadListener="#{messageController.uploadListener}" id="upload"
+                         acceptedTypes="jpg, gif, png, bmp"
+                         ontyperejected="alert('Only JPG, GIF, PNG and BMP files are accepted');"
+                         maxFilesQuantity="5" immediateUpload="true" addLabel="#{msg['add_attach']}"
+                         serverErrorLabel="#{msg['file_upload_fail']}"/>
 
-        <a4j:commandButton action="#{messageController.saveMessage}" value="#{msg['send']}" oncomplete=""/>
+        <a4j:commandButton action="#{messageController.saveMessage}" value="#{msg['send']}"/>
         <a4j:commandButton value="#{msg['cancel']}"
                            onclick="#{rich:component('messagePopup')}.hide(); return false;"/>
     </h:form>

@@ -1,10 +1,12 @@
 package com.noveogroup.mailexpress.dto.form;
 
+import org.richfaces.model.UploadedFile;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +45,11 @@ public class MessageFormData implements Serializable {
      * List of copy receivers email addresses.
      */
     private List<String> copies;
+
+    /**
+     * List of uploaded files to be attached to the message.
+     */
+    private ArrayList<UploadedFile> attachments = new ArrayList<>();
 
     /**
      * Gets id.
@@ -132,5 +139,23 @@ public class MessageFormData implements Serializable {
      */
     public void setCopies(final List<String> copies) {
         this.copies = copies;
+    }
+
+    /**
+     * Gets attachments.
+     *
+     * @return the attachments
+     */
+    public ArrayList<UploadedFile> getAttachments() {
+        return attachments;
+    }
+
+    /**
+     * Sets attachments.
+     *
+     * @param attachments the attachments
+     */
+    public void setAttachments(final ArrayList<UploadedFile> attachments) {
+        this.attachments = attachments;
     }
 }
