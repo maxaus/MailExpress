@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:msgdata="http://java.sun.com/jsf/composite/msgdata">
+                xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
     <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()"/>
 
     <h:form id="list">
@@ -12,7 +12,7 @@
             <a4j:outputPanel id="msgList">
                 <rich:extendedDataTable id="msgTable" value="#{messageListData}" var="message"
                                         selection="#{messageListData.selectedIndexes}" selectionMode="multiple"
-                                        rows="#{messageListData.pageSize}" sortMode="single"
+                                        rows="#{messageListData.pageSize}" sortMode="single" onrowclick="selectMessage(#{message.id});"
                                         noDataLabel="#{msg['no_messages']}" styleClass="message-list">
                     <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
                               render="msgView msgTools"/>
@@ -24,12 +24,14 @@
                                 image="#{message.unread ? resource['img:green_dot.png'] : resource['img:gray_dot.png']}"
                                 execute="@this" render="msgList" action="#{messageController.changeReadStatus}"
                                 title="#{message.unread ? msg['mark_read'] : msg['mark_unread']}">
-                            <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                            <a4j:param name="currentMessageItemId" value="#{message.id}"
                                        assignTo="#{messageController.currentMessageItemId}"/>
+                            <a4j:param name="selectedItem" value="#{message}"
+                                       assignTo="#{messageListData.selectedItem}"/>
                         </a4j:commandButton>
                     </rich:column>
                     <rich:column id="subject" sortBy="#{message.subject}"
-                                 sortOrder="#{messageListData.sortsOrders['subject']}" width="100px">
+                                 sortOrder="#{messageListData.sortsOrders['subject']}" width="100%">
                         <f:facet name="header">
                             <h:outputText value="#{msg['subject']}"/>
                         </f:facet>
@@ -43,7 +45,7 @@
                         <h:outputText value="#{message.sender}"/>
                     </rich:column>
                     <rich:column id="send_date" sortBy="#{message.date}"
-                                 sortOrder="#{messageListData.sortsOrders['date']}" width="100px">
+                                 sortOrder="#{messageListData.sortsOrders['date']}" width="150px">
                         <f:facet name="header">
                             <h:outputText value="#{msg['send_date']}"/>
                         </f:facet>
@@ -51,7 +53,7 @@
                     </rich:column>
                 </rich:extendedDataTable>
                 <rich:dataScroller for="msgTable" maxPages="5" page="#{messageListData.pageNum}"/>
-                <rich:contextMenu target="msgTable" mode="ajax" styleClass="center">
+                <rich:contextMenu target="msgTable" mode="ajax">
                     <rich:menuItem label="#{msg['reply']}" mode="ajax" icon="#{resource['img:reply.png']}">
                         <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
                                    assignTo="#{messageController.currentMessageItemId}"/>
@@ -69,6 +71,10 @@
             </a4j:outputPanel>
         </h:panelGrid>
     </h:form>
+
+    <a4j:jsFunction name="selectMessage" render="msgTools" execute="@this">
+        <a4j:param name="id" assignTo="#{messageController.currentMessageItemId}" />
+    </a4j:jsFunction>
 
     <a4j:jsFunction name="remove" action="#{messageController.remove}" render="msgTable" execute="@this"
                     oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>

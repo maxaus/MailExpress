@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.swing.tree.TreeNode;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Component
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class FolderController implements Serializable {
 
     private static final long serialVersionUID = 8105007650641624790L;

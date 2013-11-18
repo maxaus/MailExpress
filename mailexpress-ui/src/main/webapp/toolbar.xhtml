@@ -13,10 +13,19 @@
                     <rich:toolbarGroup itemSeparator="line">
                         <a4j:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}"
                                            onclick="#{rich:component('messagePopup')}.show();" render="messageBody"/>
-                        <h:commandButton image="#{resource['img:reply.png']}" title="#{msg['reply']}"/>
-                        <h:commandButton image="#{resource['img:reply_to_all.png']}" title="#{msg['reply_to_all']}"/>
-                        <h:commandButton image="#{resource['img:send.png']}" title="#{msg['send']}"/>
-                        <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}"/>
+                        <a4j:commandButton
+                                image="#{not empty messageController.currentMessageItemId ? resource['img:reply.png'] : resource['img:reply_disabled.png']}"
+                                title="#{msg['reply']}" disabled="#{empty messageController.currentMessageItemId}"/>
+                        <a4j:commandButton
+                                image="#{not empty messageController.currentMessageItemId ? resource['img:reply_to_all.png'] : resource['img:reply_to_all_disabled.png']}"
+                                title="#{msg['reply_to_all']}"
+                                disabled="#{empty messageController.currentMessageItemId}"/>
+                        <a4j:commandButton
+                                image="#{not empty messageController.currentMessageItemId ? resource['img:send.png'] : resource['img:send_disabled.png']}"
+                                title="#{msg['forward']}" disabled="#{empty messageController.currentMessageItemId}"/>
+                        <a4j:commandButton
+                                image="#{not empty messageController.currentMessageItemId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
+                                title="#{msg['delete']}" disabled="#{empty messageController.currentMessageItemId}"/>
                     </rich:toolbarGroup>
                 </rich:toolbar>
             </a4j:outputPanel>
@@ -25,11 +34,18 @@
             <a4j:outputPanel id="folderTools">
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
-                        <h:commandButton image="#{resource['img:new_folder.png']}" title="#{msg['new_folder']}">
-                            <rich:componentControl target="folderPopup" operation="show"/>
-                        </h:commandButton>
-                        <h:commandButton image="#{resource['img:rename.png']}" title="#{msg['rename']}"/>
-                        <h:commandButton image="#{resource['img:delete.png']}" title="#{msg['delete']}"/>
+                        <a4j:commandButton
+                                image="#{not empty folderController.selectedFolderId ? resource['img:new_folder.png'] : resource['img:new_folder_disabled.png']}"
+                                title="#{msg['new_folder']}">
+                            <rich:componentControl target="folderPopup" operation="show"
+                                                   disabled="#{empty folderController.selectedFolderId}"/>
+                        </a4j:commandButton>
+                        <a4j:commandButton
+                                image="#{not empty folderController.selectedFolderId ? resource['img:rename.png'] : resource['img:rename_disabled.png']}"
+                                title="#{msg['rename']}" disabled="#{empty folderController.selectedFolderId}"/>
+                        <a4j:commandButton
+                                image="#{not empty folderController.selectedFolderId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
+                                title="#{msg['delete']}" disabled="#{empty folderController.selectedFolderId}"/>
                     </rich:toolbarGroup>
                 </rich:toolbar>
             </a4j:outputPanel>
