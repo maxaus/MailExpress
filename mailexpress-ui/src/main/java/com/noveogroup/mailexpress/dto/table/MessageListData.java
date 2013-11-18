@@ -4,6 +4,7 @@ import com.noveogroup.mailexpress.controller.FolderController;
 import com.noveogroup.mailexpress.dto.MessageItem;
 import com.noveogroup.mailexpress.domain.Message;
 import com.noveogroup.mailexpress.service.MessageService;
+import org.apache.commons.collections.CollectionUtils;
 import org.richfaces.component.SortOrder;
 import org.richfaces.model.ArrangeableState;
 import org.richfaces.model.SortField;
@@ -173,6 +174,7 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
         dto.setUnread(message.isUnread());
         dto.setBody(message.getBody());
         dto.setDate(DATE_FORMAT.format(message.getDate()));
+        dto.setWithAttachment(CollectionUtils.isNotEmpty(message.getAttachments()));
         return dto;
     }
 }

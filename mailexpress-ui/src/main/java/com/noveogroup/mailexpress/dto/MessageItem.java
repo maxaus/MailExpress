@@ -13,11 +13,12 @@ public class MessageItem implements Serializable {
     private static final long serialVersionUID = 3165843357002271177L;
 
     private Long id;
-    private boolean unread;
     private String subject;
     private String sender;
     private String date;
     private String body;
+    private boolean unread;
+    private boolean withAttachment;
 
     /**
      * Gets id.
@@ -53,6 +54,24 @@ public class MessageItem implements Serializable {
      */
     public void setUnread(final boolean unread) {
         this.unread = unread;
+    }
+
+    /**
+     * Is with attachment.
+     *
+     * @return the boolean
+     */
+    public boolean isWithAttachment() {
+        return withAttachment;
+    }
+
+    /**
+     * Sets with attachment.
+     *
+     * @param withAttachment the with attachment
+     */
+    public void setWithAttachment(final boolean withAttachment) {
+        this.withAttachment = withAttachment;
     }
 
     /**

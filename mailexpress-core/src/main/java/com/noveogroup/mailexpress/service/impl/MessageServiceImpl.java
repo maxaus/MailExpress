@@ -3,6 +3,7 @@ package com.noveogroup.mailexpress.service.impl;
 import com.noveogroup.mailexpress.dao.MessageDao;
 import com.noveogroup.mailexpress.domain.Message;
 import com.noveogroup.mailexpress.service.MessageService;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,11 @@ public class MessageServiceImpl implements MessageService {
             pageRequest = new PageRequest(pageNumber, pageSize);
         }
         final Page page = messageDao.findByFolderId(folderId, pageRequest);
-        return page.getContent();
+        //TODO: maybe add DTO service with transactional operation
+        final List<Message> messages = page.getContent();
+        for (final Message message: messages) {
+            Hibernate.initialize(message.getAttachments());
+        }
+        return messages;
     }
 }
