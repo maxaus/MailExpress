@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +16,9 @@ import java.util.List;
 @Component
 @ManagedBean
 @RequestScoped
-public class MessageFormData implements Serializable {
+public class MessageFormData extends AbstractFormData {
 
     private static final long serialVersionUID = -2081260075515423870L;
-
-    /**
-     * ID.
-     */
-    private Long id;
 
     /**
      * Subject
@@ -50,24 +44,6 @@ public class MessageFormData implements Serializable {
      * List of uploaded files to be attached to the message.
      */
     private ArrayList<UploadedFile> attachments = new ArrayList<>();
-
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
 
     /**
      * Gets subject.

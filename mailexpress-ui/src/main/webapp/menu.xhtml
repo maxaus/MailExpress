@@ -27,44 +27,24 @@
 
             <rich:contextMenu target="tree" mode="ajax">
                 <rich:menuItem label="#{msg['new_folder']}" render="popupContent"
-                               oncomplete="#{rich:component('folderPopup')}.show()"
+                               oncomplete="#{rich:component('folderPane')}.show()"
                                mode="ajax" icon="#{resource['img:new_folder.png']}"/>
 
                 <rich:menuItem label="#{msg['rename']}" render="popupContent"
-                               oncomplete="#{rich:component('folderPopup')}.show()"
+                               oncomplete="#{rich:component('folderPane')}.show()"
                                mode="ajax" icon="#{resource['img:rename.png']}"/>
 
                 <rich:menuItem label="#{msg['delete']}" render="popupContent"
-                               oncomplete="#{rich:component('folderPopup')}.show()"
+                               oncomplete="#{rich:component('folderPane')}.show()"
                                mode="ajax" icon="#{resource['img:delete.png']}"/>
             </rich:contextMenu>
         </rich:panel>
     </h:form>
 
-    <rich:popupPanel id="folderPopup" modal="true" autosized="true" resizeable="false">
-        <f:facet name="header">
-            <h:outputText value="#{msg['new_folder']}"/>
-        </f:facet>
-        <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('folderPopup')}.hide(); return false;">
-                x
-            </h:outputLink>
-        </f:facet>
-        <h:panelGroup id="popupContent">
-            <ui:insert name="form">
-                <ui:include src="form/folder.xhtml"/>
-            </ui:insert>
-        </h:panelGroup>
-    </rich:popupPanel>
-
     <rich:popupPanel id="confirmFolderPane" autosized="true">
         #{msg['delete_folder_confirm_question']}
         <a4j:commandButton value="#{msg['yes']}" onclick="remove(); return false;"/>
         <a4j:commandButton value="#{msg['no']}" onclick="#{rich:component('confirmFolderPane')}.hide(); return false;"/>
-    </rich:popupPanel>
-
-    <rich:popupPanel id="renameFolderPane" autosized="true">
-
     </rich:popupPanel>
 
 </ui:composition>

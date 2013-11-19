@@ -12,7 +12,7 @@
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
                         <a4j:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}"
-                                           onclick="#{rich:component('messagePopup')}.show();" render="messageBody"/>
+                                           onclick="#{rich:component('messagePane')}.show();" render="messageBody"/>
                         <a4j:commandButton
                                 image="#{not empty messageController.currentMessageItemId ? resource['img:reply.png'] : resource['img:reply_disabled.png']}"
                                 title="#{msg['reply']}" disabled="#{empty messageController.currentMessageItemId}"/>
@@ -37,7 +37,7 @@
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:new_folder.png'] : resource['img:new_folder_disabled.png']}"
                                 title="#{msg['new_folder']}">
-                            <rich:componentControl target="folderPopup" operation="show"
+                            <rich:componentControl target="folderPane" operation="show"
                                                    disabled="#{empty folderController.selectedFolderId}"/>
                         </a4j:commandButton>
                         <a4j:commandButton
@@ -52,10 +52,10 @@
         </rich:tab>
     </rich:tabPanel>
 
-    <rich:popupPanel id="messagePopup" modal="true" autosized="false" resizeable="true" minHeight="450" minWidth="580"
-                     header="#{msg['new_message']}">
+    <rich:popupPanel id="messagePane" modal="true" autosized="false" resizeable="true" minHeight="450" minWidth="580"
+                     header="#{messageFormData.title}">
         <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('messagePopup')}.hide(); return false;">
+            <h:outputLink value="#" onclick="#{rich:component('messagePane')}.hide(); return false;">
                 x
             </h:outputLink>
         </f:facet>
@@ -63,6 +63,22 @@
         <ui:insert name="form">
             <ui:include src="form/message.xhtml"/>
         </ui:insert>
+    </rich:popupPanel>
+
+    <rich:popupPanel id="folderPane" modal="true" autosized="true" resizeable="false">
+        <f:facet name="header">
+            <h:outputText value="#{folderFormData.title}"/>
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('folderPane')}.hide(); return false;">
+                x
+            </h:outputLink>
+        </f:facet>
+        <h:panelGroup id="popupContent">
+            <ui:insert name="form">
+                <ui:include src="form/folder.xhtml"/>
+            </ui:insert>
+        </h:panelGroup>
     </rich:popupPanel>
 
 </ui:composition>

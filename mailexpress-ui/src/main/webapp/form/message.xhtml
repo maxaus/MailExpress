@@ -38,7 +38,7 @@
 
         <a4j:commandButton action="#{messageController.saveMessage}" value="#{msg['send']}"/>
         <a4j:commandButton value="#{msg['cancel']}"
-                           onclick="#{rich:component('messagePopup')}.hide(); return false;"/>
+                           onclick="#{rich:component('messagePane')}.hide(); return false;"/>
     </h:form>
 </ui:composition>
 </html>
