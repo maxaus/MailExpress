@@ -12,17 +12,20 @@
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
                         <a4j:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}"
-                                           onclick="#{rich:component('messagePane')}.show();" render="messageBody"/>
+                                           onclick="openMessageForm('create')"/>
                         <a4j:commandButton
                                 image="#{not empty messageController.currentMessageItemId ? resource['img:reply.png'] : resource['img:reply_disabled.png']}"
-                                title="#{msg['reply']}" disabled="#{empty messageController.currentMessageItemId}"/>
+                                title="#{msg['reply']}" disabled="#{empty messageController.currentMessageItemId}"
+                                onclick="openMessageForm('reply')"/>
                         <a4j:commandButton
                                 image="#{not empty messageController.currentMessageItemId ? resource['img:reply_to_all.png'] : resource['img:reply_to_all_disabled.png']}"
                                 title="#{msg['reply_to_all']}"
-                                disabled="#{empty messageController.currentMessageItemId}"/>
+                                disabled="#{empty messageController.currentMessageItemId}"
+                                onclick="openMessageForm('reply_to_all')"/>
                         <a4j:commandButton
                                 image="#{not empty messageController.currentMessageItemId ? resource['img:send.png'] : resource['img:send_disabled.png']}"
-                                title="#{msg['forward']}" disabled="#{empty messageController.currentMessageItemId}"/>
+                                title="#{msg['forward']}" disabled="#{empty messageController.currentMessageItemId}"
+                                onclick="openMessageForm('forward')"/>
                         <a4j:commandButton
                                 image="#{not empty messageController.currentMessageItemId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
                                 title="#{msg['delete']}" disabled="#{empty messageController.currentMessageItemId}"/>
@@ -42,7 +45,10 @@
                         </a4j:commandButton>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:rename.png'] : resource['img:rename_disabled.png']}"
-                                title="#{msg['rename']}" disabled="#{empty folderController.selectedFolderId}"/>
+                                title="#{msg['rename']}" disabled="#{empty folderController.selectedFolderId}"
+                                oncomplete="#{rich:component('folderPane')}.show()">
+
+                        </a4j:commandButton>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
                                 title="#{msg['delete']}" disabled="#{empty folderController.selectedFolderId}"/>
@@ -53,7 +59,7 @@
     </rich:tabPanel>
 
     <rich:popupPanel id="messagePane" modal="true" autosized="false" resizeable="true" minHeight="450" minWidth="580"
-                     header="#{messageFormData.title}">
+                     header="#{messageController.messageFormData.title}">
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('messagePane')}.hide(); return false;">
                 x
@@ -80,6 +86,12 @@
             </ui:insert>
         </h:panelGroup>
     </rich:popupPanel>
+
+    <a4j:jsFunction name="openMessageForm" action="#{messageController.openForm}"
+                    oncomplete="#{rich:component('messagePane')}.show();" render="messagePane messageBody"
+                    execute="@this">
+        <a4j:param id="actionName" assignTo="#{messageController.actionName}"/>
+    </a4j:jsFunction>
 
 </ui:composition>
 </html>

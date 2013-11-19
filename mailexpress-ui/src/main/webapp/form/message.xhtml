@@ -9,10 +9,11 @@
     <h:form id="messageForm">
         <h:panelGrid columns="2">
             <h:outputLabel value="#{msg['subject']}" for="messageSubject"/>
-            <h:inputText id="messageSubject" label="#{msg['subject']}" value="#{messageFormData.subject}"/>
+            <h:inputText id="messageSubject" label="#{msg['subject']}" value="#{messageController.messageFormData.subject}"/>
 
             <h:outputLabel value="#{msg['to']}" for="messageReceivers"/>
-            <h:inputText id="messageReceivers" label="#{msg['to']}" value="#{messageFormData.receivers}" required="true">
+            <h:inputText id="messageReceivers" label="#{msg['to']}" value="#{messageController.messageFormData.receivers}"
+                         required="true">
                 <f:converter converterId="stringListConverter"/>
                 <f:validator validatorId="emailListValidator"/>
             </h:inputText>
@@ -20,7 +21,7 @@
             <h:outputText value="#{msg['email_tip']}" styleClass="tip-text"/>
 
             <h:outputLabel value="#{msg['copy']}" for="messageReceiverCopies"/>
-            <h:inputText id="messageReceiverCopies" label="#{msg['copy']}" value="#{messageFormData.copies}">
+            <h:inputText id="messageReceiverCopies" label="#{msg['copy']}" value="#{messageController.messageFormData.copies}">
                 <f:converter converterId="stringListConverter"/>
                 <f:validator validatorId="emailListValidator"/>
             </h:inputText>
@@ -29,16 +30,17 @@
         </h:panelGrid>
         <rich:messages ajaxRendered="true"/>
 
-        <rich:editor id="messageBody" value="#{messageFormData.body}"/>
+        <rich:editor id="messageBody" value="#{messageController.messageFormData.body}"/>
         <rich:fileUpload fileUploadListener="#{messageController.uploadListener}" id="upload"
                          acceptedTypes="jpg, gif, png, bmp"
                          ontyperejected="alert('Only JPG, GIF, PNG and BMP files are accepted');"
                          maxFilesQuantity="5" immediateUpload="true" addLabel="#{msg['add_attach']}"
-                         serverErrorLabel="#{msg['file_upload_fail']}"/>
+                         serverErrorLabel="#{msg['file_upload_fail']}" style="width: 100%;height: 100px;"/>
 
-        <a4j:commandButton action="#{messageController.saveMessage}" value="#{msg['send']}"/>
+        <a4j:commandButton action="#{messageController.send()}" value="#{msg['send']}"
+                           render="msgList" oncomplete="#{rich:component('messagePane')}.hide()"/>
         <a4j:commandButton value="#{msg['cancel']}"
-                           onclick="#{rich:component('messagePane')}.hide(); return false;"/>
+                           onclick="#{rich:component('messagePane')}.hide()"/>
     </h:form>
 </ui:composition>
 </html>

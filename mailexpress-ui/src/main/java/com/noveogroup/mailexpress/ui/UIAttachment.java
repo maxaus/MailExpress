@@ -13,7 +13,7 @@ import java.io.IOException;
 public class UIAttachment extends UIComponentBase {
 
     public static final String COMPONENT_TYPE = "com.noveogroup.mailexpress.ui";
-    public static final String COMPONENT_TAG = "attachment";
+    public static final String DIV_TAG = "div";
 
     private String value = "";
 
@@ -25,9 +25,14 @@ public class UIAttachment extends UIComponentBase {
     @Override
     public void encodeBegin(final FacesContext context) throws IOException {
         final ResponseWriter writer = context.getResponseWriter();
-        writer.startElement(COMPONENT_TAG, this);
+        //TODO:
+        writer.startElement(DIV_TAG, this);
+        writer.startElement("img", this);
+        writer.writeAttribute("src", "fsdf.png", null);
+        writer.writeAttribute("alt", "fsdf", null);
+        writer.endElement("img");
         writer.write(getValue());
-        writer.endElement(COMPONENT_TAG);
+        writer.endElement(DIV_TAG);
     }
 
 

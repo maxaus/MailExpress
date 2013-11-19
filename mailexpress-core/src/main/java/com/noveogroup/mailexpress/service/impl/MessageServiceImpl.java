@@ -66,7 +66,10 @@ public class MessageServiceImpl implements MessageService {
     @Transactional(readOnly = true)
     public Message getById(final Long id) {
         LOGGER.info("Retrieving message with ID = {}", id);
-        return messageDao.findOne(id);
+        final Message message = messageDao.findOne(id);
+        Hibernate.initialize(message.getReceivers());
+        Hibernate.initialize(message.getAttachments());
+        return message;
     }
 
     /**

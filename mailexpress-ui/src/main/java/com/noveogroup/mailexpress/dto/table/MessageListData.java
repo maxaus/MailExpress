@@ -1,10 +1,11 @@
 package com.noveogroup.mailexpress.dto.table;
 
 import com.noveogroup.mailexpress.controller.FolderController;
-import com.noveogroup.mailexpress.dto.MessageItem;
+import com.noveogroup.mailexpress.domain.Attachment;
+import com.noveogroup.mailexpress.dto.AttachmentDto;
+import com.noveogroup.mailexpress.dto.MessageDto;
 import com.noveogroup.mailexpress.domain.Message;
 import com.noveogroup.mailexpress.service.MessageService;
-import org.apache.commons.collections.CollectionUtils;
 import org.richfaces.component.SortOrder;
 import org.richfaces.model.ArrangeableState;
 import org.richfaces.model.SortField;
@@ -30,7 +31,7 @@ import java.util.Map;
 @Component
 @ManagedBean
 @ViewScoped
-public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
+public class MessageListData extends AbstractDataListModel<MessageDto, Long> {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
     private static final int DEFAULT_PAGE_SIZE = 10;
@@ -101,7 +102,7 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
      * {@inheritDoc}
      */
     @Override
-    public Long getId(final MessageItem message) {
+    public Long getId(final MessageDto message) {
         return message.getId();
     }
 
@@ -109,8 +110,8 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
      * {@inheritDoc}
      */
     @Override
-    public List<MessageItem> findObjects(final int firstRow, final int numberOfRows, final String sortField,
-                                         final Map<String, Object> filterMap, final boolean descending) {
+    public List<MessageDto> findObjects(final int firstRow, final int numberOfRows, final String sortField,
+                                        final Map<String, Object> filterMap, final boolean descending) {
         final Long folderId = folderController.getSelectedFolderId();
         if (folderId != null) {
             return createDtoList(messageService.findByFolder(folderId, sortField, descending ? "desc" : "asc",
@@ -124,7 +125,7 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
      * {@inheritDoc}
      */
     @Override
-    public MessageItem getObjectById(final Long id) {
+    public MessageDto getObjectById(final Long id) {
         return createDto(messageService.getById(id));
     }
 
@@ -158,23 +159,32 @@ public class MessageListData extends AbstractDataListModel<MessageItem, Long> {
         }
     }
 
-    private List<MessageItem> createDtoList(final List<Message> messages) {
-        final List<MessageItem> dtoList = new ArrayList<>();
+    private List<MessageDto> createDtoList(final List<Message> messages) {
+        final List<MessageDto> dtoList = new ArrayList<>();
         for (final Message message : messages) {
             dtoList.add(createDto(message));
         }
         return dtoList;
     }
 
-    private MessageItem createDto(final Message message) {
-        final MessageItem dto = new MessageItem();
+    private MessageDto createDto(final Message message) {
+        final MessageDto dto = new MessageDto();
         dto.setId(message.getId());
         dto.setSender(message.getSender().getEmail());
         dto.setSubject(message.getSubject());
         dto.setUnread(message.isUnread());
         dto.setBody(message.getBody());
         dto.setDate(DATE_FORMAT.format(message.getDate()));
-        dto.setWithAttachment(CollectionUtils.isNotEmpty(message.getAttachments()));
+        for (final Attachment attachment : message.getAttachments()) {
+            dto.addAttachment(createAttachmentDto(attachment));
+        }
+        return dto;
+    }
+
+    private AttachmentDto createAttachmentDto(final Attachment attachment) {
+        final AttachmentDto dto = new AttachmentDto();
+        dto.setId(attachment.getId());
+        dto.setPath(attachment.getPath());
         return dto;
     }
 }

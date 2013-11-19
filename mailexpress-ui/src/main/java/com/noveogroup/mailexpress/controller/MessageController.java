@@ -17,8 +17,9 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 /**
  * UI controller for message manage actions.
@@ -32,10 +33,15 @@ public class MessageController implements Serializable {
 
     private static final long serialVersionUID = -4863780031482494674L;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
+    private static final String BUNDLE_NAME = "MailExpress";
+    private static final String FORWARD_PREFIX = "FW: ";
+    private static final String REPLY_PREFIX = "RE: ";
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final String DEFAULT_SENDER_EMAIL = "mail@mail.com";
 
     private Long currentMessageItemId;
+
+    private String actionName;
 
     @Autowired
     private MessageService messageService;
@@ -43,11 +49,9 @@ public class MessageController implements Serializable {
     @Autowired
     private FolderService folderService;
 
-    @Autowired
-    private MessageFormData messageFormData;
+    private MessageFormData messageFormData = new MessageFormData();
 
-
-    public void saveMessage() {
+    public void send() {
         LOGGER.debug("Saving new message");
         final Message message = new Message();
         message.setSubject(messageFormData.getSubject());
@@ -66,12 +70,8 @@ public class MessageController implements Serializable {
                 message.addReceiver(new Contact(receiverCopyEmail, ContactType.RECEIVER_COPY));
             }
         }
-
-        messageService.save(message);
-    }
-
-    public void send() {
-
+        //TODO: uncomment
+//        messageService.save(message);
     }
 
     public void remove() {
@@ -88,10 +88,65 @@ public class MessageController implements Serializable {
         messageService.save(message);
     }
 
-    public void uploadListener(FileUploadEvent event) throws Exception {
+    public void uploadListener(final FileUploadEvent event) throws Exception {
         UploadedFile item = event.getUploadedFile();
+//        byte[] content = item.getData();
+//        String fileName = item.getName();
 
+        messageFormData.getAttachments().add(item);
 
+    }
+
+    public void openForm() {
+        Message item = null;
+        if (currentMessageItemId != null && !"create".equals(actionName)) {
+            messageFormData.clear();
+            item = messageService.getById(currentMessageItemId);
+        }
+
+        switch (actionName) {
+            case "create":
+                LOGGER.debug("Open form to create new message.");
+                messageFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
+                        FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("new_message"));
+
+                break;
+            case "forward":
+                LOGGER.debug("Forward message. ID={}", currentMessageItemId);
+                messageFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
+                        FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("forward"));
+                if (item != null) {
+                    messageFormData.setSubject(FORWARD_PREFIX + item.getSubject());
+                    messageFormData.setBody(item.getBody());
+
+                }
+                break;
+            case "reply":
+                LOGGER.debug("Reply on message. ID={}", currentMessageItemId);
+                messageFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
+                        FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("reply"));
+                if (item != null) {
+                    messageFormData.setSubject(REPLY_PREFIX + item.getSubject());
+                    messageFormData.setBody(item.getBody());
+                    messageFormData.setReceivers(Collections.singletonList(item.getSender().getEmail()));
+                }
+                break;
+            case "reply_to_all":
+                LOGGER.debug("Reply to all on message. ID={}", currentMessageItemId);
+                messageFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
+                        FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("reply_to_all"));
+                if (item != null) {
+                    messageFormData.setSubject(REPLY_PREFIX + item.getSubject());
+                    messageFormData.setBody(item.getBody());
+                    List<String> receivers = new ArrayList<>();
+                    receivers.add(item.getSender().getEmail());
+                    for (Contact contact : item.getReceivers()) {
+                        receivers.add(contact.getEmail());
+                    }
+                    messageFormData.setReceivers(receivers);
+                }
+                break;
+        }
     }
 
     public Long getCurrentMessageItemId() {
@@ -102,5 +157,19 @@ public class MessageController implements Serializable {
         this.currentMessageItemId = currentMessageItemId;
     }
 
+    public String getActionName() {
+        return actionName;
+    }
 
+    public void setActionName(final String actionName) {
+        this.actionName = actionName;
+    }
+
+    public MessageFormData getMessageFormData() {
+        return messageFormData;
+    }
+
+    public void setMessageFormData(final MessageFormData messageFormData) {
+        this.messageFormData = messageFormData;
+    }
 }

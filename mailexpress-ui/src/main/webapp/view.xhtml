@@ -7,8 +7,8 @@
       xmlns:h="http://java.sun.com/jsf/html">
 <ui:composition>
     <a4j:outputPanel id="msgView">
-
-        <rich:panel rendered="#{not empty messageListData.selectedItem}" bodyClass="msg-view">
+        <rich:panel rendered="#{not empty messageListData.selectedItem}" bodyClass="msg-view" xmlns:msgdata="http://java.sun.com/jsf/composite/msgdata">
+            <msgdata:msgSummary message="#{messageListData.selectedItem}"/>
             <h:outputText value="#{messageListData.selectedItem.body}" escape="false"/>
         </rich:panel>
     </a4j:outputPanel>

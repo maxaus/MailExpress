@@ -1,14 +1,19 @@
 package com.noveogroup.mailexpress.dto;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * DTO represents message entity used in message list.
+ * Message DTO.
+ *
  * @author Maxim Baev
  */
-public class MessageItem implements Serializable {
+public class MessageDto implements Serializable {
 
     private static final long serialVersionUID = 3165843357002271177L;
 
@@ -18,7 +23,8 @@ public class MessageItem implements Serializable {
     private String date;
     private String body;
     private boolean unread;
-    private boolean withAttachment;
+    private List<AttachmentDto> attachments = new ArrayList<>();
+    private List<String> items = Arrays.asList("a", "b", "c", "d", "e", "f");
 
     /**
      * Gets id.
@@ -57,21 +63,39 @@ public class MessageItem implements Serializable {
     }
 
     /**
-     * Is with attachment.
+     * Gets attachments.
+     *
+     * @return the attachments
+     */
+    public List<AttachmentDto> getAttachments() {
+        return attachments;
+    }
+
+    /**
+     * Sets attachments.
+     *
+     * @param attachments the attachments
+     */
+    public void setAttachments(final List<AttachmentDto> attachments) {
+        this.attachments = attachments;
+    }
+
+    /**
+     * Add attachment.
+     *
+     * @param attachment the attachment
+     */
+    public void addAttachment(final AttachmentDto attachment) {
+        this.attachments.add(attachment);
+    }
+
+    /**
+     * Is message with attachment.
      *
      * @return the boolean
      */
     public boolean isWithAttachment() {
-        return withAttachment;
-    }
-
-    /**
-     * Sets with attachment.
-     *
-     * @param withAttachment the with attachment
-     */
-    public void setWithAttachment(final boolean withAttachment) {
-        this.withAttachment = withAttachment;
+        return CollectionUtils.isNotEmpty(this.attachments);
     }
 
     /**
@@ -144,6 +168,14 @@ public class MessageItem implements Serializable {
      */
     public void setBody(final String body) {
         this.body = body;
+    }
+
+    public List<String> getItems() {
+        return items;
+    }
+
+    public void setItems(final List<String> items) {
+        this.items = items;
     }
 
     /**

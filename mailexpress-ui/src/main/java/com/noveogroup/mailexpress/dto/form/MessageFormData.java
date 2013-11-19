@@ -1,10 +1,7 @@
 package com.noveogroup.mailexpress.dto.form;
 
+import com.noveogroup.mailexpress.util.data.Clearable;
 import org.richfaces.model.UploadedFile;
-import org.springframework.stereotype.Component;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +10,7 @@ import java.util.List;
  *
  * @author Maxim Baev
  */
-@Component
-@ManagedBean
-@RequestScoped
-public class MessageFormData extends AbstractFormData {
+public class MessageFormData extends AbstractFormData implements Clearable {
 
     private static final long serialVersionUID = -2081260075515423870L;
 
@@ -133,5 +127,13 @@ public class MessageFormData extends AbstractFormData {
      */
     public void setAttachments(final ArrayList<UploadedFile> attachments) {
         this.attachments = attachments;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        subject = null;
     }
 }

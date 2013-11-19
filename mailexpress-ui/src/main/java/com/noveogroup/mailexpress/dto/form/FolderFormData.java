@@ -1,5 +1,6 @@
 package com.noveogroup.mailexpress.dto.form;
 
+import com.noveogroup.mailexpress.util.data.Clearable;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
@@ -13,7 +14,7 @@ import javax.faces.bean.RequestScoped;
 @Component
 @ManagedBean
 @RequestScoped
-public class FolderFormData extends AbstractFormData {
+public class FolderFormData extends AbstractFormData implements Clearable {
 
     private static final long serialVersionUID = 5154775171912224663L;
 
@@ -38,5 +39,13 @@ public class FolderFormData extends AbstractFormData {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        this.name = null;
     }
 }
