@@ -39,15 +39,12 @@
                     <rich:toolbarGroup itemSeparator="line">
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:new_folder.png'] : resource['img:new_folder_disabled.png']}"
-                                title="#{msg['new_folder']}">
-                            <rich:componentControl target="folderPane" operation="show"
-                                                   disabled="#{empty folderController.selectedFolderId}"/>
+                                title="#{msg['new_folder']}" onclick="openFolderForm('create')">
                         </a4j:commandButton>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:rename.png'] : resource['img:rename_disabled.png']}"
                                 title="#{msg['rename']}" disabled="#{empty folderController.selectedFolderId}"
-                                oncomplete="#{rich:component('folderPane')}.show()">
-
+                                onclick="openFolderForm('rename')">
                         </a4j:commandButton>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
@@ -58,7 +55,7 @@
         </rich:tab>
     </rich:tabPanel>
 
-    <rich:popupPanel id="messagePane" modal="true" autosized="false" resizeable="true" minHeight="450" minWidth="580"
+    <rich:popupPanel id="messagePane" modal="true" autosized="false" resizeable="true" minHeight="550" minWidth="580"
                      header="#{messageController.messageFormData.title}">
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('messagePane')}.hide(); return false;">
@@ -73,7 +70,7 @@
 
     <rich:popupPanel id="folderPane" modal="true" autosized="true" resizeable="false">
         <f:facet name="header">
-            <h:outputText value="#{folderFormData.title}"/>
+            <h:outputText value="#{folderController.folderFormData.title}"/>
         </f:facet>
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('folderPane')}.hide(); return false;">
@@ -91,6 +88,12 @@
                     oncomplete="#{rich:component('messagePane')}.show();" render="messagePane messageBody"
                     execute="@this">
         <a4j:param id="actionName" assignTo="#{messageController.actionName}"/>
+    </a4j:jsFunction>
+
+    <a4j:jsFunction name="openFolderForm" action="#{folderController.openForm}"
+                    oncomplete="#{rich:component('folderPane')}.show();" render="folderPane"
+                    execute="@this">
+        <a4j:param id="actionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
 
 </ui:composition>

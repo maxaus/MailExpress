@@ -31,16 +31,17 @@
         <rich:messages ajaxRendered="true"/>
 
         <rich:editor id="messageBody" value="#{messageController.messageFormData.body}"/>
-        <rich:fileUpload fileUploadListener="#{messageController.uploadListener}" id="upload"
-                         acceptedTypes="jpg, gif, png, bmp"
-                         ontyperejected="alert('Only JPG, GIF, PNG and BMP files are accepted');"
-                         maxFilesQuantity="5" immediateUpload="true" addLabel="#{msg['add_attach']}"
-                         serverErrorLabel="#{msg['file_upload_fail']}" style="width: 100%;height: 100px;"/>
+        <rich:fileUpload fileUploadListener="#{messageController.uploadListener}" id="upload" listHeight="100px"
+                         maxFilesQuantity="5" immediateUpload="true" style="width: 100%;height: 120px;"
+                         addLabel="#{msg['add_attach']}" clearLabel="#{msg['clear']}"
+                         clearAllLabel="#{msg['clear_all']}" deleteLabel="#{msg['delete']}"
+                         sizeExceededLabel="#{msg['size_exceeded']}"
+                         serverErrorLabel="#{msg['file_upload_fail']}"/>
 
         <a4j:commandButton action="#{messageController.send()}" value="#{msg['send']}"
-                           render="msgList" oncomplete="#{rich:component('messagePane')}.hide()"/>
+                           render="msgList" oncomplete="#{rich:component('messagePane')}.hide()" styleClass="m1"/>
         <a4j:commandButton value="#{msg['cancel']}"
-                           onclick="#{rich:component('messagePane')}.hide()"/>
+                           onclick="#{rich:component('messagePane')}.hide()" styleClass="m1"/>
     </h:form>
 </ui:composition>
 </html>

@@ -27,6 +27,21 @@ public class Attachment extends AbstractEntity {
     private Message message;
 
     /**
+     * Default constructor.
+     */
+    public Attachment() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param path file path
+     */
+    public Attachment(final String path) {
+        this.path = path;
+    }
+
+    /**
      * Gets path.
      *
      * @return the path

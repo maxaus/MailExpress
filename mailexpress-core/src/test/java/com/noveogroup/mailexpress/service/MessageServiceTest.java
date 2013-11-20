@@ -100,9 +100,9 @@ public class MessageServiceTest extends BaseMockitoTest {
 
     @Test
     public void testDelete() {
-        final Message message = new Message();
-        doNothing().when(messageDao).delete(message);
-        messageService.delete(message);
-        verify(messageDao).delete(message);
+        final Long messageId = 1L;
+        doNothing().when(messageDao).delete(messageId);
+        messageService.delete(messageId);
+        verify(messageDao).delete(messageId);
     }
 }

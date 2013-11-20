@@ -68,8 +68,8 @@ public class FolderServiceImpl implements FolderService {
      */
     @Override
     @Transactional
-    public void delete(final Folder folder) {
-        LOGGER.info("Removing folder with ID = {}", folder.getId());
-        folderDao.delete(folder);
+    public void delete(final Long folderId) {
+        LOGGER.info("Removing folder with ID = {}", folderId);
+        folderDao.delete(folderId);
     }
 }

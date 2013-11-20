@@ -54,9 +54,9 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     @Transactional
-    public void delete(final Message message) {
-        LOGGER.info("Removing message with ID = {}", message.getId());
-        messageDao.delete(message);
+    public void delete(final Long messageId) {
+        LOGGER.info("Removing message with ID = {}", messageId);
+        messageDao.delete(messageId);
     }
 
     /**

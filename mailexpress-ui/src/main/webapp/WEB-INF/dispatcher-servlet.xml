@@ -5,7 +5,11 @@
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
-    <!--<context:annotation-config/>-->
+    <context:property-placeholder location="classpath:config.properties"
+                                  local-override="true"
+                                  ignore-unresolvable="true"
+                                  ignore-resource-not-found="false"/>
+
     <context:component-scan base-package="com.noveogroup.mailexpress"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
@@ -46,10 +50,6 @@
         <property name="entityManagerFactory"
                   ref="entityManagerFactory"/>
     </bean>
-
-    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
-        <!--<property name="maxUploadSize" value="100000"/>-->
-    <!--</bean>-->
 
     <bean id="messageSource"
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

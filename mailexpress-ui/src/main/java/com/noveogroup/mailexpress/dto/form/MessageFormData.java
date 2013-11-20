@@ -1,7 +1,7 @@
 package com.noveogroup.mailexpress.dto.form;
 
+import com.noveogroup.mailexpress.dto.AttachmentDto;
 import com.noveogroup.mailexpress.util.data.Clearable;
-import org.richfaces.model.UploadedFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class MessageFormData extends AbstractFormData implements Clearable {
     /**
      * List of uploaded files to be attached to the message.
      */
-    private ArrayList<UploadedFile> attachments = new ArrayList<>();
+    private List<AttachmentDto> attachments = new ArrayList<>();
 
     /**
      * Gets subject.
@@ -116,7 +116,7 @@ public class MessageFormData extends AbstractFormData implements Clearable {
      *
      * @return the attachments
      */
-    public ArrayList<UploadedFile> getAttachments() {
+    public List<AttachmentDto> getAttachments() {
         return attachments;
     }
 
@@ -125,7 +125,7 @@ public class MessageFormData extends AbstractFormData implements Clearable {
      *
      * @param attachments the attachments
      */
-    public void setAttachments(final ArrayList<UploadedFile> attachments) {
+    public void setAttachments(final List<AttachmentDto> attachments) {
         this.attachments = attachments;
     }
 

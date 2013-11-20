@@ -8,9 +8,11 @@
 <ui:composition>
     <h:form id="folderForm">
         <h:outputLabel value="#{msg['folder_name']}" for="folderName"/>
-        <h:inputText id="folderName" value="#{folderFormData.name}"/>
-        <a4j:commandButton action="#{folderController.saveFolder}" value="#{msg['save']}" render="tree"/>
-        <a4j:commandButton onclick="#{rich:component('folderPane')}.hide()" value="#{msg['cancel']}"/>
+        <h:inputText id="folderName" value="#{folderController.folderFormData.name}"/>
+        <a4j:commandButton action="#{folderController.saveFolder()}" value="#{msg['save']}"
+                           render="tree" oncomplete="#{rich:component('folderPane')}.hide()" styleClass="m1"/>
+        <a4j:commandButton value="#{msg['cancel']}"
+                           onclick="#{rich:component('folderPane')}.hide()" styleClass="m1"/>
     </h:form>
 </ui:composition>
 </html>

@@ -30,9 +30,9 @@ public interface MessageService {
     /**
      * Removes message.
      *
-     * @param message message
+     * @param messageId message ID
      */
-    void delete(Message message);
+    void delete(final Long messageId);
 
     /**
      * Retrieves message by provided  ID.

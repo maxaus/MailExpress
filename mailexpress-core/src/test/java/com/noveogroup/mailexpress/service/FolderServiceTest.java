@@ -68,9 +68,9 @@ public class FolderServiceTest extends BaseMockitoTest {
 
     @Test
     public void testDelete() {
-        final Folder folder = new Folder();
-        doNothing().when(folderDao).delete(folder);
-        folderService.delete(folder);
-        verify(folderDao).delete(folder);
+        final Long folderId = 1L;
+        doNothing().when(folderDao).delete(folderId);
+        folderService.delete(folderId);
+        verify(folderDao).delete(folderId);
     }
 }

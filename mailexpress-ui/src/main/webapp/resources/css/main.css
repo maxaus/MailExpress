@@ -56,13 +56,17 @@ div *.rf-tab-cnt {
     padding: 0;
 }
 
-.folder-icon{
+.folder-icon {
     width: 24px;
     height: 24px;
 }
 
 .inner-layout-container {
     height: 100%;
+}
+
+.m1 {
+    margin: 3px 3px 0 0;
 }
 
 .w1 {
@@ -82,31 +86,28 @@ div *.rf-tab-cnt {
 }
 
 .msg-summary {
-    background-color: #cecece;
+    background-color: #e1e1e1;
 }
 
 .msg-view {
     overflow: auto;
 }
 
-.rich-table-subheadercell
-{
+.rich-table-subheadercell {
     white-space: normal !important;
 }
 
-
-.rich-table-sortable-header
-{
+.rich-table-sortable-header {
     white-space: normal !important;
 }
 
-.tip-text  {
+.tip-text {
     color: #a6a6a6;
     font-size: smaller;
     font-style: italic;
 }
 
-.msg-form{
+.msg-form {
     width: 300px;
     height: 300px;
 }

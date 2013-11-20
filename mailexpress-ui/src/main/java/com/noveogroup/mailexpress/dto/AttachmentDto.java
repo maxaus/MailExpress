@@ -14,6 +14,21 @@ public class AttachmentDto implements Serializable {
     private String path;
 
     /**
+     * Default constructor.
+     */
+    public AttachmentDto() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param path file path
+     */
+    public AttachmentDto(final String path) {
+        this.path = path;
+    }
+
+    /**
      * Gets id.
      *
      * @return the id

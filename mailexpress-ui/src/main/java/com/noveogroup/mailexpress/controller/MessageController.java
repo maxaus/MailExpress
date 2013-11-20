@@ -1,23 +1,25 @@
 package com.noveogroup.mailexpress.controller;
 
-import com.noveogroup.mailexpress.domain.Contact;
-import com.noveogroup.mailexpress.domain.ContactType;
-import com.noveogroup.mailexpress.domain.Folder;
-import com.noveogroup.mailexpress.domain.Message;
+import com.noveogroup.mailexpress.domain.*;
+import com.noveogroup.mailexpress.dto.AttachmentDto;
 import com.noveogroup.mailexpress.dto.form.MessageFormData;
 import com.noveogroup.mailexpress.service.FolderService;
 import com.noveogroup.mailexpress.service.MessageService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
@@ -49,6 +51,9 @@ public class MessageController implements Serializable {
     @Autowired
     private FolderService folderService;
 
+    @Value("${upload.dir}")
+    private String uploadDir;
+
     private MessageFormData messageFormData = new MessageFormData();
 
     public void send() {
@@ -70,14 +75,17 @@ public class MessageController implements Serializable {
                 message.addReceiver(new Contact(receiverCopyEmail, ContactType.RECEIVER_COPY));
             }
         }
-        //TODO: uncomment
-//        messageService.save(message);
+
+        for (final AttachmentDto attachmentDto: messageFormData.getAttachments()) {
+            message.addAttachment(new Attachment(attachmentDto.getPath()));
+        }
+
+        messageService.save(message);
     }
 
     public void remove() {
         LOGGER.debug("Removing message. ID = {}", currentMessageItemId);
-        final Message message = messageService.getById(currentMessageItemId);
-        messageService.delete(message);
+        messageService.delete(currentMessageItemId);
     }
 
 
@@ -89,12 +97,15 @@ public class MessageController implements Serializable {
     }
 
     public void uploadListener(final FileUploadEvent event) throws Exception {
-        UploadedFile item = event.getUploadedFile();
-//        byte[] content = item.getData();
-//        String fileName = item.getName();
-
-        messageFormData.getAttachments().add(item);
-
+        try {
+            UploadedFile item = event.getUploadedFile();
+            File file = new File(uploadDir + item.getName());
+            FileUtils.writeByteArrayToFile(file, item.getData());
+            messageFormData.getAttachments().add(new AttachmentDto(item.getName()));
+        } catch (IOException e) {
+            LOGGER.error("Problem while saving file.", e);
+            throw e;
+        }
     }
 
     public void openForm() {

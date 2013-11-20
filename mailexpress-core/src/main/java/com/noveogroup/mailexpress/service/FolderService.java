@@ -12,35 +12,40 @@ import java.util.List;
 public interface FolderService {
 
     /**
+     * Retrieves all folders
      *
-     * @return
+     * @return Collection of folders
      */
     List<Folder> findAll();
 
     /**
+     * Retrieves folder by name
      *
-     * @param name
-     * @return
+     * @param name folder name
+     * @return Found folder
      */
     Folder findByName(String name);
 
     /**
+     * Persists folder.
      *
-     * @param folder
-     * @return
+     * @param folder folder
+     * @return Saved folder
      */
     Folder save(Folder folder);
 
     /**
+     * Updates folder.
      *
-     * @param folder
-     * @return
+     * @param folder folder
+     * @return Updated folder
      */
     Folder update(Folder folder);
 
     /**
+     * Removes folder.
      *
-     * @param folder
+     * @param folderId folder ID
      */
-    void delete(Folder folder);
+    void delete(Long folderId);
 }
