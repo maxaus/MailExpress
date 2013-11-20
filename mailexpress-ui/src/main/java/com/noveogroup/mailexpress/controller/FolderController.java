@@ -2,7 +2,9 @@ package com.noveogroup.mailexpress.controller;
 
 import com.noveogroup.mailexpress.dto.FolderNode;
 import com.noveogroup.mailexpress.domain.Folder;
+import com.noveogroup.mailexpress.dto.MessageDto;
 import com.noveogroup.mailexpress.dto.form.FolderFormData;
+import com.noveogroup.mailexpress.dto.table.MessageListData;
 import com.noveogroup.mailexpress.service.FolderService;
 import org.richfaces.component.UITree;
 import org.richfaces.event.TreeSelectionChangeEvent;
@@ -44,6 +46,12 @@ public class FolderController implements Serializable {
     @Autowired
     private FolderService folderService;
 
+    @Autowired
+    private MessageListData messageListData;
+
+    @Autowired
+    private MessageController messageController;
+
     /**
      * Return list of tree nodes to build folder tree.
      *
@@ -73,6 +81,9 @@ public class FolderController implements Serializable {
         this.selectedFolderName = folderNode.getName();
         this.selectedFolderId = folderNode.getId();
         tree.setRowKey(storedKey);
+        messageListData.setSelectedIndexes(new ArrayList<Long>());
+        messageListData.setSelectedItems(new ArrayList<MessageDto>());
+        messageController.setCurrentMessageItemId(null);
     }
 
     /**

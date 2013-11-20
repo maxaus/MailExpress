@@ -87,13 +87,13 @@
     <a4j:jsFunction name="openMessageForm" action="#{messageController.openForm}"
                     oncomplete="#{rich:component('messagePane')}.show();" render="messagePane messageBody"
                     execute="@this">
-        <a4j:param id="actionName" assignTo="#{messageController.actionName}"/>
+        <a4j:param id="messageActionName" assignTo="#{messageController.actionName}"/>
     </a4j:jsFunction>
 
     <a4j:jsFunction name="openFolderForm" action="#{folderController.openForm}"
                     oncomplete="#{rich:component('folderPane')}.show();" render="folderPane"
                     execute="@this">
-        <a4j:param id="actionName" assignTo="#{folderController.actionName}"/>
+        <a4j:param id="folderActionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
 
 </ui:composition>

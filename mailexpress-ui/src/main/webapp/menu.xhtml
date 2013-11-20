@@ -20,7 +20,7 @@
                                iconExpanded="#{node.system ? resource[node.iconPath] : resource['img:folder.png']}"
                                expanded="true" iconClass="folder-icon">
                     <h:outputText value="#{node}"/>
-                    <a4j:ajax execute="@form" event="click" listener="#{messageListData.selectionListener}"
+                    <a4j:ajax execute="@form" event="click"
                               render="appTitle msgList msgView folderTools"/>
                 </rich:treeNode>
             </rich:tree>
