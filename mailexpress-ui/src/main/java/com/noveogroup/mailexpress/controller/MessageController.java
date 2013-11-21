@@ -190,7 +190,7 @@ public class MessageController implements Serializable {
         }
     }
 
-    private void moveToOtherFolder() {
+    public void moveToOtherFolder() {
         final Message message = messageService.getById(currentMessageItemId);
         final Folder folder = folderService.findByName(selectedFolderName);
         message.setFolder(folder);
