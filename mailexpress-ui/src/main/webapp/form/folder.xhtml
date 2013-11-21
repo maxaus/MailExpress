@@ -7,12 +7,14 @@
       xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
 <ui:composition>
     <h:form id="folderForm">
-        <h:outputLabel value="#{msg['folder_name']}" for="folderName"/>
-        <h:inputText id="folderName" value="#{folderController.folderFormData.name}"/>
-        <a4j:commandButton action="#{folderController.saveFolder()}" value="#{msg['save']}"
-                           render="tree" oncomplete="#{rich:component('folderPane')}.hide()" styleClass="m1"/>
-        <a4j:commandButton value="#{msg['cancel']}"
-                           onclick="#{rich:component('folderPane')}.hide()" styleClass="m1"/>
+        <h:inputHidden value="#{folderController.folderFormData.id}"/>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{msg['folder_name']}" for="folderName"/>
+            <h:inputText id="folderName" value="#{folderController.folderFormData.name}"/>
+        </h:panelGrid>
+        <a4j:commandButton action="#{folderController.saveFolder()}" value="#{msg['save']}" render="tree"
+                           oncomplete="#{rich:component('folderPane')}.hide()" styleClass="m1"/>
+        <a4j:commandButton value="#{msg['cancel']}" onclick="#{rich:component('folderPane')}.hide()" styleClass="m1"/>
     </h:form>
 </ui:composition>
 </html>

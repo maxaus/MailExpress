@@ -1,17 +1,14 @@
-package com.noveogroup.mailexpress.dto.form;
+package com.noveogroup.mailexpress.dto;
 
 /**
- * Folder form DTO.
+ * Folder DTO.
  *
  * @author Maxim Baev
  */
-public class FolderFormData extends AbstractFormData {
+public class FolderDto extends AbstractDto {
 
-    private static final long serialVersionUID = 5154775171912224663L;
+    private static final long serialVersionUID = 9197188787470051705L;
 
-    /**
-     * Folder name.
-     */
     private String name;
 
     /**

@@ -39,13 +39,12 @@
                     <rich:toolbarGroup itemSeparator="line">
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:new_folder.png'] : resource['img:new_folder_disabled.png']}"
-                                title="#{msg['new_folder']}" onclick="openFolderForm('create')">
-                        </a4j:commandButton>
+                                title="#{msg['new_folder']}" disabled="#{empty folderController.selectedFolderId}"
+                                onclick="openFolderForm('create')"/>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:rename.png'] : resource['img:rename_disabled.png']}"
                                 title="#{msg['rename']}" disabled="#{empty folderController.selectedFolderId}"
-                                onclick="openFolderForm('rename')">
-                        </a4j:commandButton>
+                                onclick="openFolderForm('rename')"/>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
                                 title="#{msg['delete']}" disabled="#{empty folderController.selectedFolderId}"/>
@@ -68,20 +67,30 @@
         </ui:insert>
     </rich:popupPanel>
 
-    <rich:popupPanel id="folderPane" modal="true" autosized="true" resizeable="false">
-        <f:facet name="header">
-            <h:outputText value="#{folderController.folderFormData.title}"/>
-        </f:facet>
+    <rich:popupPanel id="confirmMessagePane" autosized="true">
+        #{msg['delete_message_confirm_question']}
+        <a4j:commandButton value="#{msg['yes']}" onclick="removeMessage(); return false;"/>
+        <a4j:commandButton value="#{msg['no']}"
+                           onclick="#{rich:component('confirmMessagePane')}.hide(); return false;"/>
+    </rich:popupPanel>
+
+    <rich:popupPanel id="folderPane" modal="true" autosized="false" resizeable="true"
+                     header="#{folderController.folderFormData.title}">
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('folderPane')}.hide(); return false;">
                 x
             </h:outputLink>
         </f:facet>
-        <h:panelGroup id="popupContent">
-            <ui:insert name="form">
-                <ui:include src="form/folder.xhtml"/>
-            </ui:insert>
-        </h:panelGroup>
+        <ui:insert name="form">
+            <ui:include src="form/folder.xhtml"/>
+        </ui:insert>
+    </rich:popupPanel>
+
+    <rich:popupPanel id="confirmFolderPane" autosized="true">
+        #{msg['delete_folder_confirm_question']}
+        <a4j:commandButton value="#{msg['yes']}" onclick="removeFolder(); return false;"/>
+        <a4j:commandButton value="#{msg['no']}"
+                           onclick="#{rich:component('confirmFolderPane')}.hide(); return false;"/>
     </rich:popupPanel>
 
     <a4j:jsFunction name="openMessageForm" action="#{messageController.openForm}"
@@ -95,6 +104,12 @@
                     execute="@this">
         <a4j:param id="folderActionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
+
+    <a4j:jsFunction name="removeMessage" action="#{messageController.remove}" render="msgTable" execute="@this"
+                    oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
+
+    <a4j:jsFunction name="removeFolder" action="#{folderController.remove}" render="tree" execute="@this"
+                    oncomplete="#{rich:component('confirmFolderPane')}.hide();"/>
 
 </ui:composition>
 </html>

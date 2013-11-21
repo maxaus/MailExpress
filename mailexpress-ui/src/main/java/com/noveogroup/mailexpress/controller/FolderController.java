@@ -1,7 +1,7 @@
 package com.noveogroup.mailexpress.controller;
 
-import com.noveogroup.mailexpress.dto.FolderNode;
 import com.noveogroup.mailexpress.domain.Folder;
+import com.noveogroup.mailexpress.dto.FolderNode;
 import com.noveogroup.mailexpress.dto.MessageDto;
 import com.noveogroup.mailexpress.dto.form.FolderFormData;
 import com.noveogroup.mailexpress.dto.table.MessageListData;
@@ -40,7 +40,7 @@ public class FolderController implements Serializable {
     private String selectedFolderName;
     private Long selectedFolderId;
     private List<TreeNode> rootNodes = new ArrayList<>();
-    private FolderFormData folderFormData;
+    private FolderFormData folderFormData = new FolderFormData();
     private String actionName;
 
     @Autowired
@@ -105,19 +105,25 @@ public class FolderController implements Serializable {
     }
 
     /**
-     * Saves new folder.
+     * Saves or updates folder.
      */
     public void saveFolder() {
-        final Folder folder = new Folder();
-        folder.setName(folderFormData.getName());
-        folder.setParentFolderId(selectedFolderId);
-        folderService.save(folder);
+        if (folderFormData.getId() != null) {
+            final Folder folder = folderService.findByName(selectedFolderName);
+            folder.setName(folderFormData.getName());
+            folderService.update(folder);
+        } else {
+            final Folder folder = new Folder();
+            folder.setName(folderFormData.getName());
+            folder.setParentFolderId(selectedFolderId);
+            folderService.save(folder);
+        }
     }
 
     public void openForm() {
         Folder item = null;
+        folderFormData = new FolderFormData();
         if (selectedFolderName != null && !"create".equals(actionName)) {
-            folderFormData.clear();
             item = folderService.findByName(selectedFolderName);
         }
 
@@ -126,13 +132,14 @@ public class FolderController implements Serializable {
                 LOGGER.debug("Open form to create new folder.");
                 folderFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
                         FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("new_folder"));
-
+                folderFormData.setName(null);
                 break;
             case "rename":
                 LOGGER.debug("Rename folder. Name={}", selectedFolderName);
                 folderFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
                         FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("rename"));
                 if (item != null) {
+                    folderFormData.setId(item.getId());
                     folderFormData.setName(item.getName());
                 }
                 break;

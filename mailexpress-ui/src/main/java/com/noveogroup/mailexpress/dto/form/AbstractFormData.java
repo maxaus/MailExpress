@@ -1,41 +1,20 @@
 package com.noveogroup.mailexpress.dto.form;
 
-import java.io.Serializable;
+import com.noveogroup.mailexpress.dto.AbstractDto;
 
 /**
  * Base DTO for UI forms.
+ *
  * @author Maxim Baev
  */
-public abstract class AbstractFormData implements Serializable {
-    private static final long serialVersionUID = -91571287830040513L;
+public abstract class AbstractFormData extends AbstractDto {
 
-    /**
-     * Entity ID.
-     */
-    private Long id;
+    private static final long serialVersionUID = -91571287830040513L;
 
     /**
      * Form title.
      */
     private String title;
-
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
 
     /**
      * Gets title.

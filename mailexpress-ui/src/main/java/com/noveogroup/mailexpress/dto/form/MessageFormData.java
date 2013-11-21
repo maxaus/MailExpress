@@ -1,7 +1,6 @@
 package com.noveogroup.mailexpress.dto.form;
 
 import com.noveogroup.mailexpress.dto.AttachmentDto;
-import com.noveogroup.mailexpress.util.data.Clearable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  *
  * @author Maxim Baev
  */
-public class MessageFormData extends AbstractFormData implements Clearable {
+public class MessageFormData extends AbstractFormData {
 
     private static final long serialVersionUID = -2081260075515423870L;
 
@@ -127,13 +126,5 @@ public class MessageFormData extends AbstractFormData implements Clearable {
      */
     public void setAttachments(final List<AttachmentDto> attachments) {
         this.attachments = attachments;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clear() {
-        subject = null;
     }
 }

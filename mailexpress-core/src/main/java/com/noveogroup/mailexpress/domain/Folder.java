@@ -45,6 +45,12 @@ public class Folder extends AbstractEntity {
     private List<Folder> subFolders;
 
     /**
+     * List of messages in folder.
+     */
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Message> messages;
+
+    /**
      * Gets name.
      *
      * @return the name
@@ -132,5 +138,23 @@ public class Folder extends AbstractEntity {
      */
     public void setSubFolders(final List<Folder> subFolders) {
         this.subFolders = subFolders;
+    }
+
+    /**
+     * Gets messages.
+     *
+     * @return the messages
+     */
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    /**
+     * Sets messages.
+     *
+     * @param messages the messages
+     */
+    public void setMessages(final List<Message> messages) {
+        this.messages = messages;
     }
 }

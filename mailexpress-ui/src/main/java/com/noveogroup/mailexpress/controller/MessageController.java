@@ -1,6 +1,10 @@
 package com.noveogroup.mailexpress.controller;
 
-import com.noveogroup.mailexpress.domain.*;
+import com.noveogroup.mailexpress.domain.Attachment;
+import com.noveogroup.mailexpress.domain.Contact;
+import com.noveogroup.mailexpress.domain.ContactType;
+import com.noveogroup.mailexpress.domain.Folder;
+import com.noveogroup.mailexpress.domain.Message;
 import com.noveogroup.mailexpress.dto.AttachmentDto;
 import com.noveogroup.mailexpress.dto.form.MessageFormData;
 import com.noveogroup.mailexpress.service.FolderService;
@@ -21,7 +25,11 @@ import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * UI controller for message manage actions.
@@ -56,6 +64,13 @@ public class MessageController implements Serializable {
 
     private MessageFormData messageFormData = new MessageFormData();
 
+    private String selectedFolderName;
+
+    private List<String> folderNames = new ArrayList<>();
+
+    /**
+     * Send void.
+     */
     public void send() {
         LOGGER.debug("Saving new message");
         final Message message = new Message();
@@ -76,19 +91,25 @@ public class MessageController implements Serializable {
             }
         }
 
-        for (final AttachmentDto attachmentDto: messageFormData.getAttachments()) {
+        for (final AttachmentDto attachmentDto : messageFormData.getAttachments()) {
             message.addAttachment(new Attachment(attachmentDto.getPath()));
         }
 
         messageService.save(message);
     }
 
+    /**
+     * Remove void.
+     */
     public void remove() {
         LOGGER.debug("Removing message. ID = {}", currentMessageItemId);
         messageService.delete(currentMessageItemId);
     }
 
 
+    /**
+     * Change read status.
+     */
     public void changeReadStatus() {
         LOGGER.debug("Change message read status. ID = {}", currentMessageItemId);
         final Message message = messageService.getById(currentMessageItemId);
@@ -96,6 +117,12 @@ public class MessageController implements Serializable {
         messageService.save(message);
     }
 
+    /**
+     * Upload listener.
+     *
+     * @param event the event
+     * @throws Exception the exception
+     */
     public void uploadListener(final FileUploadEvent event) throws Exception {
         try {
             UploadedFile item = event.getUploadedFile();
@@ -108,10 +135,13 @@ public class MessageController implements Serializable {
         }
     }
 
+    /**
+     * Open form.
+     */
     public void openForm() {
         Message item = null;
+        messageFormData = new MessageFormData();
         if (currentMessageItemId != null && !"create".equals(actionName)) {
-            messageFormData.clear();
             item = messageService.getById(currentMessageItemId);
         }
 
@@ -160,27 +190,100 @@ public class MessageController implements Serializable {
         }
     }
 
+    private void moveToOtherFolder() {
+        final Message message = messageService.getById(currentMessageItemId);
+        final Folder folder = folderService.findByName(selectedFolderName);
+        message.setFolder(folder);
+        messageService.update(message);
+    }
+
+    /**
+     * Gets current message item id.
+     *
+     * @return the current message item id
+     */
     public Long getCurrentMessageItemId() {
         return currentMessageItemId;
     }
 
+    /**
+     * Sets current message item id.
+     *
+     * @param currentMessageItemId the current message item id
+     */
     public void setCurrentMessageItemId(final Long currentMessageItemId) {
         this.currentMessageItemId = currentMessageItemId;
     }
 
+    /**
+     * Gets action name.
+     *
+     * @return the action name
+     */
     public String getActionName() {
         return actionName;
     }
 
+    /**
+     * Sets action name.
+     *
+     * @param actionName the action name
+     */
     public void setActionName(final String actionName) {
         this.actionName = actionName;
     }
 
+    /**
+     * Gets message form data.
+     *
+     * @return the message form data
+     */
     public MessageFormData getMessageFormData() {
         return messageFormData;
     }
 
+    /**
+     * Sets message form data.
+     *
+     * @param messageFormData the message form data
+     */
     public void setMessageFormData(final MessageFormData messageFormData) {
         this.messageFormData = messageFormData;
+    }
+
+    /**
+     * Gets selected folder name.
+     *
+     * @return the selected folder name
+     */
+    public String getSelectedFolderName() {
+        return selectedFolderName;
+    }
+
+    /**
+     * Sets selected folder name.
+     *
+     * @param selectedFolderName the selected folder name
+     */
+    public void setSelectedFolderName(final String selectedFolderName) {
+        this.selectedFolderName = selectedFolderName;
+    }
+
+    /**
+     * Gets folder names.
+     *
+     * @return the folder names
+     */
+    public List<String> getFolderNames() {
+        return folderNames;
+    }
+
+    /**
+     * Sets folder names.
+     *
+     * @param folderNames the folder names
+     */
+    public void setFolderNames(final List<String> folderNames) {
+        this.folderNames = folderNames;
     }
 }

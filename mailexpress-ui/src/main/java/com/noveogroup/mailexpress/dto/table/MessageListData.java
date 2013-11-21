@@ -168,17 +168,21 @@ public class MessageListData extends AbstractDataListModel<MessageDto, Long> {
     }
 
     private MessageDto createDto(final Message message) {
-        final MessageDto dto = new MessageDto();
-        dto.setId(message.getId());
-        dto.setSender(message.getSender().getEmail());
-        dto.setSubject(message.getSubject());
-        dto.setUnread(message.isUnread());
-        dto.setBody(message.getBody());
-        dto.setDate(DATE_FORMAT.format(message.getDate()));
-        for (final Attachment attachment : message.getAttachments()) {
-            dto.addAttachment(createAttachmentDto(attachment));
+        if (message != null) {
+            final MessageDto dto = new MessageDto();
+            dto.setId(message.getId());
+            dto.setSender(message.getSender().getEmail());
+            dto.setSubject(message.getSubject());
+            dto.setUnread(message.isUnread());
+            dto.setBody(message.getBody());
+            dto.setDate(DATE_FORMAT.format(message.getDate()));
+            for (final Attachment attachment : message.getAttachments()) {
+                dto.addAttachment(createAttachmentDto(attachment));
+            }
+            return dto;
+        } else {
+            return null;
         }
-        return dto;
     }
 
     private AttachmentDto createAttachmentDto(final Attachment attachment) {

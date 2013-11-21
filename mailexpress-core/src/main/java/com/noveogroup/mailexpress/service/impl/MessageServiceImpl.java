@@ -67,8 +67,10 @@ public class MessageServiceImpl implements MessageService {
     public Message getById(final Long id) {
         LOGGER.info("Retrieving message with ID = {}", id);
         final Message message = messageDao.findOne(id);
-        Hibernate.initialize(message.getReceivers());
-        Hibernate.initialize(message.getAttachments());
+        if (message != null) {
+            Hibernate.initialize(message.getReceivers());
+            Hibernate.initialize(message.getAttachments());
+        }
         return message;
     }
 
@@ -99,7 +101,7 @@ public class MessageServiceImpl implements MessageService {
         final Page page = messageDao.findByFolderId(folderId, pageRequest);
         //TODO: maybe add DTO service with transactional operation
         final List<Message> messages = page.getContent();
-        for (final Message message: messages) {
+        for (final Message message : messages) {
             Hibernate.initialize(message.getAttachments());
         }
         return messages;

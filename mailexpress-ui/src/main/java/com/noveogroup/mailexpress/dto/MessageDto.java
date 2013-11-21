@@ -3,7 +3,6 @@ package com.noveogroup.mailexpress.dto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,11 +12,10 @@ import java.util.List;
  *
  * @author Maxim Baev
  */
-public class MessageDto implements Serializable {
+public class MessageDto extends AbstractDto {
 
     private static final long serialVersionUID = 3165843357002271177L;
 
-    private Long id;
     private String subject;
     private String sender;
     private String date;
@@ -25,24 +23,6 @@ public class MessageDto implements Serializable {
     private boolean unread;
     private List<AttachmentDto> attachments = new ArrayList<>();
     private List<String> items = Arrays.asList("a", "b", "c", "d", "e", "f");
-
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(final Long id) {
-        this.id = id;
-    }
 
     /**
      * Is unread.
