@@ -73,6 +73,12 @@
                         <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
                                    assignTo="#{messageController.currentMessageItemId}"/>
                     </rich:menuItem>
+                    <rich:menuItem label="#{msg['move']}" mode="ajax" icon="#{resource['img:move.png']}"
+                                   execute="@this" render="@none"
+                                   oncomplete="#{rich:component('confirmMoveMessagePane')}.show()">
+                        <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                                   assignTo="#{messageController.currentMessageItemId}"/>
+                    </rich:menuItem>
                 </rich:contextMenu>
             </a4j:outputPanel>
         </h:panelGrid>

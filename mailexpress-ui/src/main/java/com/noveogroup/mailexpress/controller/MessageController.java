@@ -64,8 +64,9 @@ public class MessageController implements Serializable {
 
     private MessageFormData messageFormData = new MessageFormData();
 
-    private String selectedFolderName;
+    private String targetFolderName;
 
+    //TODO: move to application scoped controller
     private List<String> folderNames = new ArrayList<>();
 
     /**
@@ -192,7 +193,7 @@ public class MessageController implements Serializable {
 
     public void moveToOtherFolder() {
         final Message message = messageService.getById(currentMessageItemId);
-        final Folder folder = folderService.findByName(selectedFolderName);
+        final Folder folder = folderService.findByName(targetFolderName);
         message.setFolder(folder);
         messageService.update(message);
     }
@@ -256,17 +257,17 @@ public class MessageController implements Serializable {
      *
      * @return the selected folder name
      */
-    public String getSelectedFolderName() {
-        return selectedFolderName;
+    public String getTargetFolderName() {
+        return targetFolderName;
     }
 
     /**
      * Sets selected folder name.
      *
-     * @param selectedFolderName the selected folder name
+     * @param targetFolderName the selected folder name
      */
-    public void setSelectedFolderName(final String selectedFolderName) {
-        this.selectedFolderName = selectedFolderName;
+    public void setTargetFolderName(final String targetFolderName) {
+        this.targetFolderName = targetFolderName;
     }
 
     /**
@@ -275,6 +276,12 @@ public class MessageController implements Serializable {
      * @return the folder names
      */
     public List<String> getFolderNames() {
+        if (CollectionUtils.isEmpty(folderNames)) {
+            final List<Folder> folders = folderService.findAll();
+            for (final Folder folder : folders) {
+                folderNames.add(folder.getName());
+            }
+        }
         return folderNames;
     }
 

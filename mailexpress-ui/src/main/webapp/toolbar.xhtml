@@ -75,10 +75,15 @@
     </rich:popupPanel>
 
     <rich:popupPanel id="confirmMoveMessagePane" autosized="true">
-        #{msg['delete_message_confirm_question']}
-        <a4j:commandButton value="#{msg['ok']}" onclick="moveMessageToOtherFolder(); return false;"/>
-        <a4j:commandButton value="#{msg['cancel']}"
-                           onclick="#{rich:component('confirmMoveMessagePane')}.hide(); return false;"/>
+        <h:form>
+            #{msg['move_message']}
+            <h:selectOneMenu id="targetFolderName" value="#{messageController.targetFolderName}" >
+                <f:selectItems value="#{messageController.folderNames}" var="fn" itemValue="#{fn}" itemLabel="#{fn}"/>
+            </h:selectOneMenu>
+            <a4j:commandButton value="#{msg['ok']}" onclick="moveMessageToOtherFolder(); return false;"/>
+            <a4j:commandButton value="#{msg['cancel']}"
+                               onclick="#{rich:component('confirmMoveMessagePane')}.hide(); return false;"/>
+        </h:form>
     </rich:popupPanel>
 
     <rich:popupPanel id="folderPane" modal="true" autosized="false" resizeable="true"
