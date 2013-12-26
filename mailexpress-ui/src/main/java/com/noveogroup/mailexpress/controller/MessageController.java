@@ -192,10 +192,13 @@ public class MessageController implements Serializable {
     }
 
     public void moveToOtherFolder() {
+        LOGGER.debug("Moving message with ID={} to the folder {}", currentMessageItemId, targetFolderName);
         final Message message = messageService.getById(currentMessageItemId);
         final Folder folder = folderService.findByName(targetFolderName);
-        message.setFolder(folder);
-        messageService.update(message);
+        if (folder != null) {
+            message.setFolder(folder);
+            messageService.update(message);
+        }
     }
 
     /**

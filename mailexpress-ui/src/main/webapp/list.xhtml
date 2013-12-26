@@ -74,7 +74,7 @@
                                    assignTo="#{messageController.currentMessageItemId}"/>
                     </rich:menuItem>
                     <rich:menuItem label="#{msg['move']}" mode="ajax" icon="#{resource['img:move.png']}"
-                                   execute="@this" render="@none"
+                                   execute="@this" render="moveMsgForm"
                                    oncomplete="#{rich:component('confirmMoveMessagePane')}.show()">
                         <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
                                    assignTo="#{messageController.currentMessageItemId}"/>

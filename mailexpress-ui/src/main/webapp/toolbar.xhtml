@@ -75,12 +75,12 @@
     </rich:popupPanel>
 
     <rich:popupPanel id="confirmMoveMessagePane" autosized="true">
-        <h:form>
+        <h:form id="moveMsgForm">
             #{msg['move_message']}
-            <h:selectOneMenu id="targetFolderName" value="#{messageController.targetFolderName}" >
+            <h:selectOneMenu id="targetFolderName">
                 <f:selectItems value="#{messageController.folderNames}" var="fn" itemValue="#{fn}" itemLabel="#{fn}"/>
             </h:selectOneMenu>
-            <a4j:commandButton value="#{msg['ok']}" onclick="moveMessageToOtherFolder(); return false;"/>
+            <a4j:commandButton value="#{msg['ok']}" onclick="moveMessageToOtherFolder(document.getElementById('moveMsgForm:targetFolderName').value); return false;"/>
             <a4j:commandButton value="#{msg['cancel']}"
                                onclick="#{rich:component('confirmMoveMessagePane')}.hide(); return false;"/>
         </h:form>
@@ -117,8 +117,11 @@
         <a4j:param id="folderActionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
 
-    <a4j:jsFunction name="moveMessageToOtherFolder" action="#{messageController.moveToOtherFolder()}" render="msgTable" execute="@this"
-                    oncomplete="#{rich:component('confirmMoveMessagePane')}.hide();"/>
+    <a4j:jsFunction name="moveMessageToOtherFolder" action="#{messageController.moveToOtherFolder()}" render="msgTable"
+                    execute="@this"
+                    oncomplete="#{rich:component('confirmMoveMessagePane')}.hide();">
+        <a4j:param id="folderName" assignTo="#{messageController.targetFolderName}"/>
+    </a4j:jsFunction>
 
     <a4j:jsFunction name="removeMessage" action="#{messageController.remove}" render="msgTable" execute="@this"
                     oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
