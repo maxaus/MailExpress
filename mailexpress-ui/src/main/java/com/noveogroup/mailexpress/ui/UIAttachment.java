@@ -15,8 +15,6 @@ public class UIAttachment extends UIComponentBase {
     public static final String COMPONENT_TYPE = "com.noveogroup.mailexpress.ui";
     public static final String DIV_TAG = "div";
 
-    private String value = "";
-
     @Override
     public String getFamily() {
         return COMPONENT_TYPE;
@@ -26,12 +24,13 @@ public class UIAttachment extends UIComponentBase {
     public void encodeBegin(final FacesContext context) throws IOException {
         final ResponseWriter writer = context.getResponseWriter();
         //TODO:
+        String value = (String) getAttributes().get("value");
         writer.startElement(DIV_TAG, this);
         writer.startElement("img", this);
         writer.writeAttribute("src", "fsdf.png", null);
         writer.writeAttribute("alt", "fsdf", null);
         writer.endElement("img");
-        writer.write(getValue());
+        writer.write(value);
         writer.endElement(DIV_TAG);
     }
 
@@ -39,13 +38,5 @@ public class UIAttachment extends UIComponentBase {
     @Override
     public void encodeEnd(final FacesContext arg0) throws IOException {
         super.encodeEnd(arg0);
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(final String value) {
-        this.value = value;
     }
 }

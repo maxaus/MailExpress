@@ -33,7 +33,7 @@
                     </f:facet>
                     <c:forEach items="#{cc.attrs.message.attachments}" var="item">
                         <rich:menuItem title="#{item.path}">
-                            <attachment:attachment>#{item.path}</attachment:attachment>
+                            <attachment:attachment value="#{item.path}"/>
                         </rich:menuItem>
                     </c:forEach>
 
