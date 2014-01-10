@@ -11,6 +11,7 @@ import com.noveogroup.mailexpress.service.FolderService;
 import com.noveogroup.mailexpress.service.MessageService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -20,9 +21,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +43,7 @@ import java.util.ResourceBundle;
  */
 @Component
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class MessageController implements Serializable {
 
     private static final long serialVersionUID = -4863780031482494674L;
@@ -46,6 +51,7 @@ public class MessageController implements Serializable {
     private static final String BUNDLE_NAME = "MailExpress";
     private static final String FORWARD_PREFIX = "FW: ";
     private static final String REPLY_PREFIX = "RE: ";
+    private static final String INBOX_FOLDER_NAME = "Inbox";
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final String DEFAULT_SENDER_EMAIL = "mail@mail.com";
 
@@ -95,6 +101,21 @@ public class MessageController implements Serializable {
         for (final AttachmentDto attachmentDto : messageFormData.getAttachments()) {
             message.addAttachment(new Attachment(attachmentDto.getPath()));
         }
+
+        messageService.save(message);
+    }
+
+    public void sendReceive() {
+        LOGGER.debug("Send and receive all messages");
+        final Message message = new Message();
+        message.setSubject("Some subject " + RandomUtils.nextInt());
+        message.setBody("");
+        message.setUnread(true);
+        message.setDate(new Date());
+        final Folder inboxFolder = folderService.findByName(INBOX_FOLDER_NAME);
+        message.setFolder(inboxFolder);
+        message.setSender(new Contact(RandomUtils.nextInt() + DEFAULT_SENDER_EMAIL, ContactType.SENDER));
+        message.addReceiver(new Contact(DEFAULT_SENDER_EMAIL, ContactType.RECEIVER));
 
         messageService.save(message);
     }
@@ -295,5 +316,38 @@ public class MessageController implements Serializable {
      */
     public void setFolderNames(final List<String> folderNames) {
         this.folderNames = folderNames;
+    }
+
+    public String downloadFile() {
+        String filename = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("file");
+        File file = new File(uploadDir + filename);
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+        writeOutContent(response, file, file.getName());
+
+        FacesContext.getCurrentInstance().responseComplete();
+        return null;
+    }
+    private void writeOutContent(final HttpServletResponse res, final File content, final String theFilename) {
+        if (content == null) {
+            return;
+        }
+        try {
+            res.setHeader("Pragma", "no-cache");
+            res.setDateHeader("Expires", 0);
+            res.setHeader("Content-disposition", "attachment; filename=" + theFilename);
+            FileInputStream fis = new FileInputStream(content);
+            ServletOutputStream os = res.getOutputStream();
+            int bt = fis.read();
+            while (bt != -1) {
+                os.write(bt);
+                bt = fis.read();
+            }
+            os.flush();
+            fis.close();
+            os.close();
+        } catch (final IOException ex) {
+            LOGGER.error("", ex);
+        }
     }
 }

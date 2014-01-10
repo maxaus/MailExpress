@@ -108,7 +108,7 @@ public class FolderController implements Serializable {
      * Saves or updates folder.
      */
     public void saveFolder() {
-        if (folderFormData.getId() != null) {
+        if (folderFormData.getId() != 0) {
             final Folder folder = folderService.findByName(selectedFolderName);
             folder.setName(folderFormData.getName());
             folderService.update(folder);

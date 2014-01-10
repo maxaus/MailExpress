@@ -21,13 +21,13 @@
                                expanded="true" iconClass="folder-icon">
                     <h:outputText value="#{node}"/>
                     <a4j:ajax execute="@form" event="click"
-                              render="appTitle msgList msgView folderTools"/>
+                              render="appTitle msgList msgView folderTools msgTools"/>
                 </rich:treeNode>
             </rich:tree>
 
             <rich:contextMenu target="tree" mode="ajax">
                 <rich:menuItem label="#{msg['new_folder']}"
-                               oncomplete="#{rich:component('folderPane')}.show()"
+                               onclick="openFolderForm('create')"
                                mode="ajax" icon="#{resource['img:new_folder.png']}"/>
                 <rich:menuItem label="#{msg['rename']}" onclick="openFolderForm('rename')"
                                mode="ajax" icon="#{resource['img:rename.png']}"/>

@@ -11,6 +11,8 @@
             <a4j:outputPanel id="msgTools">
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
+                        <a4j:commandButton image="#{resource['img:send_receive.png']}" title="#{msg['send_receive']}"
+                                           onclick="sendReceiveMessages()"/>
                         <a4j:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}"
                                            onclick="openMessageForm('create')"/>
                         <a4j:commandButton
@@ -47,7 +49,8 @@
                                 onclick="openFolderForm('rename')"/>
                         <a4j:commandButton
                                 image="#{not empty folderController.selectedFolderId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
-                                title="#{msg['delete']}" disabled="#{empty folderController.selectedFolderId}"/>
+                                title="#{msg['delete']}" disabled="#{empty folderController.selectedFolderId}"
+                                onclick="#{rich:component('confirmFolderPane')}.show()"/>
                     </rich:toolbarGroup>
                 </rich:toolbar>
             </a4j:outputPanel>
@@ -62,7 +65,7 @@
             </h:outputLink>
         </f:facet>
 
-        <ui:insert name="form">
+        <ui:insert name="msgForm">
             <ui:include src="form/message.xhtml"/>
         </ui:insert>
     </rich:popupPanel>
@@ -80,20 +83,21 @@
             <h:selectOneMenu id="targetFolderName">
                 <f:selectItems value="#{messageController.folderNames}" var="fn" itemValue="#{fn}" itemLabel="#{fn}"/>
             </h:selectOneMenu>
-            <a4j:commandButton value="#{msg['ok']}" onclick="moveMessageToOtherFolder(document.getElementById('moveMsgForm:targetFolderName').value); return false;"/>
+            <a4j:commandButton value="#{msg['ok']}"
+                               onclick="moveMessageToOtherFolder(document.getElementById('moveMsgForm:targetFolderName').value); return false;"/>
             <a4j:commandButton value="#{msg['cancel']}"
                                onclick="#{rich:component('confirmMoveMessagePane')}.hide(); return false;"/>
         </h:form>
     </rich:popupPanel>
 
     <rich:popupPanel id="folderPane" modal="true" autosized="false" resizeable="true"
-                     header="#{folderController.folderFormData.title}">
+                     header="#{folderController.folderFormData.title}" height="95">
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('folderPane')}.hide(); return false;">
                 x
             </h:outputLink>
         </f:facet>
-        <ui:insert name="form">
+        <ui:insert name="fdForm">
             <ui:include src="form/folder.xhtml"/>
         </ui:insert>
     </rich:popupPanel>
@@ -112,16 +116,18 @@
     </a4j:jsFunction>
 
     <a4j:jsFunction name="openFolderForm" action="#{folderController.openForm}"
-                    oncomplete="#{rich:component('folderPane')}.show();" render="folderPane"
-                    execute="@this">
+                    oncomplete="#{rich:component('folderPane')}.show();">
         <a4j:param id="folderActionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
 
-    <a4j:jsFunction name="moveMessageToOtherFolder" action="#{messageController.moveToOtherFolder()}" render="msgTable"
+    <a4j:jsFunction name="moveMessageToOtherFolder" action="#{messageController.moveToOtherFolder}" render="msgTable"
                     execute="@this"
                     oncomplete="#{rich:component('confirmMoveMessagePane')}.hide();">
         <a4j:param id="folderName" assignTo="#{messageController.targetFolderName}"/>
     </a4j:jsFunction>
+
+    <a4j:jsFunction name="sendReceiveMessages" action="#{messageController.sendReceive}" render="msgTable"
+                    execute="@this"/>
 
     <a4j:jsFunction name="removeMessage" action="#{messageController.remove}" render="msgTable" execute="@this"
                     oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
