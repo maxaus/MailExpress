@@ -59,8 +59,8 @@
                     </rich:column>
                 </rich:extendedDataTable>
                 <rich:dataScroller for="msgTable" maxPages="5" page="#{messageListData.pageNum}"/>
-                <rich:contextMenu target="msgTable" mode="ajax">
-                    <rich:menuItem label="#{msg['reply']}" mode="ajax" icon="#{resource['img:reply.png']}">
+                <rich:contextMenu id="tableCtxMenu" target="msgTable" mode="ajax">
+                    <rich:menuItem label="#{msg['reply']}" mode="ajax" icon="#{resource['img:reply.png']}" oncomplete="#{rich:component('messagePane')}.show()">
                         <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
                                    assignTo="#{messageController.currentMessageItemId}"/>
                     </rich:menuItem>

@@ -25,7 +25,7 @@
                 </rich:treeNode>
             </rich:tree>
 
-            <rich:contextMenu target="tree" mode="ajax">
+            <rich:contextMenu id="treeCtxMenu" target="tree" mode="ajax">
                 <rich:menuItem label="#{msg['new_folder']}"
                                onclick="openFolderForm('create')"
                                mode="ajax" icon="#{resource['img:new_folder.png']}"/>

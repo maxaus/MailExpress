@@ -132,7 +132,7 @@
     <a4j:jsFunction name="removeMessage" action="#{messageController.remove}" render="msgTable" execute="@this"
                     oncomplete="#{rich:component('confirmMessagePane')}.hide();"/>
 
-    <a4j:jsFunction name="removeFolder" action="#{folderController.remove}" render="tree" execute="@this"
+    <a4j:jsFunction name="removeFolder" action="#{folderController.remove}" render="tree treeCtxMenu" execute="@this"
                     oncomplete="#{rich:component('confirmFolderPane')}.hide();"/>
 
 </ui:composition>
