@@ -12,7 +12,8 @@
             <a4j:outputPanel id="msgList">
                 <rich:extendedDataTable id="msgTable" value="#{messageListData}" var="message"
                                         selection="#{messageListData.selectedIndexes}" selectionMode="multiple"
-                                        rows="#{messageListData.pageSize}" sortMode="single" onrowclick="selectMessage(#{message.id});"
+                                        rows="#{messageListData.pageSize}" sortMode="single"
+                                        onrowclick="selectMessage(#{message.id});"
                                         noDataLabel="#{msg['no_messages']}" styleClass="message-list">
                     <a4j:ajax execute="@form" event="selectionchange" listener="#{messageListData.selectionListener}"
                               render="msgView msgTools"/>
@@ -60,13 +61,22 @@
                 </rich:extendedDataTable>
                 <rich:dataScroller for="msgTable" maxPages="5" page="#{messageListData.pageNum}"/>
                 <rich:contextMenu id="tableCtxMenu" target="msgTable" mode="ajax">
-                    <rich:menuItem label="#{msg['reply']}" mode="ajax" icon="#{resource['img:reply.png']}" oncomplete="#{rich:component('messagePane')}.show()">
+                    <rich:menuItem label="#{msg['reply']}" mode="ajax" icon="#{resource['img:reply.png']}"
+                                   oncomplete="openMessageForm('reply')">
                         <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
                                    assignTo="#{messageController.currentMessageItemId}"/>
                     </rich:menuItem>
                     <rich:menuItem label="#{msg['reply_to_all']}" mode="ajax"
-                                   icon="#{resource['img:reply_to_all.png']}"/>
-                    <rich:menuItem label="#{msg['forward']}" mode="ajax" icon="#{resource['img:send.png']}"/>
+                                   icon="#{resource['img:reply_to_all.png']}"
+                                   oncomplete="openMessageForm('reply_to_all')">
+                        <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                                   assignTo="#{messageController.currentMessageItemId}"/>
+                    </rich:menuItem>
+                    <rich:menuItem label="#{msg['forward']}" mode="ajax" icon="#{resource['img:send.png']}"
+                                   oncomplete="openMessageForm('forward')">
+                        <a4j:param name="currentMessageItemId" value="#{messageListData.selectedItem.id}"
+                                   assignTo="#{messageController.currentMessageItemId}"/>
+                    </rich:menuItem>
                     <rich:menuItem label="#{msg['delete']}" mode="ajax" icon="#{resource['img:delete.png']}"
                                    execute="@this" render="@none"
                                    oncomplete="#{rich:component('confirmMessagePane')}.show()">
@@ -85,7 +95,7 @@
     </h:form>
 
     <a4j:jsFunction name="selectMessage" render="msgTools" execute="@this">
-        <a4j:param name="id" assignTo="#{messageController.currentMessageItemId}" />
+        <a4j:param name="id" assignTo="#{messageController.currentMessageItemId}"/>
     </a4j:jsFunction>
 
     <rich:popupPanel id="statPane" autosized="true">

@@ -39,7 +39,7 @@
                          serverErrorLabel="#{msg['file_upload_fail']}"/>
 
         <a4j:commandButton action="#{messageController.send()}" value="#{msg['send']}"
-                           render="msgList" oncomplete="#{rich:component('messagePane')}.hide()" styleClass="m1"/>
+                           render="msgList tableCtxMenu" oncomplete="#{rich:component('messagePane')}.hide()" styleClass="m1"/>
         <a4j:commandButton value="#{msg['cancel']}"
                            onclick="#{rich:component('messagePane')}.hide()" styleClass="m1"/>
     </h:form>
