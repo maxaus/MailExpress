@@ -12,16 +12,16 @@
                 <h:outputText value="#{msg['folders_header']}"/>
             </f:facet>
             <rich:tree id="tree" nodeType="#{node.type}" var="node" value="#{folderController.rootNodes}"
-                       toggleType="client" selectionChangeListener="#{folderController.selectionListener}"
+                       selectionChangeListener="#{folderController.selectionListener}"
                        iconClass="folder-icon">
+                <a4j:ajax execute="@form" event="selectionchange"
+                          render="appTitle msgList msgView folderTools msgTools renameFolderMenuItem deleteFolderMenuItem"/>
                 <rich:treeNode type="folder"
                                iconLeaf="#{node.system ? resource[node.iconPath] : resource['img:folder_leaf.png']}"
                                iconCollapsed="#{node.system ? resource[node.iconPath] : resource['img:folder.png']}"
                                iconExpanded="#{node.system ? resource[node.iconPath] : resource['img:folder.png']}"
                                expanded="true" iconClass="folder-icon">
                     <h:outputText value="#{node}"/>
-                    <a4j:ajax execute="@form" event="click"
-                              render="appTitle msgList msgView folderTools msgTools"/>
                 </rich:treeNode>
             </rich:tree>
 
@@ -29,11 +29,15 @@
                 <rich:menuItem label="#{msg['new_folder']}"
                                onclick="openFolderForm('create')"
                                mode="ajax" icon="#{resource['img:new_folder.png']}"/>
-                <rich:menuItem label="#{msg['rename']}" onclick="openFolderForm('rename')"
-                               mode="ajax" icon="#{resource['img:rename.png']}"/>
-                <rich:menuItem label="#{msg['delete']}" mode="ajax" icon="#{resource['img:delete.png']}"
+                <rich:menuItem id="renameFolderMenuItem" label="#{msg['rename']}" onclick="openFolderForm('rename')"
+                               mode="ajax" icon="#{resource['img:rename.png']}"
+                               disabled="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem}">
+                </rich:menuItem>
+                <rich:menuItem id="deleteFolderMenuItem" label="#{msg['delete']}" mode="ajax"
+                               icon="#{resource['img:delete.png']}"
                                execute="@this" render="@none"
-                               onclick="#{rich:component('confirmFolderPane')}.show()"/>
+                               onclick="#{rich:component('confirmFolderPane')}.show()"
+                               disabled="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem}"/>
             </rich:contextMenu>
         </rich:panel>
     </h:form>

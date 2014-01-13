@@ -2,6 +2,7 @@ package com.noveogroup.mailexpress.service;
 
 import com.noveogroup.mailexpress.domain.Message;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,7 +33,9 @@ public interface MessageService {
      *
      * @param messageId message ID
      */
-    void delete(final Long messageId);
+    void delete(Long messageId);
+
+    void deleteAll(Collection<Long> idList);
 
     /**
      * Retrieves message by provided  ID.
@@ -41,6 +44,8 @@ public interface MessageService {
      * @return Found message
      */
     Message getById(Long id);
+
+    List<Message> getByIds(Collection<Long> ids);
 
     /**
      * Retrieves number of messages in folder.

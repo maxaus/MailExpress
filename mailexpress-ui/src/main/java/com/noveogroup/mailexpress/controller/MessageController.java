@@ -7,6 +7,7 @@ import com.noveogroup.mailexpress.domain.Folder;
 import com.noveogroup.mailexpress.domain.Message;
 import com.noveogroup.mailexpress.dto.AttachmentDto;
 import com.noveogroup.mailexpress.dto.form.MessageFormData;
+import com.noveogroup.mailexpress.dto.table.MessageListData;
 import com.noveogroup.mailexpress.service.FolderService;
 import com.noveogroup.mailexpress.service.MessageService;
 import org.apache.commons.collections.CollectionUtils;
@@ -21,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -43,7 +43,7 @@ import java.util.ResourceBundle;
  */
 @Component
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class MessageController implements Serializable {
 
     private static final long serialVersionUID = -4863780031482494674L;
@@ -64,6 +64,9 @@ public class MessageController implements Serializable {
 
     @Autowired
     private FolderService folderService;
+
+    @Autowired
+    private MessageListData messageListData;
 
     @Value("${upload.dir}")
     private String uploadDir;
@@ -124,8 +127,8 @@ public class MessageController implements Serializable {
      * Remove void.
      */
     public void remove() {
-        LOGGER.debug("Removing message. ID = {}", currentMessageItemId);
-        messageService.delete(currentMessageItemId);
+        LOGGER.debug("Removing messages. IDs = {}", messageListData.getSelectedIndexes());
+        messageService.deleteAll(messageListData.getSelectedIndexes());
     }
 
 
@@ -181,7 +184,13 @@ public class MessageController implements Serializable {
                 if (item != null) {
                     messageFormData.setSubject(FORWARD_PREFIX + item.getSubject());
                     messageFormData.setBody(item.getBody());
-
+                    if (CollectionUtils.isNotEmpty(item.getAttachments())) {
+                        final List<AttachmentDto> attachmentDtoList = new ArrayList<>();
+                        for (Attachment attachment : item.getAttachments()) {
+                            attachmentDtoList.add(new AttachmentDto(attachment.getPath()));
+                        }
+                        messageFormData.setAttachments(attachmentDtoList);
+                    }
                 }
                 break;
             case "reply":
@@ -213,13 +222,26 @@ public class MessageController implements Serializable {
     }
 
     public void moveToOtherFolder() {
-        LOGGER.debug("Moving message with ID={} to the folder {}", currentMessageItemId, targetFolderName);
-        final Message message = messageService.getById(currentMessageItemId);
+        LOGGER.debug("Moving messages with IDs={} to the folder {}", messageListData.getSelectedIndexes(), targetFolderName);
+        final List<Message> messages = messageService.getByIds(messageListData.getSelectedIndexes());
         final Folder folder = folderService.findByName(targetFolderName);
         if (folder != null) {
-            message.setFolder(folder);
-            messageService.update(message);
+            for (Message message : messages) {
+                message.setFolder(folder);
+                messageService.update(message);
+            }
         }
+    }
+
+    public void deleteAttachment() {
+        String filename = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("file");
+        AttachmentDto attachmentToRemove = null;
+        for (AttachmentDto attachmentDto : messageFormData.getAttachments()) {
+            if (filename.equals(attachmentDto.getPath())) {
+                attachmentToRemove = attachmentDto;
+            }
+        }
+        messageFormData.getAttachments().remove(attachmentToRemove);
     }
 
     /**
@@ -328,6 +350,7 @@ public class MessageController implements Serializable {
         FacesContext.getCurrentInstance().responseComplete();
         return null;
     }
+
     private void writeOutContent(final HttpServletResponse res, final File content, final String theFilename) {
         if (content == null) {
             return;

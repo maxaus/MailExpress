@@ -10,7 +10,7 @@
         <h:inputHidden value="#{folderController.folderFormData.id}"/>
         <h:panelGrid columns="2">
             <h:outputLabel value="#{msg['folder_name']}" for="folderName"/>
-            <h:inputText id="folderName" value="#{folderController.folderFormData.name}"/>
+            <h:inputText id="folderName" value="#{folderController.folderFormData.name}" required="true"/>
         </h:panelGrid>
         <a4j:commandButton action="#{folderController.saveFolder()}" value="#{msg['save']}" render="tree treeCtxMenu"
                            oncomplete="#{rich:component('folderPane')}.hide()" styleClass="m1"/>

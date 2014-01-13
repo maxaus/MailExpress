@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -63,6 +64,17 @@ public class MessageServiceImpl implements MessageService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
+    public void deleteAll(final Collection<Long> idList) {
+        LOGGER.info("Removing messages with IDs = {}", idList);
+        final List<Message> messagesToDelete = messageDao.findAll(idList);
+        messageDao.delete(messagesToDelete);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional(readOnly = true)
     public Message getById(final Long id) {
         LOGGER.info("Retrieving message with ID = {}", id);
@@ -72,6 +84,11 @@ public class MessageServiceImpl implements MessageService {
             Hibernate.initialize(message.getAttachments());
         }
         return message;
+    }
+
+    @Override
+    public List<Message> getByIds(Collection<Long> ids) {
+        return messageDao.findAll(ids);
     }
 
     /**

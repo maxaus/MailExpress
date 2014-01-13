@@ -39,6 +39,7 @@ public class FolderController implements Serializable {
 
     private String selectedFolderName;
     private Long selectedFolderId;
+    private boolean selectedFolderSystem;
     private List<TreeNode> rootNodes = new ArrayList<>();
     private FolderFormData folderFormData = new FolderFormData();
     private String actionName;
@@ -80,6 +81,7 @@ public class FolderController implements Serializable {
         final FolderNode folderNode = (FolderNode) tree.getRowData();
         this.selectedFolderName = folderNode.getName();
         this.selectedFolderId = folderNode.getId();
+        this.selectedFolderSystem = folderNode.isSystem();
         tree.setRowKey(storedKey);
         messageListData.setSelectedIndexes(new ArrayList<Long>());
         messageListData.setSelectedItems(new ArrayList<MessageDto>());
@@ -211,5 +213,9 @@ public class FolderController implements Serializable {
      */
     public void setActionName(final String actionName) {
         this.actionName = actionName;
+    }
+
+    public boolean isSelectedFolderSystem() {
+        return selectedFolderSystem;
     }
 }

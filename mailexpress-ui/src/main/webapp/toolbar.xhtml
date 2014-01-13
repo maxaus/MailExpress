@@ -16,21 +16,24 @@
                         <a4j:commandButton image="#{resource['img:mail.png']}" title="#{msg['new_message']}"
                                            onclick="openMessageForm('create')"/>
                         <a4j:commandButton
-                                image="#{not empty messageController.currentMessageItemId ? resource['img:reply.png'] : resource['img:reply_disabled.png']}"
-                                title="#{msg['reply']}" disabled="#{empty messageController.currentMessageItemId}"
+                                image="#{empty messageController.currentMessageItemId || messageListData.selectedIndexes.size() > 1 ? resource['img:reply_disabled.png'] : resource['img:reply.png']}"
+                                title="#{msg['reply']}"
+                                disabled="#{empty messageController.currentMessageItemId || messageListData.selectedIndexes.size() > 1}"
                                 onclick="openMessageForm('reply')"/>
                         <a4j:commandButton
-                                image="#{not empty messageController.currentMessageItemId ? resource['img:reply_to_all.png'] : resource['img:reply_to_all_disabled.png']}"
+                                image="#{empty messageController.currentMessageItemId || messageListData.selectedIndexes.size() > 1 ? resource['img:reply_to_all_disabled.png'] : resource['img:reply_to_all.png']}"
                                 title="#{msg['reply_to_all']}"
-                                disabled="#{empty messageController.currentMessageItemId}"
+                                disabled="#{empty messageController.currentMessageItemId || messageListData.selectedIndexes.size() > 1}"
                                 onclick="openMessageForm('reply_to_all')"/>
                         <a4j:commandButton
-                                image="#{not empty messageController.currentMessageItemId ? resource['img:send.png'] : resource['img:send_disabled.png']}"
-                                title="#{msg['forward']}" disabled="#{empty messageController.currentMessageItemId}"
+                                image="#{empty messageController.currentMessageItemId || messageListData.selectedIndexes.size() > 1 ? resource['img:send_disabled.png'] : resource['img:send.png']}"
+                                title="#{msg['forward']}"
+                                disabled="#{empty messageController.currentMessageItemId || messageListData.selectedIndexes.size() > 1}"
                                 onclick="openMessageForm('forward')"/>
                         <a4j:commandButton
                                 image="#{not empty messageController.currentMessageItemId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
-                                title="#{msg['delete']}" disabled="#{empty messageController.currentMessageItemId}"/>
+                                title="#{msg['delete']}" disabled="#{empty messageController.currentMessageItemId}"
+                                onclick="#{rich:component('confirmMessagePane')}.show()"/>
                     </rich:toolbarGroup>
                 </rich:toolbar>
             </a4j:outputPanel>
@@ -40,16 +43,18 @@
                 <rich:toolbar>
                     <rich:toolbarGroup itemSeparator="line">
                         <a4j:commandButton
-                                image="#{not empty folderController.selectedFolderId ? resource['img:new_folder.png'] : resource['img:new_folder_disabled.png']}"
+                                image="#{empty folderController.selectedFolderId ? resource['img:new_folder_disabled.png'] : resource['img:new_folder.png']}"
                                 title="#{msg['new_folder']}" disabled="#{empty folderController.selectedFolderId}"
                                 onclick="openFolderForm('create')"/>
                         <a4j:commandButton
-                                image="#{not empty folderController.selectedFolderId ? resource['img:rename.png'] : resource['img:rename_disabled.png']}"
-                                title="#{msg['rename']}" disabled="#{empty folderController.selectedFolderId}"
+                                image="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem ? resource['img:rename_disabled.png'] : resource['img:rename.png']}"
+                                title="#{msg['rename']}"
+                                disabled="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem}"
                                 onclick="openFolderForm('rename')"/>
                         <a4j:commandButton
-                                image="#{not empty folderController.selectedFolderId ? resource['img:delete.png'] : resource['img:delete_disabled.png']}"
-                                title="#{msg['delete']}" disabled="#{empty folderController.selectedFolderId}"
+                                image="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem ? resource['img:delete_disabled.png'] : resource['img:delete.png']}"
+                                title="#{msg['delete']}"
+                                disabled="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem}"
                                 onclick="#{rich:component('confirmFolderPane')}.show()"/>
                     </rich:toolbarGroup>
                 </rich:toolbar>
@@ -110,13 +115,13 @@
     </rich:popupPanel>
 
     <a4j:jsFunction name="openMessageForm" action="#{messageController.openForm}"
-                    oncomplete="#{rich:component('messagePane')}.show();" render="messagePane messageBody"
+                    oncomplete="#{rich:component('messagePane')}.show();" render="messageForm messageBody"
                     execute="@this">
         <a4j:param id="messageActionName" assignTo="#{messageController.actionName}"/>
     </a4j:jsFunction>
 
     <a4j:jsFunction name="openFolderForm" action="#{folderController.openForm}"
-                    oncomplete="#{rich:component('folderPane')}.show();">
+                    oncomplete="#{rich:component('folderPane')}.show();" render="folderForm">
         <a4j:param id="folderActionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
 
