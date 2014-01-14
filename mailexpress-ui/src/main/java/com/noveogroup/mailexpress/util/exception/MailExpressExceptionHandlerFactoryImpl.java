@@ -8,7 +8,7 @@ import javax.faces.context.ExceptionHandlerFactory;
  *
  * @author Maxim Baev
  */
-public class MailExpressExceptionHandlerFactory extends ExceptionHandlerFactory {
+public class MailExpressExceptionHandlerFactoryImpl extends ExceptionHandlerFactory {
     private ExceptionHandlerFactory parent;
 
     /**
@@ -16,7 +16,7 @@ public class MailExpressExceptionHandlerFactory extends ExceptionHandlerFactory 
      *
      * @param parent parent exception handler factory
      */
-    public MailExpressExceptionHandlerFactory(final ExceptionHandlerFactory parent) {
+    public MailExpressExceptionHandlerFactoryImpl(final ExceptionHandlerFactory parent) {
         this.parent = parent;
     }
 

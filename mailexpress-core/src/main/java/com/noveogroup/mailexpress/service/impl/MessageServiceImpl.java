@@ -55,19 +55,9 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     @Transactional
-    public void delete(final Long messageId) {
-        LOGGER.info("Removing message with ID = {}", messageId);
-        messageDao.delete(messageId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional
-    public void deleteAll(final Collection<Long> idList) {
-        LOGGER.info("Removing messages with IDs = {}", idList);
-        final List<Message> messagesToDelete = messageDao.findAll(idList);
+    public void deleteAll(final Collection<Long> ids) {
+        LOGGER.info("Removing messages with IDs = {}", ids);
+        final List<Message> messagesToDelete = messageDao.findAll(ids);
         messageDao.delete(messagesToDelete);
     }
 
@@ -86,8 +76,12 @@ public class MessageServiceImpl implements MessageService {
         return message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<Message> getByIds(Collection<Long> ids) {
+    @Transactional(readOnly = true)
+    public List<Message> getByIds(final Collection<Long> ids) {
         return messageDao.findAll(ids);
     }
 
@@ -108,7 +102,8 @@ public class MessageServiceImpl implements MessageService {
     @Transactional(readOnly = true)
     public List<Message> findByFolder(final Long folderId, final String sortColumn, final String direction,
                                       final int pageNumber, final int pageSize) {
-        LOGGER.info("Retrieving messages in folder. folderId = {}, sortColumn = {}, direction = {}, pageNumber = {}, pageSize = {}", folderId, sortColumn, direction, pageNumber, pageSize);
+        LOGGER.info("Retrieving messages in folder. folderId = {}, sortColumn = {}, direction = {}, pageNumber = {}, "
+                + "pageSize = {}", folderId, sortColumn, direction, pageNumber, pageSize);
         final Pageable pageRequest;
         if (sortColumn != null) {
             pageRequest = new PageRequest(pageNumber, pageSize, Sort.Direction.fromString(direction), sortColumn);
@@ -116,7 +111,6 @@ public class MessageServiceImpl implements MessageService {
             pageRequest = new PageRequest(pageNumber, pageSize);
         }
         final Page page = messageDao.findByFolderId(folderId, pageRequest);
-        //TODO: maybe add DTO service with transactional operation
         final List<Message> messages = page.getContent();
         for (final Message message : messages) {
             Hibernate.initialize(message.getAttachments());

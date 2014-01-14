@@ -29,22 +29,26 @@ public interface MessageService {
     Message update(Message message);
 
     /**
-     * Removes message.
+     * Removes messages.
      *
-     * @param messageId message ID
+     * @param ids message IDs
      */
-    void delete(Long messageId);
-
-    void deleteAll(Collection<Long> idList);
+    void deleteAll(Collection<Long> ids);
 
     /**
-     * Retrieves message by provided  ID.
+     * Retrieves message by provided ID.
      *
      * @param id ID
      * @return Found message
      */
     Message getById(Long id);
 
+    /**
+     * Retrieves messages by provided ID list.
+     *
+     * @param ids IDs
+     * @return Found messages
+     */
     List<Message> getByIds(Collection<Long> ids);
 
     /**

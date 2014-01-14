@@ -21,8 +21,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class MessageDaoTest extends BasePersistenceTest {
 
-    private static final String OLD_SUBJECT = "Subj";
-    private static final String NEW_SUBJECT = "Subject";
+    private static final String SUBJECT = "Subj";
 
     @Autowired
     private MessageDao messageDao;
@@ -37,7 +36,7 @@ public class MessageDaoTest extends BasePersistenceTest {
         assertEquals(1, messages.size());
 
         Message message = new Message();
-        message.setSubject(OLD_SUBJECT);
+        message.setSubject(SUBJECT);
         message.setBody("body");
         Attachment attachment = new Attachment();
         attachment.setPath("img.png");
@@ -53,11 +52,7 @@ public class MessageDaoTest extends BasePersistenceTest {
         message = messageDao.save(message);
         assertNotNull(message);
         assertNotNull(message.getId());
-        assertEquals(OLD_SUBJECT, message.getSubject());
-
-        message.setSubject(NEW_SUBJECT);
-        message = messageDao.save(message);
-        assertEquals(NEW_SUBJECT, message.getSubject());
+        assertEquals(SUBJECT, message.getSubject());
 
         messageDao.delete(message);
         messages = messageDao.findAll();

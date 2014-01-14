@@ -12,14 +12,14 @@ import java.util.List;
 public interface FolderService {
 
     /**
-     * Retrieves all folders
+     * Retrieves all folders.
      *
      * @return Collection of folders
      */
     List<Folder> findAll();
 
     /**
-     * Retrieves folder by name
+     * Retrieves folder by name.
      *
      * @param name folder name
      * @return Found folder

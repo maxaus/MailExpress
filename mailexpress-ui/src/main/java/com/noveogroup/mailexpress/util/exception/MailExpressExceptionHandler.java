@@ -3,7 +3,6 @@ package com.noveogroup.mailexpress.util.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.faces.FacesException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.ExternalContext;
@@ -45,7 +44,7 @@ public class MailExpressExceptionHandler extends ExceptionHandlerWrapper {
      * {@inheritDoc}
      */
     @Override
-    public void handle() throws FacesException {
+    public void handle() {
         final Iterator iterator = getUnhandledExceptionQueuedEvents().iterator();
         while (iterator.hasNext()) {
             final ExceptionQueuedEvent event = (ExceptionQueuedEvent) iterator.next();

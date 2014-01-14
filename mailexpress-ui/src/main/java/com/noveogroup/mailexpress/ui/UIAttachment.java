@@ -1,5 +1,7 @@
 package com.noveogroup.mailexpress.ui;
 
+import com.noveogroup.mailexpress.util.attachment.FileExtension;
+import com.noveogroup.mailexpress.util.attachment.FileType;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Custom tag to display attachment name with icon.
+ *
  * @author Maxim Baev
  */
 @FacesComponent("com.noveogroup.mailexpress.ui")
@@ -23,26 +27,26 @@ public class UIAttachment extends UIComponentBase {
     private static final String IMG_RESOURCES_PREFIX = "resources/img/file/";
     private static final String ICON_TYPE = ".png";
 
-    private static final Map<String, String> ICON_MAP = new HashMap<>();
+    private static final Map<FileExtension, FileType> ICON_MAP = new HashMap<>();
 
     public UIAttachment() {
         super();
-        ICON_MAP.put("zip", "archive");
-        ICON_MAP.put("rar", "archive");
-        ICON_MAP.put("7z", "archive");
-        ICON_MAP.put("xls", "excel");
-        ICON_MAP.put("xlsx", "excel");
-        ICON_MAP.put("doc", "word");
-        ICON_MAP.put("docx", "word");
-        ICON_MAP.put("gif", "gif");
-        ICON_MAP.put("jpg", "jpeg");
-        ICON_MAP.put("jpeg", "jpeg");
-        ICON_MAP.put("pdf", "pdf");
-        ICON_MAP.put("png", "png");
-        ICON_MAP.put("ppt", "ppt");
-        ICON_MAP.put("pptx", "ppt");
-        ICON_MAP.put("txt", "txt");
-        ICON_MAP.put("rtf","txt");
+        ICON_MAP.put(FileExtension.ZIP, FileType.ARCHIVE);
+        ICON_MAP.put(FileExtension.RAR, FileType.ARCHIVE);
+        ICON_MAP.put(FileExtension.SEVEN_ZIP, FileType.ARCHIVE);
+        ICON_MAP.put(FileExtension.XLS, FileType.EXCEL);
+        ICON_MAP.put(FileExtension.XLSX, FileType.EXCEL);
+        ICON_MAP.put(FileExtension.DOC, FileType.WORD);
+        ICON_MAP.put(FileExtension.DOCX, FileType.WORD);
+        ICON_MAP.put(FileExtension.GIF, FileType.GIF);
+        ICON_MAP.put(FileExtension.JPG, FileType.JPEG);
+        ICON_MAP.put(FileExtension.JPEG, FileType.JPEG);
+        ICON_MAP.put(FileExtension.PDF, FileType.PDF);
+        ICON_MAP.put(FileExtension.PNG, FileType.PNG);
+        ICON_MAP.put(FileExtension.PPT, FileType.PPT);
+        ICON_MAP.put(FileExtension.PPTX, FileType.PPT);
+        ICON_MAP.put(FileExtension.TXT, FileType.TXT);
+        ICON_MAP.put(FileExtension.RTF, FileType.TXT);
     }
 
     @Override
@@ -66,16 +70,10 @@ public class UIAttachment extends UIComponentBase {
 
     private String getIconPath(final String fileName) {
         final String fileExtension = FilenameUtils.getExtension(fileName);
-        String iconName = ICON_MAP.get(fileExtension.toLowerCase());
+        String iconName = ICON_MAP.get(FileExtension.valueOf(fileExtension.toUpperCase())).toString();
         if (StringUtils.isEmpty(iconName)) {
             iconName = "file";
         }
         return IMG_RESOURCES_PREFIX + iconName + ICON_TYPE;
-    }
-
-
-    @Override
-    public void encodeEnd(final FacesContext arg0) throws IOException {
-        super.encodeEnd(arg0);
     }
 }

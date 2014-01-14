@@ -4,23 +4,21 @@ import com.noveogroup.mailexpress.domain.Folder;
 import com.noveogroup.mailexpress.dto.FolderNode;
 import com.noveogroup.mailexpress.dto.MessageDto;
 import com.noveogroup.mailexpress.dto.form.FolderFormData;
-import com.noveogroup.mailexpress.dto.table.MessageListData;
-import com.noveogroup.mailexpress.service.FolderService;
 import org.richfaces.component.UITree;
 import org.richfaces.event.TreeSelectionChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.swing.tree.TreeNode;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * UI controller for folder manage actions.
@@ -30,28 +28,20 @@ import java.util.ResourceBundle;
 @Component
 @ManagedBean
 @ViewScoped
-public class FolderController implements Serializable {
+public class FolderController extends AbstractUIController {
 
     private static final long serialVersionUID = 8105007650641624790L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FolderController.class);
-    private static final String BUNDLE_NAME = "MailExpress";
+    private static final String CREATE_FOLDER_ACTION = "new_folder";
 
+    private String actionName;
     private String selectedFolderName;
     private Long selectedFolderId;
     private boolean selectedFolderSystem;
-    private List<TreeNode> rootNodes = new ArrayList<>();
     private FolderFormData folderFormData = new FolderFormData();
-    private String actionName;
-
-    @Autowired
-    private FolderService folderService;
-
-    @Autowired
-    private MessageListData messageListData;
-
-    @Autowired
-    private MessageController messageController;
+    private List<TreeNode> rootNodes = new ArrayList<>();
+    private Set<String> folderNames = new HashSet<>();
 
     /**
      * Return list of tree nodes to build folder tree.
@@ -59,11 +49,19 @@ public class FolderController implements Serializable {
      * @return List of tree nodes
      */
     public List<TreeNode> getRootNodes() {
-        //TODO: re-init only when updated
-//        if (rootNodes.isEmpty()) {
-        initTree();
-//        }
+        if (rootNodes.isEmpty()) {
+            initTree();
+        }
         return rootNodes;
+    }
+
+    /**
+     * Gets folder names.
+     *
+     * @return the folder names
+     */
+    public List<String> getFolderNames() {
+        return new ArrayList<>(folderNames);
     }
 
     /**
@@ -85,7 +83,52 @@ public class FolderController implements Serializable {
         tree.setRowKey(storedKey);
         messageListData.setSelectedIndexes(new ArrayList<Long>());
         messageListData.setSelectedItems(new ArrayList<MessageDto>());
-        messageController.setCurrentMessageItemId(null);
+    }
+
+    /**
+     * Saves or updates folder.
+     */
+    public void saveFolder() {
+        if (folderFormData.getId() != 0) {
+            final Folder folder = folderService.findByName(selectedFolderName);
+            folder.setName(folderFormData.getName());
+            folderService.update(folder);
+        } else {
+            final Folder folder = new Folder();
+            folder.setName(folderFormData.getName());
+            folder.setParentFolderId(selectedFolderId);
+            folderService.save(folder);
+        }
+        rootNodes.clear();
+        folderNames.clear();
+    }
+
+    /**
+     * Prepares appropriate data for folder form being opened.
+     */
+    public void openForm() {
+        LOGGER.debug("Open folder form. Action: {}", actionName);
+        folderFormData = new FolderFormData();
+        if (selectedFolderName != null && !CREATE_FOLDER_ACTION.equals(actionName)) {
+            final Folder folder = folderService.findByName(selectedFolderName);
+            if (folder != null) {
+                folderFormData.setId(folder.getId());
+                folderFormData.setName(folder.getName());
+            }
+        }
+
+        folderFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
+                FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString(actionName));
+    }
+
+    /**
+     * Removes folder.
+     */
+    public void remove() {
+        LOGGER.debug("Removing folder. ID = {}", selectedFolderId);
+        folderService.delete(selectedFolderId);
+        rootNodes.clear();
+        folderNames.clear();
     }
 
     /**
@@ -107,53 +150,39 @@ public class FolderController implements Serializable {
     }
 
     /**
-     * Saves or updates folder.
+     * Gets folder form data.
+     *
+     * @return the folder form data
      */
-    public void saveFolder() {
-        if (folderFormData.getId() != 0) {
-            final Folder folder = folderService.findByName(selectedFolderName);
-            folder.setName(folderFormData.getName());
-            folderService.update(folder);
-        } else {
-            final Folder folder = new Folder();
-            folder.setName(folderFormData.getName());
-            folder.setParentFolderId(selectedFolderId);
-            folderService.save(folder);
-        }
-    }
-
-    public void openForm() {
-        Folder item = null;
-        folderFormData = new FolderFormData();
-        if (selectedFolderName != null && !"create".equals(actionName)) {
-            item = folderService.findByName(selectedFolderName);
-        }
-
-        switch (actionName) {
-            case "create":
-                LOGGER.debug("Open form to create new folder.");
-                folderFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
-                        FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("new_folder"));
-                folderFormData.setName(null);
-                break;
-            case "rename":
-                LOGGER.debug("Rename folder. Name={}", selectedFolderName);
-                folderFormData.setTitle(ResourceBundle.getBundle(BUNDLE_NAME,
-                        FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString("rename"));
-                if (item != null) {
-                    folderFormData.setId(item.getId());
-                    folderFormData.setName(item.getName());
-                }
-                break;
-        }
+    public FolderFormData getFolderFormData() {
+        return folderFormData;
     }
 
     /**
-     * Remove void.
+     * Sets folder form data.
+     *
+     * @param folderFormData the folder form data
      */
-    public void remove() {
-        LOGGER.debug("Removing message. ID = {}", selectedFolderId);
-        folderService.delete(selectedFolderId);
+    public void setFolderFormData(final FolderFormData folderFormData) {
+        this.folderFormData = folderFormData;
+    }
+
+    /**
+     * Sets action name.
+     *
+     * @param actionName the action name
+     */
+    public void setActionName(final String actionName) {
+        this.actionName = actionName;
+    }
+
+    /**
+     * Is selected folder is system folder.
+     *
+     * @return true for system folder
+     */
+    public boolean isSelectedFolderSystem() {
+        return selectedFolderSystem;
     }
 
     /**
@@ -176,46 +205,7 @@ public class FolderController implements Serializable {
                 final FolderNode folderNode = new FolderNode(folder);
                 rootNodes.add(folderNode);
             }
+            folderNames.add(folder.getName());
         }
-    }
-
-    /**
-     * Gets folder form data.
-     *
-     * @return the folder form data
-     */
-    public FolderFormData getFolderFormData() {
-        return folderFormData;
-    }
-
-    /**
-     * Sets folder form data.
-     *
-     * @param folderFormData the folder form data
-     */
-    public void setFolderFormData(final FolderFormData folderFormData) {
-        this.folderFormData = folderFormData;
-    }
-
-    /**
-     * Gets action name.
-     *
-     * @return the action name
-     */
-    public String getActionName() {
-        return actionName;
-    }
-
-    /**
-     * Sets action name.
-     *
-     * @param actionName the action name
-     */
-    public void setActionName(final String actionName) {
-        this.actionName = actionName;
-    }
-
-    public boolean isSelectedFolderSystem() {
-        return selectedFolderSystem;
     }
 }

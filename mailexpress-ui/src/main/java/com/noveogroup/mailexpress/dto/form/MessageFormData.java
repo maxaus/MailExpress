@@ -14,7 +14,7 @@ public class MessageFormData extends AbstractFormData {
     private static final long serialVersionUID = -2081260075515423870L;
 
     /**
-     * Subject
+     * Subject.
      */
     private String subject;
 

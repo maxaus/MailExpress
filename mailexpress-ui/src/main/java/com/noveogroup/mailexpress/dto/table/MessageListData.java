@@ -33,7 +33,6 @@ import java.util.Map;
 @ViewScoped
 public class MessageListData extends AbstractDataListModel<MessageDto, Long> {
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
     private static final int DEFAULT_PAGE_SIZE = 10;
 
     private int pageNum = 1;
@@ -175,7 +174,8 @@ public class MessageListData extends AbstractDataListModel<MessageDto, Long> {
             dto.setSubject(message.getSubject());
             dto.setUnread(message.isUnread());
             dto.setBody(message.getBody());
-            dto.setDate(DATE_FORMAT.format(message.getDate()));
+            final DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+            dto.setDate(dateFormat.format(message.getDate()));
             for (final Attachment attachment : message.getAttachments()) {
                 dto.addAttachment(createAttachmentDto(attachment));
             }

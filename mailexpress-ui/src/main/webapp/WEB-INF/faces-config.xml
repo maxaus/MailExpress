@@ -22,7 +22,7 @@
         </el-resolver>
     </application>
     <factory>
-        <exception-handler-factory>com.noveogroup.mailexpress.util.exception.MailExpressExceptionHandlerFactory
+        <exception-handler-factory>com.noveogroup.mailexpress.util.exception.MailExpressExceptionHandlerFactoryImpl
         </exception-handler-factory>
     </factory>
 </faces-config>

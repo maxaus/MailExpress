@@ -38,6 +38,7 @@ public class FolderServiceImpl implements FolderService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public Folder findByName(final String name) {
         LOGGER.info("Retrieving folder by name : {}", name);
         return folderDao.findByName(name);

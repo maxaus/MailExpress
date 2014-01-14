@@ -123,15 +123,6 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
     }
 
     /**
-     * Gets selected items.
-     *
-     * @return the selected items
-     */
-    public List<T> getSelectedItems() {
-        return selectedItems;
-    }
-
-    /**
      * Sets selected items.
      *
      * @param selectedItems the selected items
@@ -215,7 +206,7 @@ public abstract class AbstractDataListModel<T, U> extends ExtendedDataModel<T> i
      */
     @Override
     public boolean isRowAvailable() {
-        return currentPk != null && (wrappedKeys.contains(currentPk) || wrappedData.entrySet().contains(currentPk)
+        return currentPk != null && (wrappedKeys.contains(currentPk) || wrappedData.keySet().contains(currentPk)
                 || getObjectById(currentPk) != null);
     }
 

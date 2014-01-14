@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -63,6 +64,22 @@ public class MessageServiceTest extends BaseMockitoTest {
     }
 
     @Test
+    public void testGetByIds() {
+        final Message message = new Message();
+        message.setSubject(TEST_SUBJECT);
+        final List<Long> ids = Collections.singletonList(TEST_MESSAGE_ID);
+        final List<Message> messages = Collections.singletonList(message);
+
+        when(messageDao.findAll(ids)).thenReturn(messages);
+
+        final List<Message> result = messageService.getByIds(ids);
+        verify(messageDao).findAll(ids);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(TEST_SUBJECT, result.get(0).getSubject());
+    }
+
+    @Test
     public void testFindByFolder() {
         final List<Message> messages = Collections.singletonList(new Message());
         final Pageable pageRequest = new PageRequest(TEST_PAGE_NUM, TEST_PAGE_SIZE, Sort.Direction.fromString(TEST_DIRECTION), TEST_SORT_COLUMN);
@@ -101,8 +118,8 @@ public class MessageServiceTest extends BaseMockitoTest {
     @Test
     public void testDelete() {
         final Long messageId = 1L;
-        doNothing().when(messageDao).delete(messageId);
-        messageService.delete(messageId);
-        verify(messageDao).delete(messageId);
+        when(messageDao.findAll(anyCollection())).thenReturn(Collections.singletonList(new Message()));
+        doNothing().when(messageDao).delete(anyCollection());
+        messageService.deleteAll(Collections.singletonList(messageId));
     }
 }

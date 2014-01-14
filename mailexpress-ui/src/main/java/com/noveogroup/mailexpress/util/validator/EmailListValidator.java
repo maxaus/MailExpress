@@ -21,16 +21,15 @@ import java.util.regex.Pattern;
 public class EmailListValidator implements Validator {
 
     private static final String BUNDLE_NAME = "MailExpress";
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\" +
-            ".[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\"
+            + ".[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final String VALIDATION_ERROR_KEY = "email_valid_msg";
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void validate(final FacesContext context, final UIComponent component,
-                         final Object value) throws ValidatorException {
+    public void validate(final FacesContext context, final UIComponent component, final Object value) {
         if (value != null) {
             checkEmailListString((List<String>) value, component, context.getViewRoot().getLocale());
         }
@@ -51,10 +50,9 @@ public class EmailListValidator implements Validator {
             final Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
                 final ResourceBundle rb = ResourceBundle.getBundle(BUNDLE_NAME, locale);
-                final String messageText = uiComponent.getAttributes().get("label") + ": " + rb.getString
-                        (VALIDATION_ERROR_KEY);
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        messageText, messageText));
+                final String messageText = uiComponent.getAttributes().get("label") + ": " + rb.getString(
+                        VALIDATION_ERROR_KEY);
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, messageText));
             }
         }
     }

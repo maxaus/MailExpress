@@ -45,7 +45,7 @@
                         <a4j:commandButton
                                 image="#{empty folderController.selectedFolderId ? resource['img:new_folder_disabled.png'] : resource['img:new_folder.png']}"
                                 title="#{msg['new_folder']}" disabled="#{empty folderController.selectedFolderId}"
-                                onclick="openFolderForm('create')"/>
+                                onclick="openFolderForm('new_folder')"/>
                         <a4j:commandButton
                                 image="#{empty folderController.selectedFolderId || folderController.selectedFolderSystem ? resource['img:rename_disabled.png'] : resource['img:rename.png']}"
                                 title="#{msg['rename']}"
@@ -86,7 +86,7 @@
         <h:form id="moveMsgForm">
             #{msg['move_message']}
             <h:selectOneMenu id="targetFolderName">
-                <f:selectItems value="#{messageController.folderNames}" var="fn" itemValue="#{fn}" itemLabel="#{fn}"/>
+                <f:selectItems value="#{folderController.folderNames}" var="fn" itemValue="#{fn}" itemLabel="#{fn}"/>
             </h:selectOneMenu>
             <a4j:commandButton value="#{msg['ok']}"
                                onclick="moveMessageToOtherFolder(document.getElementById('moveMsgForm:targetFolderName').value); return false;"/>
@@ -115,13 +115,13 @@
     </rich:popupPanel>
 
     <a4j:jsFunction name="openMessageForm" action="#{messageController.openForm}"
-                    oncomplete="#{rich:component('messagePane')}.show();" render="messageForm messageBody"
+                    oncomplete="#{rich:component('messagePane')}.show();" render="messagePane messageForm messageBody"
                     execute="@this">
         <a4j:param id="messageActionName" assignTo="#{messageController.actionName}"/>
     </a4j:jsFunction>
 
     <a4j:jsFunction name="openFolderForm" action="#{folderController.openForm}"
-                    oncomplete="#{rich:component('folderPane')}.show();" render="folderForm">
+                    oncomplete="#{rich:component('folderPane')}.show();" render="folderPane folderForm">
         <a4j:param id="folderActionName" assignTo="#{folderController.actionName}"/>
     </a4j:jsFunction>
 
