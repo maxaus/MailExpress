@@ -103,7 +103,7 @@ public class MessageController extends AbstractUIController {
     /**
      * Removes messages.
      */
-    public void remove() {
+    public void removeMessages() {
         LOGGER.debug("Removing messages. IDs = {}", messageListData.getSelectedIndexes());
         messageService.deleteAll(messageListData.getSelectedIndexes());
     }

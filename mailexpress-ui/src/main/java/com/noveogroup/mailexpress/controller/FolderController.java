@@ -124,7 +124,7 @@ public class FolderController extends AbstractUIController {
     /**
      * Removes folder.
      */
-    public void remove() {
+    public void removeFolder() {
         LOGGER.debug("Removing folder. ID = {}", selectedFolderId);
         folderService.delete(selectedFolderId);
         rootNodes.clear();
@@ -177,6 +177,15 @@ public class FolderController extends AbstractUIController {
     }
 
     /**
+     * Sets selected folder name.
+     *
+     * @param selectedFolderName the selected folder name
+     */
+    public void setSelectedFolderName(final String selectedFolderName) {
+        this.selectedFolderName = selectedFolderName;
+    }
+
+    /**
      * Is selected folder is system folder.
      *
      * @return true for system folder
@@ -208,4 +217,5 @@ public class FolderController extends AbstractUIController {
             folderNames.add(folder.getName());
         }
     }
+
 }
