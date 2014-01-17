@@ -6,9 +6,14 @@ import com.noveogroup.mailexpress.dto.AttachmentDto;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,8 +28,10 @@ public class MessageControllerTest extends AbstractUIControllerTest {
     private static final String TEST_EMAIL = "mail@mail.net";
     private static final String TEST_EMAIL2 = "mail2@mail.net";
     private static final String TEST_MESSAGE_SUBJECT = "subject";
+    private static final String TEST_FILENAME = "1.doc";
     private static final String INBOX_FOLDER_NAME = "Inbox";
     private static final String SENT_FOLDER_NAME = "Sent";
+    private static final String FILE_PARAM_KEY = "file";
 
     @InjectMocks
     private MessageController messageController;
@@ -68,16 +75,38 @@ public class MessageControllerTest extends AbstractUIControllerTest {
 
     @Test
     public void testChangeReadStatus() {
+        final Message message = new Message();
+        message.setUnread(true);
+        when(messageService.getById(anyLong())).thenReturn(message);
+        when(messageService.save(message)).thenReturn(message);
         messageController.changeReadStatus();
+
+        assertFalse(message.isUnread());
+        verify(messageService).getById(anyLong());
+        verify(messageService).save(message);
     }
 
     @Test
     public void testMoveToOtherFolder() {
+        final Message message = new Message();
+        when(messageService.getByIds(anyCollection())).thenReturn(Collections.singletonList(message));
+        when(folderService.findByName(anyString())).thenReturn(new Folder());
+        when(messageService.update(message)).thenReturn(message);
         messageController.moveToOtherFolder();
+        verify(messageService).getByIds(anyCollection());
+        verify(folderService).findByName(anyString());
+        verify(messageService).update(message);
     }
 
     @Test
     public void testDeleteAttachment() {
+        fcRequestMap.put(FILE_PARAM_KEY, TEST_FILENAME);
+        final AttachmentDto attachmentDto = new AttachmentDto();
+        attachmentDto.setPath(TEST_FILENAME);
+        final List<AttachmentDto> attachmentDtoList = new ArrayList<>();
+        attachmentDtoList.add(attachmentDto);
+        messageController.getMessageFormData().setAttachments(attachmentDtoList);
         messageController.deleteAttachment();
+        assertEquals(0, messageController.getMessageFormData().getAttachments().size());
     }
 }
