@@ -46,12 +46,13 @@ public class FolderControllerTest extends AbstractUIControllerTest {
 
     @Test
     public void testOpenForm() {
-//        folderController.setActionName("rename");
-//        folderController.setSelectedFolderName("Inbox");
-//        Folder folder = new Folder();
-//        when(folderService.findByName("Inbox")).thenReturn(folder);
-//        folderController.openForm();
-//        assertEquals(folder.getId(), folderController.getFolderFormData().getId());
+        folderController.setActionName("rename");
+        folderController.setSelectedFolderName(TEST_FOLDER_NAME);
+        final Folder folder = new Folder();
+        when(folderService.findByName(TEST_FOLDER_NAME)).thenReturn(folder);
+        folderController.openForm();
+        assertEquals(folder.getId(), folderController.getFolderFormData().getId());
+        verify(folderService).findByName(TEST_FOLDER_NAME);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.noveogroup.mailexpress.controller;
 
+import com.noveogroup.mailexpress.domain.Attachment;
 import com.noveogroup.mailexpress.domain.Folder;
 import com.noveogroup.mailexpress.domain.Message;
 import com.noveogroup.mailexpress.dto.AttachmentDto;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.verify;
@@ -32,13 +34,25 @@ public class MessageControllerTest extends AbstractUIControllerTest {
     private static final String INBOX_FOLDER_NAME = "Inbox";
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final String FILE_PARAM_KEY = "file";
+    private static final Long TEST_MESSAGE_ID = 1L;
+    private static final String TEST_ACTION_NAME = "forward";
+    private static final String FORWARD_PREFIX = "FW: ";
 
     @InjectMocks
     private MessageController messageController;
 
     @Test
     public void testOpenForm() {
-//        messageController.openForm();
+        messageController.setActionName(TEST_ACTION_NAME);
+        messageController.setCurrentMessageItemId(TEST_MESSAGE_ID);
+        final Message message = new Message();
+        final Attachment attachment = new Attachment();
+        message.setAttachments(Collections.singletonList(attachment));
+        when(messageService.getById(TEST_MESSAGE_ID)).thenReturn(message);
+        messageController.openForm();
+        assertEquals(1, messageController.getMessageFormData().getAttachments().size());
+        assertTrue(messageController.getMessageFormData().getSubject().startsWith(FORWARD_PREFIX));
+        verify(messageService).getById(TEST_MESSAGE_ID);
     }
 
     @Test
@@ -47,7 +61,7 @@ public class MessageControllerTest extends AbstractUIControllerTest {
         messageController.getMessageFormData().setReceivers(Collections.singletonList(TEST_EMAIL));
         messageController.getMessageFormData().setCopies(Collections.singletonList(TEST_EMAIL2));
         messageController.getMessageFormData().setSubject(TEST_MESSAGE_SUBJECT);
-        AttachmentDto attachmentDto = new AttachmentDto();
+        final AttachmentDto attachmentDto = new AttachmentDto();
 
         messageController.getMessageFormData().setAttachments(Collections.singletonList(attachmentDto));
 
