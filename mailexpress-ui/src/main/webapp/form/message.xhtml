@@ -35,7 +35,7 @@
         <rich:messages ajaxRendered="true"/>
 
         <rich:editor id="messageBody" value="#{messageController.messageFormData.body}"/>
-        <h:outputText value="#{msg['attachments']}"/>
+        <h:outputText value="#{msg['attachments']}" styleClass="m1 b"/>
         <rich:dataTable id="existingAttachments" value="#{messageController.messageFormData.attachments}" var="item"
                         width="60px">
             <rich:column>
