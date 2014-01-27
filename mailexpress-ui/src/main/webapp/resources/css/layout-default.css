@@ -69,6 +69,7 @@ body {
  *	RESIZER-BARS
  */
 .ui-layout-resizer	{ /* all 'resizer-bars' */
+    height: 5px;
 	background:		#DDD;
 	border:			1px solid #BBB;
 	border-width:	0;

@@ -105,6 +105,11 @@ div *.rf-tab-cnt {
     white-space: normal !important;
 }
 
+.rf-trn-ico {
+    width: 24px;
+    height: 24px;
+}
+
 .tip-text {
     color: #a6a6a6;
     font-size: smaller;
@@ -125,5 +130,5 @@ label {
 }
 
 .message-list {
-    height: 100%;
+    height: 235px;
 }
