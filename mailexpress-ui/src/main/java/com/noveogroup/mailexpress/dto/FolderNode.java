@@ -21,6 +21,7 @@ public class FolderNode extends NamedNode implements TreeNode {
     private Long id;
     private String iconPath;
     private boolean system;
+    private boolean expanded = true;
     private List<FolderNode> subFolders = new ArrayList<FolderNode>();
 
     /**
@@ -135,6 +136,14 @@ public class FolderNode extends NamedNode implements TreeNode {
     @Override
     public boolean isLeaf() {
         return subFolders.isEmpty();
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(final boolean expanded) {
+        this.expanded = expanded;
     }
 
     /**

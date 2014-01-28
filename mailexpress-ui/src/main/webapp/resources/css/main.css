@@ -15,17 +15,19 @@ body {
     right: 0;
 }
 
+table {
+    width: 100%;
+}
+
+label {
+    font-weight: bolder;
+}
+
 .container {
     border-width: 0;
     overflow: hidden;
     padding: 0;
     display: none; /* hide panes until layout initializes */
-}
-
-.block {
-    border: 1px dashed #BBB;
-    padding: 5px 10px;
-    font-weight: bold;
 }
 
 .border {
@@ -36,29 +38,8 @@ body {
     text-align: center;
 }
 
-.left {
-    text-align: center;
-}
-
 .errorMessage {
     color: #FF0011;
-}
-
-.rf-tb {
-    height: 35px;
-}
-
-.rf-tb-itm input {
-    vertical-align: middle;
-}
-
-div *.rf-tab-cnt {
-    padding: 0;
-}
-
-.folder-icon {
-    width: 24px;
-    height: 24px;
 }
 
 .inner-layout-container {
@@ -74,14 +55,6 @@ div *.rf-tab-cnt {
 }
 
 .w1 {
-    width: 150px;
-}
-
-.w2 {
-    width: 200px;
-}
-
-.w3 {
     width: inherit;
 }
 
@@ -97,6 +70,30 @@ div *.rf-tab-cnt {
     overflow: auto;
 }
 
+.tip-text {
+    color: #a6a6a6;
+    font-size: smaller;
+    font-style: italic;
+}
+
+.message-list {
+    height: 235px;
+}
+
+/*Override some RichFaces classes*/
+
+.rf-tb {
+    height: 35px;
+}
+
+.rf-tb-itm input {
+    vertical-align: middle;
+}
+
+div *.rf-tab-cnt {
+    padding: 0;
+}
+
 .rich-table-subheadercell {
     white-space: normal !important;
 }
@@ -105,30 +102,15 @@ div *.rf-tab-cnt {
     white-space: normal !important;
 }
 
-.rf-trn-ico {
-    width: 24px;
-    height: 24px;
-}
-
-.tip-text {
-    color: #a6a6a6;
-    font-size: smaller;
-    font-style: italic;
-}
-
-.msg-form {
-    width: 300px;
-    height: 300px;
-}
-
-table {
+#list .rf-edt-td-subject {
     width: 100%;
 }
 
-label {
-    font-weight: bolder;
+#list .rf-edt-c-subject {
+    width: 100%;
 }
 
-.message-list {
-    height: 235px;
+#menu *.rf-trn-ico, *.rf-trn-hnd, *.rf-trn-hnd-ldn-fct {
+    width: 24px;
+    height: 24px;
 }
