@@ -10,7 +10,7 @@
                                   ignore-unresolvable="true"
                                   ignore-resource-not-found="false"/>
 
-    <context:component-scan base-package="com.noveogroup.mailexpress"/>
+    <context:component-scan base-package="com.baev.mailexpress"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
         <constructor-arg ref="dbcpDataSource"/>
@@ -28,7 +28,7 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="persistenceUnitName" value="transactions-optional"/>
-        <property name="packagesToScan" value="com.noveogroup.mailexpress.domain"/>
+        <property name="packagesToScan" value="com.baev.mailexpress.domain"/>
         <property name="jpaPropertyMap">
             <map>
                 <entry key="hibernate.show_sql" value="false"/>
@@ -57,5 +57,5 @@
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
 
-    <jpa:repositories base-package="com.noveogroup.mailexpress.dao"/>
+    <jpa:repositories base-package="com.baev.mailexpress.dao"/>
 </beans>

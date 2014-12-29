@@ -5,8 +5,8 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
         version="2.1">
     <component>
-        <component-type>com.noveogroup.mailexpress.ui</component-type>
-        <component-class>com.noveogroup.mailexpress.ui.UIAttachment</component-class>
+        <component-type>com.baev.mailexpress.ui</component-type>
+        <component-class>com.baev.mailexpress.ui.UIAttachment</component-class>
     </component>
     <application>
         <locale-config>
@@ -22,7 +22,7 @@
         </el-resolver>
     </application>
     <factory>
-        <exception-handler-factory>com.noveogroup.mailexpress.util.exception.MailExpressExceptionHandlerFactoryImpl
+        <exception-handler-factory>com.baev.mailexpress.util.exception.MailExpressExceptionHandlerFactoryImpl
         </exception-handler-factory>
     </factory>
 </faces-config>

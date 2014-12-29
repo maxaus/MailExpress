@@ -28,7 +28,7 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="persistenceUnitName" value="transactions-optional"/>
-        <property name="packagesToScan" value="com.noveogroup.mailexpress.domain"/>
+        <property name="packagesToScan" value="com.baev.mailexpress.domain"/>
         <property name="jpaPropertyMap">
             <map>
                 <entry key="hibernate.show_sql" value="true"/>
@@ -50,7 +50,7 @@
                   ref="entityManagerFactory"/>
     </bean>
 
-    <context:component-scan base-package="com.noveogroup.mailexpress.service"/>
+    <context:component-scan base-package="com.baev.mailexpress.service"/>
 
-    <jpa:repositories base-package="com.noveogroup.mailexpress.dao"/>
+    <jpa:repositories base-package="com.baev.mailexpress.dao"/>
 </beans>

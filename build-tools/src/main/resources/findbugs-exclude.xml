@@ -16,9 +16,9 @@
     -->
     <Match>
         <Or>
-            <Package name="~com\.noveogroup\.mailexpress\.controller.*" />
-            <Package name="~com\.noveogroup\.mailexpress\.service.*" />
-            <Package name="~com\.noveogroup\.mailexpress\.service\.impl.*" />
+            <Package name="~com\.baev\.mailexpress\.controller.*" />
+            <Package name="~com\.baev\.mailexpress\.service.*" />
+            <Package name="~com\.baev\.mailexpress\.service\.impl.*" />
         </Or>
         <Bug code="NP,UuF,UrF,UwF,EI,EI2"/>
     </Match>

@@ -1,1 +1,2 @@
-This file was created by IntelliJ IDEA 12.1.4 for binding GitHub repository
+Simple Java web app simulating Mail application like Outlook, using JSF + Spring + Hibernate + MySQL stack.
+To run application you have to create 2 databases on your local MySQL server: mail (web app DB) and mail_test (integration test DB)

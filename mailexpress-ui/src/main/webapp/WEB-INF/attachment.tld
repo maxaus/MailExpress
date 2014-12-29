@@ -3,11 +3,11 @@
         "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
         "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
 <facelet-taglib>
-    <namespace>http://noveogroup.com/</namespace>
+    <namespace>http://baev.com/</namespace>
     <tag>
         <tag-name>attachment</tag-name>
         <component>
-            <component-type>com.noveogroup.mailexpress.ui</component-type>
+            <component-type>com.baev.mailexpress.ui</component-type>
         </component>
     </tag>
 </facelet-taglib>

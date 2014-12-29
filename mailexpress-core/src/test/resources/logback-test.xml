@@ -7,9 +7,9 @@
         </encoder>
     </appender>
 
-    <logger name="com.noveogroup" level="DEBUG"/>
+    <logger name="com.baev" level="DEBUG"/>
 
-    <logger name="com.noveogroup.mailexpress.BaseDbUnitTestUtils" level="WARN"/>
+    <logger name="com.baev.mailexpress.BaseDbUnitTestUtils" level="WARN"/>
 
     <root level="WARN">
         <appender-ref ref="STDOUT"/>

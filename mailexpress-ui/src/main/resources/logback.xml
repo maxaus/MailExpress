@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.noveogroup" level="DEBUG"/>
+    <logger name="com.baev" level="DEBUG"/>
 
     <root level="WARN">
         <appender-ref ref="STDOUT"/>
